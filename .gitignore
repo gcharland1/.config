@@ -3,6 +3,13 @@
 !i3/**
 !i3status
 !i3status/**
+
+!lazygit
+!lazygit/config.yml
+
 !nvim
 !nvim/**
+
+!tmux
+!tmux/**
 */.git*
