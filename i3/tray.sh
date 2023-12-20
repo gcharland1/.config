@@ -2,9 +2,9 @@
 
 pkill -f blueman-applet
 pkill -f nm-applet
-pkill -f systray
+pkill -f pasystray
 
-nm-applet &
 blueman-applet &
+nm-applet &
 sleep 1
-pasystray --volume-inc=1 --no-notify &
+pasystray &

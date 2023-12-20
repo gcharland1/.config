@@ -30,4 +30,3 @@ vim.keymap.set("n", "<C-d>", "<C-d>zz")
 -- Center window after / jump ( n )
 
 -- Add to harpoon in Netrw
-

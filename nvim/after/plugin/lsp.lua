@@ -9,7 +9,8 @@ require('mason-lspconfig').setup({
         'eslint', -- Javascript (Code analyser)
         'angularls', -- AngularJs
         'html', --HTML
-        'jdtls', -- Java
+        'jdtls', -- Java (Requires Python 3.9)
+        -- 'java_language_server', -- Java (Requires JDK18)
         'cucumber_language_server', -- Cukes
         'lua_ls', -- Lua
         'rust_analyzer', -- Rust
