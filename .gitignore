@@ -12,4 +12,8 @@
 
 !tmux
 !tmux/**
+
+!my_aliases
+
+# Do not include sub git projects
 */.git*

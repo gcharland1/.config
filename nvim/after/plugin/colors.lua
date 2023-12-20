@@ -1,5 +1,6 @@
 -- Lua
 require('onedark').setup {
-    style = 'darker'
+    style = 'warm'
 }
-require('onedark').load()
+-- Set colorscheme after options
+vim.cmd('colorscheme onedark')

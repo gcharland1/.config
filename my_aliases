@@ -1,0 +1,5 @@
+alias vim='nvim'
+alias setupMonitors=~/.config/scripts/setupMonitors.sh
+alias cgt='cd ~/git/teluq/'
+alias lg="lazygit"
+alias tmux="tmux -2 -f ~/.config/tmux/tmux.conf"
