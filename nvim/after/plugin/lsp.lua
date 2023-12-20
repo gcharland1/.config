@@ -22,14 +22,13 @@ require('mason-lspconfig').setup({
 })
 
 local cmp = require('cmp')
--- Unused custom keybingings.
--- local cmp_select = {behavior = cmp.SelectBehavior.Select}
--- local cmp_mappings = lsp.defaults.cmp_mappings({
---   ['<C-S-Tab>'] = cmp.mapping.select_prev_item(cmp_select),
---   ['<C-Tab>'] = cmp.mapping.select_next_item(cmp_select),
---   ['<C-Cr>'] = cmp.mapping.confirm({ select = true }),
---   ["<C-Space>"] = cmp.mapping.complete(),
--- })
+local cmp_select = {behavior = cmp.SelectBehavior.Select}
+local cmp_mappings = lsp.defaults.cmp_mappings({
+  ['<C-S-Tab>'] = cmp.mapping.select_prev_item(cmp_select),
+  ['<C-Tab>'] = cmp.mapping.select_next_item(cmp_select),
+  ['<C-Cr>'] = cmp.mapping.confirm({ select = true }),
+  ["<C-Space>"] = cmp.mapping.complete(),
+})
 
 cmp.setup({
     sources = {
@@ -37,6 +36,14 @@ cmp.setup({
         {name = 'nvim_lsp'},
         {name = 'nvim_lua'},
     },
+    mapping = cmp.mapping.preset.insert({
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-j>'] = cmp.mapping.select_next_item(),
+      ['<C-k>'] = cmp.mapping.select_prev_item(),
+      ['<C-c>'] = cmp.mapping.abort(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    }),
     formatting = lsp.cmp_format(),
 })
 
@@ -54,3 +61,5 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
     vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
 end)
+
+lsp.setup()
