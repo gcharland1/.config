@@ -3,6 +3,7 @@ local lsp = require('lsp-zero')
 require('mason').setup({})
 require('mason-lspconfig').setup({
     ensure_installed = {
+        'bashls', -- Bash language
         'tsserver', -- Javascript & Typescript
         'eslint', -- Javascript (Code analyser)
         'angularls', -- AngularJs

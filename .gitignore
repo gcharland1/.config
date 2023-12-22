@@ -2,7 +2,8 @@
 *
 
 # EXCEPT
-!.setup_environment.sh # Script to run to set global variables and symlinks
+# Script to run to set global variables and symlinks
+!.setup_environment.sh
 
 !i3/**
 !i3status

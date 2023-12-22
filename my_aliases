@@ -1,5 +1,10 @@
-alias vim='nvim'
+# Workspace tools
 alias setupMonitors=~/.config/scripts/setupMonitors.sh
-alias cgt='cd ~/git/teluq/'
+
+# remap to start frequent packages
+alias vim='nvim'
 alias lg="lazygit"
 alias tmux="tmux -2 -f ~/.config/tmux/tmux.conf"
+
+# Go to directories
+alias cgt='cd ~/git/teluq/'
