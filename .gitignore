@@ -1,5 +1,9 @@
+# Ignore EVERYTHING
 *
-!i3
+
+# EXCEPT
+!.setup_environment.sh # Script to run to set global variables and symlinks
+
 !i3/**
 !i3status
 !i3status/**
@@ -7,13 +11,15 @@
 !lazygit
 !lazygit/config.yml
 
+!my_aliases
+
 !nvim
 !nvim/**
 
 !tmux
 !tmux/**
 
-!my_aliases
+!.zshrc
 
-# Do not include sub git projects
+# Do not include any sub git projects
 */.git*
