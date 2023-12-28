@@ -13,6 +13,12 @@ vim.keymap.set("n", "<leader>bd", "<cmd>bd<cr>")
 vim.keymap.set("n", "<leader>y", "\"+y")
 vim.keymap.set("v", "<leader>y", "\"+y")
 
+-- Search word under cursor in page
+--  ...project, etc
+
+-- Search commands ( :command ) with or without fzf auto-complete
+
+
 -- Delete/Paste without overwriting register
 vim.keymap.set("v", "<leader>p", "pgvy")
 vim.keymap.set("v", "<leader>d", "\"_d")
@@ -21,7 +27,7 @@ vim.keymap.set("v", "<leader>d", "\"_d")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 
-
+-- Center window after / jump ( n )
 
 -- Add to harpoon in Netrw
 

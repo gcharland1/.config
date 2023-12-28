@@ -15,19 +15,13 @@ return require('packer').startup(function(use)
     use({'theprimeagen/harpoon'})
 
     -- Linter (Smart highlighting and coloring for programming languages)
-    use({'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'})
+    use({'nvim-treesitter/nvim-treesitter'})
+    --use({'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'})
 
     -- Code analyzer
     use({
        'folke/trouble.nvim',
-        config = function()
-            require('trouble').setup {
-                icons = true,
-                -- your configuration comes here
-                -- or leave it empty to the default settings
-                -- refer to the configuration section below
-            }
-        end
+       requires = 'nvim-tree/nvim-web-devicons',
     })
 
     -- lsp server config
@@ -78,8 +72,9 @@ return require('packer').startup(function(use)
         ft = { "markdown" },
     })
 
-    -- Colorschemes
+    -- Colorscheme
     use({'navarasu/onedark.nvim'})
     use({'rose-pine/neovim'})
-
+    use {"catppuccin/nvim", as = "catppuccin"}
+    use({"jacoborus/tender.vim"})
 end)
