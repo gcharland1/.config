@@ -20,7 +20,19 @@ vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<S-n>", "<S-n>zz")
 vim.keymap.set("n", "n", "nzz")
 
--- New keybinding ideas
+-- Center window on next search result
+vim.keymap.set("n", "n", "nzz")
+vim.keymap.set("n", "N", "Nzz")
+
+-- Resize split windows
+vim.keymap.set("n", "<C-w>|", "<cmd>vsplit<cr>")
+vim.keymap.set("n", "<C-w>-", "<cmd>split<cr>")
+
+-- Search word under cursor in page
+--  ...project, etc
+
+-- Search commands ( :command ) with or without fzf auto-complete
+
 -- Add to harpoon in Netrw
 -- Search word under cursor in page
 vim.keymap.set("v", "/", "y/<C-R>\"<CR>")
