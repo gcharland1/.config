@@ -15,7 +15,6 @@ AvailableColorSchemes = {
 -- Change colorscheme
 function ColorNext()
     local currentColor = vim.api.nvim_exec('colorscheme', true)
-    print("Current colorscheme: "..currentColor)
     local nextColor = 1
     for i, cs in pairs(AvailableColorSchemes) do
         if cs == currentColor then
