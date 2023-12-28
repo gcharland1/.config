@@ -23,13 +23,4 @@ function ColorNext()
 end
 
 vim.keymap.set("n", "<leader>cc", function() ColorNext() end)
-vim.cmd("colorscheme catppuccin-mocha")
--- Lua
--- require('onedark').setup {
-    --     style = 'warm'
-    -- }
-
-    -- require('tender')
-    -- require('gruvbos')
-    -- Set colorscheme after options
-    -- vim.cmd('colorscheme onedark')
+vim.cmd(string.format("colorscheme %s", AvailableColorSchemes[1]))
