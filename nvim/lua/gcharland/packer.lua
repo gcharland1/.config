@@ -75,6 +75,6 @@ return require('packer').startup(function(use)
     -- Colorscheme
     use({'navarasu/onedark.nvim'})
     use({'rose-pine/neovim'})
-    use {"catppuccin/nvim", as = "catppuccin"}
+    use({"catppuccin/nvim", as = "catppuccin"})
     use({"jacoborus/tender.vim"})
 end)
