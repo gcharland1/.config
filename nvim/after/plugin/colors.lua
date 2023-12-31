@@ -1,11 +1,15 @@
 --@Todo: Get actual list from command colorscheme <c-d>
 AvailableColorSchemes = {
     "catppuccin-mocha",
-    "rose-pine",
     "catppuccin-frappe",
     "catppuccin-macchiato",
-    "tender",
-    "onedark",
+    --"everforest",
+    --"apprentice",
+    --"PaperColor",
+    --"rose-pine",
+    --"jellybeans",
+    --"tender",
+    --"onedark",
 }
 
 -- Change colorscheme

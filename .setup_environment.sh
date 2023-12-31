@@ -28,6 +28,7 @@ if ! command -v lazygit &> /dev/null; then
 else
     echo LazyGit already installed to version: \r $(lazygit --version)
 fi
+ln -s ~/.config/oh-my-zsh ~/.oh-my-zsh
 
 # Install oh-my-zsh and configure
 sudo apt install zsh-autosuggestions zsh-syntax-highlighting zsh
@@ -42,5 +43,5 @@ fi
 # Create symlink to .zshrc
 if [ -f ~/.zshrc ]; then
     mv ~/.zshrc ~/.zshrc.bak
-    ln -s ~/.config/.zshrc ~/.zshrc
 fi
+ln -s ~/.config/.zshrc ~/.zshrc
