@@ -4,6 +4,9 @@ return require('packer').startup(function(use)
     -- Packer can manage itself
     use('wbthomason/packer.nvim')
 
+    -- My Maven pluggin
+    use('/home/gabriel/git/nvim/marvin.nvim')
+
     -- Fizzy finder
     use({
         'nvim-telescope/telescope.nvim', tag = '0.1.5',
