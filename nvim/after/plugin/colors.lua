@@ -3,13 +3,13 @@ AvailableColorSchemes = {
     "catppuccin-mocha",
     "catppuccin-frappe",
     "catppuccin-macchiato",
-    --"everforest",
-    --"apprentice",
-    --"PaperColor",
-    --"rose-pine",
-    --"jellybeans",
-    --"tender",
-    --"onedark",
+    "everforest",
+    "apprentice",
+    "PaperColor",
+    "rose-pine",
+    "jellybeans",
+    "tender",
+    "onedark",
 }
 
 -- Change colorscheme
