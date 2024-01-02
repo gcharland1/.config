@@ -5,7 +5,7 @@ return require('packer').startup(function(use)
     use('wbthomason/packer.nvim')
 
     -- My Maven pluggin
-    use('/home/gabriel/git/nvim/marvin.nvim')
+    --use('/home/gabriel/git/nvim/marvin.nvim')
 
     -- Fizzy finder
     use({
@@ -87,6 +87,8 @@ return require('packer').startup(function(use)
     use({'rose-pine/neovim'})
     use({"catppuccin/nvim", as = "catppuccin"})
     use({"jacoborus/tender.vim"})
-    use({"sainnhe/everforest"})
     use({"romainl/Apprentice"})
+    use({"NLKNguyen/papercolor-theme"})
+    use({"sainnhe/everforest"})
+    use({"nanotech/jellybeans.vim"})
 end)
