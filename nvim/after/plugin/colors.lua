@@ -11,17 +11,27 @@ AvailableColorSchemes = {
     --"onedark",
 }
 
+local background = "#1e1d2b"
+
 require("catppuccin").setup({
     color_overrides = {
         mocha = {
-            base = "#1f1f26",
+            base = background,
         },
     }
 })
 
+require("rose-pine").setup({
+    variant = "moon",
+    groups = {
+        background = background,
+    },
+})
+
+
 -- Change colorscheme
 function ColorNext()
-    local currentColor = vim.api.nvim_exec('colorscheme', true)
+    local currentColor = vim.api.nvim_exec2("colorscheme", {output = true})
     print("Current colorscheme: "..currentColor)
     local nextColor = 1
     for i, cs in pairs(AvailableColorSchemes) do
