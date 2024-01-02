@@ -28,12 +28,12 @@ if ! command -v lazygit &> /dev/null; then
 else
     echo LazyGit already installed to version: \r $(lazygit --version)
 fi
-ln -s ~/.config/oh-my-zsh ~/.oh-my-zsh
 
 # Install oh-my-zsh and configure
 sudo apt install zsh-autosuggestions zsh-syntax-highlighting zsh
 git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+ln -s ~/.config/oh-my-zsh ~/.oh-my-zsh
 
 if [ -f ~/.zshrc.pre-oh-my-zsh ]; then
     rm ~/.zhrc

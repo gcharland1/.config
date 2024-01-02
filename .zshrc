@@ -8,23 +8,41 @@ export ZSH="$HOME/.config/oh-my-zsh"
 #ZSH_THEME="simple"
 ZSH_THEME="eastwood"
 
+# Enable auto-corrections
+ENABLE_CORRECTION="true"
+
 plugins=(
     git
+	npm
     zsh-autosuggestions
     sudo
 )
 source $ZSH/oh-my-zsh.sh
 #
-# Setting java-11 as default
-export JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64
-export PATH=$JAVA_HOME/jre/bin:$PATH
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
    export EDITOR='vim'
  else
-   export EDITOR='mvim'
+   export EDITOR='nvim'
  fi
 
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
 # Source personnal aliases
-source ~/.config/my_aliases
+if [ -f ~/.config/my_aliases ]; then
+    . ~/.config/my_aliases
+fi
+
+# Environment variables settés depuis omnimedrc
+. $HOME/.omnimedrc 2> /dev/null
+PATH=$PATH:~/Applications/Scripts
+# Setting java-11 as default
+#export JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64
+#export PATH=$JAVA_HOME/jre/bin:$PATH
+export JAVA_HOME=$(readlink -ze /usr/bin/java | xargs -0 dirname -z | xargs -0 dirname)
+export HISTTIMEFORMAT="%Y-%m-%d %T "
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"

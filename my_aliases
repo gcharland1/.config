@@ -1,11 +1,28 @@
 # Workspace tools
-alias setupMonitors=~/.config/scripts/setupMonitors.sh
+alias setupMonitors=~/.config/scripts/workspace/setupMonitors.sh
 
-# remap to start frequent packages
-alias vim='nvim'
-alias lg="lazygit"
-alias tmux="tmux -2 -f ~/.config/tmux/tmux.conf"
+# App start aliases
+alias vim=nvim
+alias lg=lazygit
+alias k9s=/snap/k9s/current/bin/k9s
+alias tmux="tmux -f ~/.config/tmux/tmux.conf"
 
 # Go to directories
 alias cgt='cd ~/git/teluq/'
 alias cgos='cd ~/git/Omnimed-solutions/'
+
+# Omnimed aliases
+alias initdb="ant -buildfile ~/git/Omnimed-solutions/build-tools/workspace/initDatabase.xml"
+## Cukes
+alias dbcukes="~/.config/scripts/omnimed/BdPlusCukes.sh"
+alias cukesdb="~/.config/scripts/omnimed/cukesPlusBD.sh"
+alias runcukeshere="npm run integration-test-dev"
+alias runcukes="~/.config/scripts/omnimed/cukes.sh"
+## Rebuild api
+rebuildApi() { bash ~/.config/scripts/omnimed/rebuildApi.sh $1; }
+## Deploy springboot solution
+alias marvin="~/.config/scripts/omnimed/runSpring.sh"
+## Deploy k8s solution. Ex: deploySolution api prescribeit
+deploySolution() { ~/.config/scripts/omnimed/startK8sPod.sh $@; }
+alias k8sOmnimedSolutions="~/.config/scripts/omnimed/deployOmnimedSolution.sh"
+
