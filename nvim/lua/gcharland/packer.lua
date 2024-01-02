@@ -5,7 +5,7 @@ return require('packer').startup(function(use)
     use('wbthomason/packer.nvim')
 
     -- My Maven pluggin
-    use('/home/gabriel/git/nvim/marvin.nvim')
+    --use('/home/gabriel/git/nvim/marvin.nvim')
 
     -- Fizzy finder
     use({

@@ -1,20 +1,28 @@
 --@Todo: Get actual list from command colorscheme <c-d>
 AvailableColorSchemes = {
-    "catppuccin-mocha",
-    "catppuccin-frappe",
-    "catppuccin-macchiato",
-    "everforest",
-    "apprentice",
-    "PaperColor",
     "rose-pine",
-    "jellybeans",
-    "tender",
-    "onedark",
+    "catppuccin-mocha",
+    --"catppuccin-frappe",
+    --"catppuccin-macchiato",
+    --"everforest",
+    --"apprentice",
+    --"jellybeans",
+    --"tender",
+    --"onedark",
 }
+
+require("catppuccin").setup({
+    color_overrides = {
+        mocha = {
+            base = "#1f1f26",
+        },
+    }
+})
 
 -- Change colorscheme
 function ColorNext()
     local currentColor = vim.api.nvim_exec('colorscheme', true)
+    print("Current colorscheme: "..currentColor)
     local nextColor = 1
     for i, cs in pairs(AvailableColorSchemes) do
         if cs == currentColor then
