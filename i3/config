@@ -1,28 +1,5 @@
 # i3 config file (v4)
-#
-# Please see https://i3wm.org/docs/userguide.html for a complete reference!
-#
-# This config file uses keycodes (bindsym) and was written for the QWERTY
-# layout.
-#
-# To get a config file with the same key positions, but for your current
-# layout, use the i3-config-wizard
-#
-
-# Font for window titles. Will also be used by the bar unless a different font
-# is used in the bar {} block below.
 font pango:monospace 10 
-
-# This font is widely installed, provides lots of unicode glyphs, right-to-left
-# text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:DejaVu Sans Mono 8
-
-# Before i3 v4.8, we used to recommend this one as the default:
-# font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
-# The font above is very space-efficient, that is, it looks good, sharp and
-# clear in small sizes. However, its unicode glyph coverage is limited, the old
-# X core fonts rendering does not support right-to-left and this being a bitmap
-# font, it doesn’t scale on retina/hidpi displays.
 
 ##################
 ### Variables ####
@@ -31,21 +8,71 @@ font pango:monospace 10
 set $mod Mod4
 
 # Workspace variables
-set $wspace1 1:
-set $wspace2 2:
+set $wspace1 1
+set $wspace2 2
 set $wspace3 3
 set $wspace4 4
 set $wspace5 5
 set $wspace6 6
-set $wspace7 7:
-set $wspace8 8:
-set $wspace9 9:
-set $wspace10 10:
+set $wspace7 7
+set $wspace8 8
+set $wspace9 9
+set $wspace10 10
 
 # Font variables (requires fonts-font-awesome)
 set $font_normal "pango:monospace 10"
 set $font_bar "pango:Ubuntu 10"
 set $font_button "pango:Ubuntu mono, Awesome 14"
+
+###########################
+# Changement des couleurs #
+###########################
+# class                 border  bground text    indicator child_border
+client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
+client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
+client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
+client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
+
+client.background       #F8F8F2
+
+# Setting up border width
+new_window pixel 3
+hide_edge_borders smart
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+    status_command i3status
+        mode dock
+        position bottom
+
+        tray_output eDP-1 
+        tray_padding 0
+
+        separator_symbol " | "
+
+        font $font_button
+
+        workspace_buttons yes 
+        strip_workspace_numbers yes
+
+        colors {
+            background #282A36
+                statusline #F8F8F2
+                separator  #A8ACC4
+
+                focused_workspace  #44475A #44475A #F8F8F2
+                active_workspace   #282A36 #44475A #F8F8F2
+                inactive_workspace #282A36 #282A36 #BFBFBF
+                urgent_workspace   #FF5555 #FF5555 #F8F8F2
+                binding_mode       #FF5555 #FF5555 #F8F8F2
+        }
+}
+
+###############
+# Keybindings #
+###############
 
 # use these keys for focus, movement, and resize directions when reaching for
 # the arrows is not convenient
@@ -94,7 +121,7 @@ bindsym $mod+Shift+v split h
 bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen toggle
+bindsym $mod+Shift+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -117,13 +144,11 @@ bindsym $mod+d focus child
 bindsym $mod+Shift+minus move scratchpad
 
 # Show the next scratchpad window or hide the focused scratchpad window.
-# If there are multiple scratchpad windows, this command cycles through them.
 bindsym $mod+minus scratchpad show
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
-
         bindsym $left       resize shrink width $resizeInc px or $resizeInc ppt
         bindsym $down       resize grow height $resizeInc px or $resizeInc ppt
         bindsym $up         resize shrink height $resizeInc px or $resizeInc ppt
@@ -209,6 +234,8 @@ bindsym XF86AudioMute exec amixer -q -D pulse set Master toggle
 
 # Play / Pause (requires playerctl)
 bindsym $mod+p exec playerctl play-pause
+bindsym $mod+Shift+Right exec playerctl next
+bindsym $mod+Shift+Left exec playerctl previous
 bindsym $mod+F8 exec playerctl next
 bindsym $mod+F6 exec playerctl previous
 
@@ -255,52 +282,6 @@ set $Locker i3lock -c "#000000"
 
 #bindsym Ctrl+Shift+Escape exec $Locker
 bindsym Ctrl+Shift+Escape exec "~/.config/i3/fuzzy_lock.sh"
-
-###########################
-# Changement des couleurs #
-###########################
-# class                 border  bground text    indicator child_border
-client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
-client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
-client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
-client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-
-client.background       #F8F8F2
-
-# Setting up border width
-new_window pixel 3
-hide_edge_borders smart
-
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-bar {
-    status_command i3status
-        mode dock
-        position bottom
-
-        tray_output eDP-1 
-        tray_padding 0
-
-        separator_symbol " | "
-
-        font $font_button
-
-        workspace_buttons yes 
-        strip_workspace_numbers yes
-
-        colors {
-            background #282A36
-                statusline #F8F8F2
-                separator  #A8ACC4
-
-                focused_workspace  #44475A #44475A #F8F8F2
-                active_workspace   #282A36 #44475A #F8F8F2
-                inactive_workspace #282A36 #282A36 #BFBFBF
-                urgent_workspace   #FF5555 #FF5555 #F8F8F2
-                binding_mode       #FF5555 #FF5555 #F8F8F2
-        }
-}
 
 #######################################################################
 # automatically start i3-config-wizard to offer the user to create a

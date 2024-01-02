@@ -8,3 +8,4 @@ alias tmux="tmux -2 -f ~/.config/tmux/tmux.conf"
 
 # Go to directories
 alias cgt='cd ~/git/teluq/'
+alias cgos='cd ~/git/Omnimed-solutions/'

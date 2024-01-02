@@ -5,6 +5,7 @@
 # Script to run to set global variables and symlinks
 !.setup_environment.sh
 
+!i3
 !i3/**
 !i3status
 !i3status/**
@@ -19,6 +20,9 @@
 
 !tmux
 !tmux/**
+
+!scripts
+!scripts/**
 
 !.zshrc
 
