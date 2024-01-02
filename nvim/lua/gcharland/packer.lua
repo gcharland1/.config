@@ -1,11 +1,6 @@
--- This file is called from init.vim (Added when cloning the repo)
-
 return require('packer').startup(function(use)
     -- Packer can manage itself
     use('wbthomason/packer.nvim')
-
-    -- My Maven pluggin
-    --use('/home/gabriel/git/nvim/marvin.nvim')
 
     -- Fizzy finder
     use({
@@ -19,10 +14,8 @@ return require('packer').startup(function(use)
 
     -- Linter (Smart highlighting and coloring for programming languages)
     use({'nvim-treesitter/nvim-treesitter'})
-    --use({'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'})
-    use("nvim-treesitter/playground")
-    use("nvim-treesitter/nvim-treesitter-context")
-
+    use({"nvim-treesitter/playground"})
+    use({"nvim-treesitter/nvim-treesitter-context"})
 
     -- Code analyzer
     use({
@@ -66,7 +59,6 @@ return require('packer').startup(function(use)
     -- Lazygit for nvim
     use({
         "kdheepak/lazygit.nvim",
-        -- optional for floating window border decoration
         requires = {
             "nvim-lua/plenary.nvim",
         },
@@ -83,12 +75,6 @@ return require('packer').startup(function(use)
     })
 
     -- Colorscheme
-    use({'navarasu/onedark.nvim'})
     use({'rose-pine/neovim'})
     use({"catppuccin/nvim", as = "catppuccin"})
-    use({"jacoborus/tender.vim"})
-    use({"romainl/Apprentice"})
-    use({"NLKNguyen/papercolor-theme"})
-    use({"sainnhe/everforest"})
-    use({"nanotech/jellybeans.vim"})
 end)

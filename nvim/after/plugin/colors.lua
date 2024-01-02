@@ -1,14 +1,6 @@
---@Todo: Get actual list from command colorscheme <c-d>
 AvailableColorSchemes = {
     "rose-pine",
     "catppuccin-mocha",
-    --"catppuccin-frappe",
-    --"catppuccin-macchiato",
-    --"everforest",
-    --"apprentice",
-    --"jellybeans",
-    --"tender",
-    --"onedark",
 }
 
 local background = "#1e1d2b"
@@ -28,8 +20,9 @@ require("rose-pine").setup({
     },
 })
 
+vim.cmd(string.format("colorscheme %s", AvailableColorSchemes[1]))
 
--- Change colorscheme
+-- Change colorscheme with <leader>cc
 function ColorNext()
     local currentColor = vim.api.nvim_exec2("colorscheme", {output = true})
     print("Current colorscheme: "..currentColor)
@@ -44,4 +37,3 @@ function ColorNext()
 end
 
 vim.keymap.set("n", "<leader>cc", function() ColorNext() end)
-vim.cmd(string.format("colorscheme %s", AvailableColorSchemes[1]))
