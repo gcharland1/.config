@@ -1,6 +1,9 @@
 vim.opt.nu = true
 vim.opt.relativenumber = true
+
 vim.g.netrw_bufsettings = 'noma nomod nu nowrap ro nobl'
+vim.g.netrw_liststyle = 0
+vim.g.netrw_sizestyle = "H"
 
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
