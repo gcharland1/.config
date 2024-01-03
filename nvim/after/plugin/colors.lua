@@ -3,7 +3,7 @@ AvailableColorSchemes = {
     "catppuccin-mocha",
 }
 
-local background = "#1e1d2b"
+local background = "#2b2b2c"
 
 require("catppuccin").setup({
     color_overrides = {
@@ -24,7 +24,7 @@ vim.cmd(string.format("colorscheme %s", AvailableColorSchemes[1]))
 
 -- Change colorscheme with <leader>cc
 function ColorNext()
-    local currentColor = vim.api.nvim_exec2("colorscheme", {output = true})
+    local currentColor = vim.api.nvim_exec2("colorscheme", {output = true})["output"]
     print("Current colorscheme: "..currentColor)
     local nextColor = 1
     for i, cs in pairs(AvailableColorSchemes) do

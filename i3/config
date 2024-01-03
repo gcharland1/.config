@@ -305,7 +305,7 @@ exec --no-startup-id xautolock -time 15 locker '~/.config/i3/fuzzy_lock.sh' &
 exec --no-startup-id bash /home/gcharland/.config/i3/tray.sh
 
 # Settup custom pour les moniteurs
-exec --no-startup-id /home/gcharland/Documents/myScripts/setupMonitors.sh
+exec --no-startup-id /home/gcharland/.config/scripts/workspace/setupMonitors.sh
 
 # Apps to start on login
 exec --no-startup-id i3-msg 'workspace $wspace1; exec i3-sensible-terminal'
