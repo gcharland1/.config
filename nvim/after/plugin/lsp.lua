@@ -1,16 +1,15 @@
 local lsp = require('lsp-zero')
 local cmp = require('cmp')
 
+--vim.env.PATH =  vim.env.PATH .. ":/home/gcharland/.volta/bin/:/usr/bin/"
+
 require('mason').setup({})
 require('mason-lspconfig').setup({
     ensure_installed = {
         'bashls', -- Bash language
-        'tsserver', -- Javascript & Typescript
-        'eslint', -- Javascript (Code analyser)
-        'angularls', -- AngularJs
+        'tsserver', -- Javascript & Angular
         'html', --HTML
-        --'jdtls', -- Java (Requires Python 3.9)
-        'cucumber_language_server', -- Cukes
+        --'cucumber_language_server', -- Cukes
         'lua_ls', -- Lua
         'rust_analyzer', -- Rust
     },
