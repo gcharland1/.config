@@ -1,31 +1,25 @@
 AvailableColorSchemes = {
     "rose-pine",
-    "catppuccin-mocha",
 }
 
-local background = "#2b2b2b"
+local light_background = "#2b2b2b"
+local dark_background = "#1a1a1a"
 local cursorLineColor = "#3a3a3a"
+local colorColumnColor = "#444444"
 
-require("catppuccin").setup({
-    color_overrides = {
-        mocha = {
-            base = background,
+function SetupColorscheme()
+    local background = (tonumber(os.date("%H")) > 16 and dark_background or light_background)
+    require("rose-pine").setup({
+        variant = "moon",
+        groups = {
+            background = background,
         },
-    }
-})
-
-require("rose-pine").setup({
-    variant = "moon",
-    groups = {
-        background = background,
-    },
-    highlight_groups = {
-        ['CursorLine'] = { bg = cursorLineColor },
-        ['ColorColumn'] = { bg = cursorLineColor },
-    }
-})
-
-vim.cmd(string.format("colorscheme %s", AvailableColorSchemes[1]))
+        highlight_groups = {
+            ['CursorLine'] = { bg = cursorLineColor },
+            ['ColorColumn'] = { bg = colorColumnColor },
+        }
+    })
+end
 
 -- Change colorscheme with <leader>cc
 function ColorNext()
@@ -41,4 +35,6 @@ function ColorNext()
     return vim.cmd(string.format("colorscheme %s", AvailableColorSchemes[nextColor]))
 end
 
-vim.keymap.set("n", "<leader>cc", function() ColorNext() end)
+SetupColorscheme()
+vim.cmd(string.format("colorscheme %s", AvailableColorSchemes[1]))
+vim.keymap.set("n", "<leader>cc", function() SetupColorscheme() end)
