@@ -3,7 +3,8 @@ AvailableColorSchemes = {
     "catppuccin-mocha",
 }
 
-local background = "#2b2b2c"
+local background = "#2b2b2b"
+local cursorLineColor = "#3a3a3a"
 
 require("catppuccin").setup({
     color_overrides = {
@@ -18,6 +19,10 @@ require("rose-pine").setup({
     groups = {
         background = background,
     },
+    highlight_groups = {
+        ['CursorLine'] = { bg = cursorLineColor },
+        ['ColorColumn'] = { bg = cursorLineColor },
+    }
 })
 
 vim.cmd(string.format("colorscheme %s", AvailableColorSchemes[1]))

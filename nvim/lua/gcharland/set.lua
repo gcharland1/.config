@@ -1,3 +1,7 @@
+vim.opt.path = vim.opt.path + ':~/.volta/bin/node@16:'
+vim.opt.path = vim.opt.path + ':~/.volta/bin/npm@8'
+vim.opt.path = vim.opt.path + ':/usr/lib/jvm/java-17-openjdk-amd64/bin/java'
+
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
@@ -30,4 +34,5 @@ vim.opt.isfname:append("@-@")
 --
 vim.opt.updatetime = 50
 --
-vim.opt.colorcolumn = "120"
+vim.opt.colorcolumn = "160"
+vim.opt.cursorline = true

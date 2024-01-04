@@ -8,8 +8,10 @@ require('mason-lspconfig').setup({
     ensure_installed = {
         'bashls', -- Bash language
         'tsserver', -- Javascript & Angular
+        'jdtls', -- java
+        'java_language_server', -- Java
         'html', --HTML
-        --'cucumber_language_server', -- Cukes
+        'cucumber_language_server', -- Cukes
         'lua_ls', -- Lua
         'rust_analyzer', -- Rust
     },
