@@ -56,13 +56,16 @@ return require('packer').startup(function(use)
     -- Git-like undo tree
     use({'mbbill/undotree'})
 
+    -- Fugitive (Git)
+    use({"tpope/vim-fugitive"})
+
     -- Lazygit for nvim
-    use({
-        "kdheepak/lazygit.nvim",
-        requires = {
-            "nvim-lua/plenary.nvim",
-        },
-    })
+--    use({
+--        "kdheepak/lazygit.nvim",
+--        requires = {
+--            "nvim-lua/plenary.nvim",
+--        },
+--    })
 
     -- Markdownpreview
     use({
@@ -76,5 +79,4 @@ return require('packer').startup(function(use)
 
     -- Colorscheme
     use({'rose-pine/neovim'})
-    use({"catppuccin/nvim", as = "catppuccin"})
 end)
