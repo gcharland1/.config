@@ -272,6 +272,7 @@ bindsym XF86PowerOff mode "$mode_system"
 # Take Screenshot
 bindsym --release Print exec gnome-screenshot -ia
 bindsym --release Shift+Print exec gnome-screenshot -acf /tmp/screenshot && cat /tmp/screenshot | xclip -i -selection clipboard -target image/png
+bindsym --release $mod+Shift+P exec gnome-screenshot -acf /tmp/screenshot && cat /tmp/screenshot | xclip -i -selection clipboard -target image/png
 
 ##########################
 # Screen locker settings #
