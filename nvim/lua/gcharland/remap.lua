@@ -23,3 +23,5 @@ vim.keymap.set("n", "n", "nzz")
 -- New keybinding ideas
 -- Add to harpoon in Netrw
 -- Search word under cursor in page
+vim.keymap.set("v", "/", "y/<C-R>\"<CR>")
+
