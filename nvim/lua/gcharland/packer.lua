@@ -79,4 +79,7 @@ return require('packer').startup(function(use)
 
     -- Colorscheme
     use({'rose-pine/neovim'})
+
+    -- Vim Be Good
+    use({'ThePrimeagen/vim-be-good'})
 end)
