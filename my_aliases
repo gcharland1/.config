@@ -1,11 +1,15 @@
 # Workspace tools
 alias setupMonitors=~/.config/scripts/workspace/setupMonitors.sh
+alias setVolume=~/.config/scripts/workspace/setInputVolume.sh
 
 # App start aliases
 alias vim=nvim
 alias lg=lazygit
 alias k9s=/snap/k9s/current/bin/k9s
+
 alias tmux="tmux -f ~/.config/tmux/tmux.conf"
+alias tmux-ssh="tmux new-session -s ssh -c ~"
+alias tmux-omnimed="tmux new-session -s omnimed -c ~/git/Omnimed-solutions"
 
 # Go to directories
 alias cgt='cd ~/git/teluq/'
@@ -25,4 +29,7 @@ alias marvin="~/.config/scripts/omnimed/runSpring.sh"
 ## Deploy k8s solution. Ex: deploySolution api prescribeit
 k8s() { ~/.config/scripts/omnimed/startK8sPod.sh $@; }
 alias k8sOmnimedSolutions="~/.config/scripts/omnimed/deployOmnimedSolution.sh"
-
+## Ant scripts
+alias ant-activeMq="sudo ant -buildfile ~/git/Omnimed-solutions/build-tools/workspace/starter.xml start-activemq"
+alias ant-generateIndex="ant -buildfile ~/git/Omnimed-solutions/build-tools/pipeline/database/generateIndex.xml default"
+alias ant-processRessource="ant -buildfile ~/git/Omnimed-solutions/build-tools/workspace/processResources.xml all force-rebuild"
