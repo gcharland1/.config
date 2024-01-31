@@ -21,7 +21,12 @@ if [ "$TYPE" == "api" ] || [ "$TYPE" == "config" ] || [ "$TYPE" == "integration"
 elif [ "$TYPE" == "frontend" ]; then
     echo "Building and deploying solution $TYPE-$SERVICE"
     echo "Output log available at ~/Documents/stacks/k8s/$TYPE-$SERVICE.log"
-    { npm run pre-deploy && skaffold run; } > ~/Documents/stacks/$TYPE-$SERVICE.log & disown;
+    if [ -f "gulpfile.js" ]; then
+        CMD="gulp build"
+    else
+        CMD="npm run pre-deploy"
+    fi
+    $($CMD && skaffold run) > ~/Documents/stacks/$TYPE-$SERVICE.log & disown;
 fi
 
 cd $CWD
