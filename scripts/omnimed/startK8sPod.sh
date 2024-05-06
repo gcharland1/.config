@@ -26,7 +26,7 @@ elif [ "$TYPE" == "frontend" ]; then
     else
         CMD="npm run pre-deploy"
     fi
-    $($CMD && skaffold run) > ~/Documents/stacks/$TYPE-$SERVICE.log & disown;
+    { $CMD && skaffold run; } > ~/Documents/stacks/$TYPE-$SERVICE.log & disown;
 fi
 
 cd $CWD
