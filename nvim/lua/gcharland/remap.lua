@@ -37,3 +37,8 @@ vim.keymap.set("n", "<C-w>-", "<cmd>split<cr>")
 -- Search word under cursor in page
 vim.keymap.set("v", "/", "y/<C-R>\"<CR>")
 
+-- Execute current file
+vim.keymap.set("n", "<leader><Enter>", ":w<CR>:! %:p<CR>")
+
+-- Format XML file
+vim.keymap.set("n", "<leader><leader>X", ":w<CR>:r!xmllint --format %<CR>ggdd")
