@@ -29,7 +29,7 @@ hide_edge_borders smart
 
 # Set color variables
 set $main #284b63
-set $black #22223b
+set $black #12122b
 set $white #d9d9d9
 set $red #c44536
 
@@ -44,7 +44,6 @@ client.background       $black
 
 # Main bar (Laptop, toutes l'info)
 bar {
-    # Commenter pour afficher sur tous les moniteurs
     output primary
 
     mode dock
@@ -181,9 +180,9 @@ bindsym $mod+v split v
 bindsym $mod+Shift+f fullscreen toggle
 
 # Start i3-dmenu-desktop
-bindsym $mod+m exec i3-dmenu-desktop --dmenu='dmenu -i -nb $black -nf $white -sb $main -sf $white'
+bindsym $mod+m exec i3-dmenu-desktop --dmenu='dmenu -i -nb $black -nf $white -sb $white -sf $black'
 # start a terminal
-bindsym $mod+Return exec --no-startup-id i3-sensible-terminal
+bindsym $mod+Return exec --no-startup-id x-terminal-emulator
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -299,7 +298,7 @@ exec --no-startup-id bash /home/gcharland/.config/i3/tray.sh
 exec --no-startup-id /home/gcharland/.config/scripts/workspace/setupMonitors.sh
 
 # Apps to start on login
-exec --no-startup-id i3-msg 'workspace $wspace1; exec i3-sensible-terminal'
+exec --no-startup-id i3-msg 'workspace $wspace1; exec x-terminal-emulator -e ~/.config/scripts/workspace/startTmux.sh'
 exec --no-startup-id i3-msg 'workspace $wspace2; exec google-chrome'
 #exec --no-startup-id i3-msg 'workspace $wspace9; exec spotify --disable-gpu'
 exec --no-startup-id i3-msg 'workspace $wspace10; exec discord --start-minimized'
