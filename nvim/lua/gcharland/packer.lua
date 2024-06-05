@@ -2,10 +2,12 @@ return require('packer').startup(function(use)
     -- Packer can manage itself
     use('wbthomason/packer.nvim')
 
+    -- My Maven pluggin
+    --use('/home/gcharland/git/personnel/marvin.nvim')
+
     -- Fizzy finder
     use({
         'nvim-telescope/telescope.nvim', tag = '0.1.5',
-        -- or                            , branch = '0.1.x',
         requires = { {'nvim-lua/plenary.nvim'} }
     })
 
@@ -14,8 +16,15 @@ return require('packer').startup(function(use)
 
     -- Linter (Smart highlighting and coloring for programming languages)
     use({'nvim-treesitter/nvim-treesitter'})
-    use({"nvim-treesitter/playground"})
-    use({"nvim-treesitter/nvim-treesitter-context"})
+    use("nvim-treesitter/playground")
+    use("nvim-treesitter/nvim-treesitter-context")
+
+    -- Java specif Lsp and linter
+--    use({
+--        'neoclide/coc.nvim',
+--        branch = 'release',
+--        run = "npm ci",
+--    })
 
     -- Code analyzer
     use({

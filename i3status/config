@@ -19,6 +19,7 @@ general {
 order += "battery all"
 order += "memory"
 order += "cpu_usage"
+order += "cpu_temperature 0"
 order += "volume master"
 order += "tztime local"
 order += ""
@@ -47,15 +48,21 @@ memory {
 
 cpu_usage {
     format = " %usage"
-        max_threshold = 80
+    max_threshold = 80
+}
+
+cpu_temperature 0 {
+    format = "%degreesC"
+    max_threshold = 70
+    path = /sys/class/hwmon/hwmon3/temp1_input
 }
 
 volume master {
     format = ": %volume"
-        format_muted = " : %volume"
+    format_muted = " : %volume"
 
-        device = "pulse"
-        mixer = "Master"
+    device = "pulse"
+    mixer = "Master"
 }
 
 tztime local {
