@@ -42,7 +42,10 @@ PATH=$PATH:~/Applications/Scripts
 # Setting java-11 as default
 #export JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64
 #export PATH=$JAVA_HOME/jre/bin:$PATH
-export JAVA_HOME=$(readlink -ze /usr/bin/java | xargs -0 dirname -z | xargs -0 dirname)
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 export HISTTIMEFORMAT="%Y-%m-%d %T "
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)
