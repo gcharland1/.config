@@ -3,6 +3,8 @@ i3status
 i3lock
 dmenu
 playerctl
+fonts-font-awesome
+xautolock
 
 blueman
 pasystray

@@ -1,18 +1,15 @@
 # Setup tous les moniteurs par défaut (Reset)
-xrandr --output DP1 --auto
-xrandr --output DP2 --auto
-xrandr --output HDMI1 --auto
-xrandr --output HDMI2 --auto
+for m in $(xrandr -q | grep '^[eDP|DP|HDMI]' | awk '{print $1}'); do
+    xrandr --output $m --auto
+done
 
+WIFI=$(iwgetid -r)
+[ "$WIFI" = "Le Flash" ] && position="--right-of" || position="--left-of"
 
-WIFI_NAME=$(iwgetid -r)
+monitors=$(xrandr --listmonitors | grep -v 'Monitors:' | awk '{print $4}' | grep -v 'e')
+main=$(xrandr --listmonitors | grep -v 'Monitors:' | awk '{print $4}' | grep 'e')
 
-if [ $WIFI_NAME = "BELL314" ]; then
-    xrandr --output DP1 --right-of eDP1
-    xrandr --output DP2 --right-of eDP1
-else
-    xrandr --output DP1 --left-of eDP1
-    xrandr --output DP2 --left-of eDP1
-fi
-
-xrandr --output HDMI1 --right-of eDP1
+xrandr --output $main --primary
+for m in $monitors; do
+    xrandr --output $m $position $main --primary
+done

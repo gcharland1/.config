@@ -10,24 +10,19 @@ general {
     colors = true
     interval = 5
 
-    color_good = "#00AA55"
-    color_degraded = "#BBBB00"
-    color_bad = "#AA0000"
+    color_good = "#d9d9d9"
+    color_degraded = "#ffc300"
+    color_bad = "#c44536"
+    
+    output_format = i3bar
 }
 
-#order += "wireless _first_"
 order += "battery all"
 order += "memory"
 order += "cpu_usage"
-order += "cpu_temperature 0"
 order += "volume master"
 order += "tztime local"
 order += ""
-
-wireless _first_ {
-    format_up = " %essid"
-    format_down = " DOWN "
-}
 
 battery all {
     format = "%status %percentage"
@@ -37,7 +32,7 @@ battery all {
     status_unk = " ?"
 
     integer_battery_capacity = true
-    last_full_capacity = True
+    last_full_capacity = true
     threshold_type = "percentage"
     low_threshold = 25
 }
@@ -49,12 +44,6 @@ memory {
 cpu_usage {
     format = " %usage"
     max_threshold = 80
-}
-
-cpu_temperature 0 {
-    format = "%degreesC"
-    max_threshold = 70
-    path = /sys/class/hwmon/hwmon3/temp1_input
 }
 
 volume master {

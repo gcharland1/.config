@@ -15,10 +15,11 @@ plugins=(
     git
 	npm
     zsh-autosuggestions
+    shrink-path
     sudo
 )
+
 source $ZSH/oh-my-zsh.sh
-#
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -48,4 +49,4 @@ export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 
 # Load Angular CLI autocompletion.
-source <(ng completion script)
+#source <(ng completion script)

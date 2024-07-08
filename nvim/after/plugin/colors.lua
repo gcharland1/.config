@@ -8,7 +8,7 @@ local cursorLineColor = "#3a3a3a"
 local colorColumnColor = "#444444"
 
 function SetupColorscheme()
-    local background = (tonumber(os.date("%H")) > 16 and dark_background or light_background)
+    local background = (tonumber(os.date("%H")) > 0 and dark_background or light_background)
     require("rose-pine").setup({
         variant = "moon",
         groups = {
@@ -37,4 +37,4 @@ end
 
 SetupColorscheme()
 vim.cmd(string.format("colorscheme %s", AvailableColorSchemes[1]))
-vim.keymap.set("n", "<leader>cc", function() SetupColorscheme() end)
+vim.keymap.set("n", "<leader>cc", function() ColorNext() end)

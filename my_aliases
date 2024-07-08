@@ -6,7 +6,31 @@ alias setVolume=~/.config/scripts/workspace/setInputVolume.sh
 alias vim=nvim
 alias lg=lazygit
 alias k9s=/snap/k9s/current/bin/k9s
+alias spotify="spotify --disable-gpu > /dev/null & disown"
 
+# Fuzzy Find
+fd() {
+    maxdepth=4
+    [[ ! -z "$1" ]] && maxdepth=$1
+    dir=$(find ./ -maxdepth $maxdepth -type d ! -path "*.git/*" ! -path "*/dist*" ! -path "*/target*" ! -path "*/node_modules*" | \
+            fzf --preview 'tree {} -L 4 -I "*.git/*|*node_modules*|*dist*|*target*"')
+    [[ ! -z "$dir" ]] && cd $dir
+} 
+
+fim() {
+    maxdepth=4
+    [[ ! -z "$1" ]] && maxdepth=$1
+    file=$(find ./ -maxdepth $maxdepth ! -path "*.git/*" ! -path "*/dist*" ! -path "*/target*" ! -path "*/node_modules*" | \
+		fzf --preview '[[ -f {} ]] && bat --style=numbers --color=always --line-range :500 {} || tree {} -L 4 -I "*.git/*|*node_modules*|*dist*|*target*"') 
+    [[ ! -z "$file" ]] && nvim $file
+}
+
+fman() {
+    entry=$(apropos . | fzf --preview "echo {} | awk '{print $1}' | xargs man" | awk '{print $1}')
+    [[ ! -z "$entry" ]] && man $entry
+}
+
+# Tmux commands
 alias tmux="tmux -f ~/.config/tmux/tmux.conf"
 alias tmux-omnimed="tmux new-session -s omnimed -c ~/git/Omnimed-solutions"
 alias tmux-ssh="tmux new-session -s ssh -c ~"
