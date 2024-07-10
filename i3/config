@@ -139,7 +139,9 @@ floating_modifier $mod
 
 # Move the currently focused window to the scratchpad
 bindsym $mod+Shift+BackSpace move scratchpad
+bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+BackSpace scratchpad show
+bindsym $mod+minus scratchpad show
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -157,8 +159,11 @@ bindsym $mod+Shift+f fullscreen toggle
 bindsym $mod+m exec i3-dmenu-desktop --dmenu='dmenu -i -p Launch: -nb $black -nf $white -sb $white -sf $black'
 bindsym $mod+Shift+m exec "dmenu_run -i -l 10 -p 'Run command:' -nb '$black' -nf '$white' -sb '$white' -sf '$black'"
 
+# dmenu utilities
 bindsym $mod+Ctrl+g exec "~/.config/scripts/workspace/googleSearch.sh"
-bindsym $mod+Ctrl+k exec "~/.config/scripts/workspace/killProcess.sh"
+bindsym $mod+Ctrl+q exec "~/.config/scripts/workspace/killProcess.sh"
+bindsym $mod+Ctrl+d exec "~/.config/scripts/workspace/editDotFiles.sh"
+bindsym $mod+Ctrl+m exec "~/.config/scripts/workspace/setupMonitors.sh"
 
 
 # start a terminal
@@ -263,7 +268,7 @@ exec --no-startup-id xsetroot -solid '$black'
 exec --no-startup-id "xautolock -time 5 -locker $locker &"
 
 exec --no-startup-id bash $HOME/.config/i3/tray.sh
-exec --no-startup-id "$setupMonitors"
+exec --no-startup-id bash $HOME/.config/scripts/workspace/setupMonitors.sh
 
 exec --no-startup-id i3-msg 'workspace $wspace1; exec ~/.config/scripts/workspace/startTmux.sh; exec x-terminal-emulator -e tmux attach -t omnimed'
 exec --no-startup-id i3-msg 'workspace $wspace2; exec google-chrome'

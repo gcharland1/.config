@@ -30,6 +30,13 @@ fman() {
     [[ ! -z "$entry" ]] && man $entry
 }
 
+ff() {
+    [[ ! -z "$1" ]] && maxdepth=$1
+    cmd=$(history | sed "s/^\s*[0-9]*\s*//" | sort | uniq | fzf)
+    echo "$cmd"
+    [[ ! -z "$cmd" ]] && $cmd
+}
+
 # Tmux commands
 alias tmux="tmux -f ~/.config/tmux/tmux.conf"
 alias tmux-omnimed="tmux new-session -s omnimed -c ~/git/Omnimed-solutions"
