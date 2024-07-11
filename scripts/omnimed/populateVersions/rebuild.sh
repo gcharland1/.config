@@ -5,20 +5,33 @@ M2_DIR="$HOME/.m2/repository/com/omnimed/"
 SOLUTION_COUNT=$(ls $BASE_DIR | grep 'omnimed-' | wc -l)
 SOLUTION_LIST=$(ls $BASE_DIR | grep 'omnimed-')
 
+VIRGO_PATH="/home/devjava/Applications/virgo-tomcat-server-3.6.3-Engine.RELEASE"
+VIRGO_DIR="$VIRGO_PATH/repository"
+
 
 updateProgess() {
     echo -e "\e[1A\e[K$1"
 }
 
+
+getMavenArgumentsList() {
+    local solution=$1
+    local goal=$2
+
+    declare mvnArguments
+    [[ $solution =~ "^omnimed-(common|engine|healthrecord|interfaces|mock|shared|utils)$" ]] \
+        && echo "-P Virgo -q -e -fae -Dmaven.test.skip=true -Ddependencies.repository=$VIRGO_DIR -Dvirgo.profile.phase=install" \
+        || echo "-T 1C -P Dev -q -e -fae -Dmaven.test.skip=true"
+}
+
 mavenCleanInstall() {
     local sol=$1
 
-    # TO DO :
-    # Ajouter la logique de mvn clean install pour virgo (porcessRessources:512)
-    updateProgess "\t${#compiledSolutionList[@]} / $SOLUTION_COUNT (${#rebuiltSolutionList[@]} rebuilt, ${#failedSolutionList[@]} failed) - Rebuilding $sol"
-
     cd $BASE_DIR$sol > /dev/null
-    mvn clean install -T 1C -P Dev -q -e -fae -Dmaven.test.skip=true > $BASE_DIR$sol/mvi_output.txt \
+    declare mvnArguments=$(getMavenArgumentsList $sol)
+
+    updateProgess "\t${#compiledSolutionList[@]} / $SOLUTION_COUNT (${#rebuiltSolutionList[@]} rebuilt, ${#failedSolutionList[@]} failed) - mvn clean install $mvnArguments"
+    mvn clean install $mvnArguments > $BASE_DIR$sol/mvi_output.txt \
         && rebuiltSolutionList+=( "$sol" ) \
         || failedSolutionList+=( "$sol" )
 }
