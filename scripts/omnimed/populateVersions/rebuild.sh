@@ -2,8 +2,10 @@
 
 BASE_DIR="$HOME/git/Omnimed-solutions/"
 M2_DIR="$HOME/.m2/repository/com/omnimed/"
-SOLUTION_COUNT=$(ls $BASE_DIR | grep 'omnimed-' | wc -l)
-SOLUTION_LIST=$(ls $BASE_DIR | grep 'omnimed-')
+
+cd $BASE_DIR
+SOLUTION_LIST=$(find ./ -maxdepth 2 -type f -path '*omnimed-*/pom.xml' -not -path '*omnimed-cuba*' -not -path '*omnimed-cumulus*' -not -path '*omnimed-saltstack*' -not -path '*.iml' | sort | cut -d/ -f2)
+SOLUTION_COUNT=$(echo ${SOLUTION_LIST[@]} | wc -w)
 
 VIRGO_PATH="/home/devjava/Applications/virgo-tomcat-server-3.6.3-Engine.RELEASE"
 VIRGO_DIR="$VIRGO_PATH/repository"
@@ -26,36 +28,39 @@ getMavenArgumentsList() {
 
 mavenCleanInstall() {
     local sol=$1
+    local forceUpdate=$2
 
     cd $BASE_DIR$sol > /dev/null
     declare mvnArguments=$(getMavenArgumentsList $sol)
+    [ $forceUpdate == 1 ] && mvnArguments="$mvnArguments -U"
 
-    updateProgess "\t${#compiledSolutionList[@]} / $SOLUTION_COUNT (${#rebuiltSolutionList[@]} rebuilt, ${#failedSolutionList[@]} failed) - mvn clean install $mvnArguments"
+    echo "$mvnArguments"
+    echo -e "\n"
+    updateProgess "\t${#compiledSolutionList[@]} / $SOLUTION_COUNT (${#rebuiltSolutionList[@]} rebuilt, ${#failedSolutionList[@]} failed) - Working on $sol"
     mvn clean install $mvnArguments > $BASE_DIR$sol/mvi_output.txt \
         && rebuiltSolutionList+=( "$sol" ) \
         || failedSolutionList+=( "$sol" )
 }
 
 rebuildSolution() {
+    local sol=$1
+    declare -i forceUpdate=0
+    [[ ! -z "$2" && "$2" == "forceUpdate" ]] && forceUpdate=1
+
     [[ ${compiledSolutionList[*]} =~ "$1" ]] && return
 
-    local sol=$1
+    updateProgess "\t${#compiledSolutionList[@]} / $SOLUTION_COUNT (${#rebuiltSolutionList[@]} rebuilt, ${#failedSolutionList[@]} failed) - Working on $sol"
 
-    if [ -f "$BASE_DIR$sol/solutionDependencies.txt" ]; then
-        local solutionDependencies=$(cat $BASE_DIR$sol/solutionDependencies.txt | tr "\n" " ")
-        for dep in ${solDependencies[@]}; do
-            rebuildSolution $dep  \
-                || echo "Failed to rebuild $dep"; echo "-"
-        done
-    fi
+    declare -a solutionDependencies
+    [ -f $BASE_DIR$sol/solutionDependencies.txt ] && solutionDependencies=$(cat $BASE_DIR$sol/solutionDependencies.txt | tr "\n" " ")
+    for dep in ${solutionDependencies[@]}; do
+        rebuildSolution $dep $forceUpdate
+    done
     
     local version=$(cat $BASE_DIR$sol/solutionVersion.txt)
-    local compiledSource=$(find $M2_DIR -maxdepth 5 -type d -path "*/$sol/*" -name $version)
-    
-    [ ! -z "$compiledSource" ] && mavenCleanInstall $sol
-    
-    compiledSolutionList+=( "$sol" )
-    updateProgess "\t${#compiledSolutionList[@]} / $SOLUTION_COUNT (${#rebuiltSolutionList[@]} rebuilt, ${#failedSolutionList[@]} failed)" 
+
+    local compiledSource=$(find $M2_DIR -type d -path "*/$sol/*" -name $version)
+    [ -z "$compiledSource" ] && mavenCleanInstall $sol $forceUpdate || compiledSolutionList+=( "$sol" )
 }
 
 
@@ -71,7 +76,13 @@ done
 
 echo "Failed compilations:"
 for s in ${failedSolutionList[@]}; do
-    echo "\t - $s"
+    echo -e "\t - $s"
 done
+
+SOLUTION_COUNT=$(echo ${failedSolutionList[@]} | wc -w)
+for s in ${failedSolutionList[@]}; do
+    rebuildSolution $s "forceUpdate"
+done
+
 
 cd $BASE_DIR
