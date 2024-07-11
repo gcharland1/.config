@@ -5,6 +5,7 @@ SOLUTION_COUNT=$(ls $BASE_DIR | grep 'omnimed-' | wc -l)
 SOLUTION_LIST=$(ls $BASE_DIR | grep 'omnimed-')
 
 updateProgess() {
+    #echo -e "$1"
     echo -e "\e[1A\e[K$1"
 }
 
@@ -23,44 +24,40 @@ populateVersionForDependentSolutions() {
     local parent=$1
     local parentVersion=$2
 
-    local dependencyFile="omnimed-*/solutionDependencies.txt"
-    local children=$(grep -lE $parent $dependencyFile | cut -d/ -f1 | sort | uniq)
+    declare childrenList=$(grep -lE $parent omnimed-*/solutionDependencies.txt | cut -d/ -f1 | sort | uniq)
+    [ -z "$childrenList" ] && return
 
     if [[ $parent =~ "-parent" ]]; then
         local sedCmd="/<artifactId>$parent<\/artifactId>/,/<\/parent>/s/<version>0\.0\.0<\/version>/<version>$parentVersion<\/version>/g"
+        find $BASE_DIR -maxdepth 3 -type f -not -path "*/$parent/pom.xml" -name 'pom.xml' -exec grep -lE "<artifactId>$parent</artifactId>" {} \; | xargs -I {} sed -i $sedCmd {}
     else
         local sedCmd="s/<$parent\.version>0\.0\.0<\/$parent\.version>/<$parent\.version>$parentVersion<\/$parent\.version>/g" 
+        find $BASE_DIR -maxdepth 3 -type f -not -path "*/$parent/pom.xml" -name 'pom.xml' -exec grep -lE "<$parent\.version>" {} \; | xargs -I {} sed -i $sedCmd {}
     fi
-
-    #sedCmd+=";s/<version>\${$parent\.version}<\/version>/<version>0\.0\.0<\/version>/g"
-    for c in ${children[@]}; do
-        find $BASE_DIR$c -maxdepth 2 -type f -name 'pom.xml' -exec sed $sedCmd -i {} \;
-    done
 }
 
 populateVersionForSolution() {
     local sol=$1
 
+    updateProgess "\t${#populatedSolutions[@]} / $SOLUTION_COUNT - $sol"
     [[ ${populatedSolutions[*]} =~ "$sol" ]] && return
 
-    if [ -f $BASE_DIR$sol/solutionDependencies.txt ]; then
-        local solutionDependencies=$(cat $BASE_DIR$sol/solutionDependencies.txt | tr "\n" " ")
-        for dep in ${solDependencies[@]}; do
-            populateVersionForSolution $dep
-        done
-    fi
+    declare -a solutionDependencies
+    [ -f $BASE_DIR$sol/solutionDependencies.txt ] && solutionDependencies=$(cat $BASE_DIR$sol/solutionDependencies.txt | tr "\n" " ")
+    for dep in ${solutionDependencies[@]}; do
+        populateVersionForSolution $dep
+    done
 
-    local version=$(getVersionForSolution $sol)    
+    local version=$(getVersionForSolution $sol)
 
     populateVersionForDependentSolutions $sol $version
 
-    local sedCmd="s/^\t<version>0\.0\.0<\/version>/\t<version>$version<\/version>/g" 
-    find $BASE_DIR$sol -maxdepth 2 -type f -name 'pom.xml' -exec sed $sedCmd -i {} \;
+    local sedCmd="s/<version>0\.0\.0<\/version>/<version>$version<\/version>/g" 
+    find $BASE_DIR$sol -maxdepth 2 -type f -name 'pom.xml' -exec sed -i $sedCmd {} \;
     
     echo $version > $BASE_DIR$sol/solutionVersion.txt
 
     populatedSolutions+=( "$sol" )
-    updateProgess "\t${#populatedSolutions[@]} / $SOLUTION_COUNT"
 }
 
 cd $BASE_DIR > /dev/null 
@@ -83,6 +80,7 @@ echo ""
 declare -a populatedSolutions
 for s in ${SOLUTION_LIST[@]}; do
     populateVersionForSolution $s
+    updateProgess "\t${#populatedSolutions[@]} / $SOLUTION_COUNT - $sol"
 done
 
 cd - > /dev/null 

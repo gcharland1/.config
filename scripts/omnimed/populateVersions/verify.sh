@@ -14,12 +14,11 @@ verifySolution() {
 
     local sol=$1
 
-    if [ -f "$BASE_DIR$sol/solutionDependencies.txt" ]; then
-        local solutionDependencies=$(cat $BASE_DIR$sol/solutionDependencies.txt | tr "\n" " ")
-        for dep in ${solDependencies[@]}; do
-            $(verifySolution $dep)
-        done
-    fi
+    declare -a solutionDependencies
+    [ -f $BASE_DIR$sol/solutionDependencies.txt ] && solutionDependencies=$(cat $BASE_DIR$sol/solutionDependencies.txt | tr "\n" " ")
+    for dep in ${solutionDependencies[@]}; do
+        verifySolution $dep
+    done
     
     # Solution needs to be rebuilt?
     local version=$(cat $BASE_DIR$sol/solutionVersion.txt)
