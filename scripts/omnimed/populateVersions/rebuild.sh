@@ -15,6 +15,24 @@ updateProgess() {
     echo -e "\e[1A\e[K$1"
 }
 
+removeCachedErrors() {
+    local cachedError="$1"
+
+    local endString=" was not found in https:"
+    local sol=""
+    local startString="The following artifacts could not be resolved: "
+    local ver=""
+
+    local artifactsList=$(echo "$cachedError" | sed -e "s/.*$startString\(.*\)$endString.*/\1/g" | tr ',' '\n' | sort | uniq)
+    declare -a solutionsToRebuild
+    for d in ${artifactsList[@]}; do
+        sol=$(getSolutionNameFromCacheStack $d)
+        ver=$(getSolutionVersionFromCacheStack $d)
+        echo "Removing $(find $M2_DIR -type d -path "*/$sol/*" -name "$ver") before rebuilding $sol"
+        find $M2_DIR -type d -path "*/$sol/*" -name "$ver" -exec rm -r {} \;
+        mavenCleanInstall $sol
+    done
+}
 
 getMavenArgumentsList() {
     local solution=$1
@@ -28,39 +46,49 @@ getMavenArgumentsList() {
 
 mavenCleanInstall() {
     local sol=$1
-    local forceUpdate=$2
 
-    cd $BASE_DIR$sol > /dev/null
+    cd $BASE_DIR$sol &> /dev/null
     declare mvnArguments=$(getMavenArgumentsList $sol)
-    [ $forceUpdate == 1 ] && mvnArguments="$mvnArguments -U"
 
-    echo "$mvnArguments"
-    echo -e "\n"
-    updateProgess "\t${#compiledSolutionList[@]} / $SOLUTION_COUNT (${#rebuiltSolutionList[@]} rebuilt, ${#failedSolutionList[@]} failed) - Working on $sol"
-    mvn clean install $mvnArguments > $BASE_DIR$sol/mvi_output.txt \
+    updateProgess "\t${#checkedSolutionList[@]} / $SOLUTION_COUNT (${#alreadyCompiledSolutionList[@]} pre-existing, ${#rebuiltSolutionList[@]} rebuilt, ${#failedSolutionList[@]} failed) - $sol"
+    mvn clean install $mvnArguments &> $BASE_DIR$sol/mvi_output.txt \
         && rebuiltSolutionList+=( "$sol" ) \
         || failedSolutionList+=( "$sol" )
 }
 
 rebuildSolution() {
     local sol=$1
-    declare -i forceUpdate=0
-    [[ ! -z "$2" && "$2" == "forceUpdate" ]] && forceUpdate=1
 
-    [[ ${compiledSolutionList[*]} =~ "$1" ]] && return
+    [[ ${checkedSolutionList[*]} =~ "$1" ]] && return
 
-    updateProgess "\t${#compiledSolutionList[@]} / $SOLUTION_COUNT (${#rebuiltSolutionList[@]} rebuilt, ${#failedSolutionList[@]} failed) - Working on $sol"
+    updateProgess "\t${#checkedSolutionList[@]} / $SOLUTION_COUNT (${#alreadyCompiledSolutionList[@]} pre-existing, ${#rebuiltSolutionList[@]} rebuilt, ${#failedSolutionList[@]} failed) - $sol"
 
     declare -a solutionDependencies
     [ -f $BASE_DIR$sol/solutionDependencies.txt ] && solutionDependencies=$(cat $BASE_DIR$sol/solutionDependencies.txt | tr "\n" " ")
     for dep in ${solutionDependencies[@]}; do
-        rebuildSolution $dep $forceUpdate
+        rebuildSolution $dep
     done
     
     local version=$(cat $BASE_DIR$sol/solutionVersion.txt)
 
     local compiledSource=$(find $M2_DIR -type d -path "*/$sol/*" -name $version)
-    [ -z "$compiledSource" ] && mavenCleanInstall $sol $forceUpdate || compiledSolutionList+=( "$sol" )
+    [ -z "$compiledSource" ] && mavenCleanInstall $sol || alreadyCompiledSolutionList+=( "$sol" )
+
+    checkedSolutionList+=( "$sol" )
+}
+
+getSolutionNameFromCacheStack() {
+    local mavenName="$1"
+
+    mavenName=$(echo "$mavenName" | sed -e 's/.*:\(.*\):jar.*/\1/')
+    echo $mavenName
+}
+
+getSolutionVersionFromCacheStack() {
+    local version="$1"
+
+    version=$(echo "$version" | sed -e 's/.*jar\:\(.*\)/\1/g;s/\(.*\):$/\1/g')
+    echo $version
 }
 
 
@@ -69,20 +97,31 @@ echo "Rebuilding the solutions in order"
 echo "..."
 declare -a failedSolutionList
 declare -a rebuiltSolutionList
-declare -a compiledSolutionList
+declare -a checkedSolutionList
+declare -a alreadyCompiledSolutionList
 for s in ${SOLUTION_LIST[@]}; do
     rebuildSolution $s
 done
 
-echo "Failed compilations:"
+echo -e "\nFailed compilations:"
 for s in ${failedSolutionList[@]}; do
-    echo -e "\t - $s"
+    echo -e "\t $s"
 done
 
-SOLUTION_COUNT=$(echo ${failedSolutionList[@]} | wc -w)
+#failedSolutionList=("omnimed-api-ai" "omnimed-dagster-data-extraction" "omnimed-hl7-importer" "omnimed-test-e2e")
+echo -e "\n-------------------------------"
+echo "Trying to fix the failed solutions..."
+declare cacheMessage="This failure was cached in the local repository and resolution" 
 for s in ${failedSolutionList[@]}; do
-    rebuildSolution $s "forceUpdate"
+    cachedError=$(grep -m 1 "$cacheMessage" $BASE_DIR$s/mvi_output.txt)
+    if [ ! -z "$cachedError" ]; then
+        removeCachedErrors $cachedError
+        mavenCleanInstall $s
+    else
+        echo "### $s failed because of"
+        head -4 $BASE_DIR$s/mvi_output.txt | sed 's/^/\t\|/g'
+        echo -e "\n"
+    fi
 done
-
 
 cd $BASE_DIR
