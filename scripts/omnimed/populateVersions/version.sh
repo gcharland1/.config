@@ -1,8 +1,10 @@
 #!/bin/bash
  
 BASE_DIR="$HOME/git/Omnimed-solutions/"
-SOLUTION_COUNT=$(ls $BASE_DIR | grep 'omnimed-' | wc -l)
-SOLUTION_LIST=$(ls $BASE_DIR | grep 'omnimed-')
+
+cd $BASE_DIR
+SOLUTION_LIST=$(find ./ -maxdepth 2 -type f -path '*omnimed-*/pom.xml' -not -path '*omnimed-cuba*' -not -path '*omnimed-cumulus*' -not -path '*omnimed-saltstack*' -not -path '*.iml' | sort | cut -d/ -f2)
+SOLUTION_COUNT=$(echo ${SOLUTION_LIST[@]} | wc -w)
 
 updateProgess() {
     #echo -e "$1"
@@ -39,7 +41,6 @@ populateVersionForDependentSolutions() {
 populateVersionForSolution() {
     local sol=$1
 
-    updateProgess "\t${#populatedSolutions[@]} / $SOLUTION_COUNT - $sol"
     [[ ${populatedSolutions[*]} =~ "$sol" ]] && return
 
     declare -a solutionDependencies
@@ -58,12 +59,11 @@ populateVersionForSolution() {
     echo $version > $BASE_DIR$sol/solutionVersion.txt
 
     populatedSolutions+=( "$sol" )
+    updateProgess "\t${#populatedSolutions[@]} / $SOLUTION_COUNT - $sol"
 }
 
-cd $BASE_DIR > /dev/null 
-git reset --hard HEAD
-
 echo "# Populate solutions versions #"
+git reset --hard HEAD
 
 echo "-------------------------------"
 echo "Getting the git hash for each solution"
@@ -74,13 +74,14 @@ for s in ${SOLUTION_LIST[@]}; do
     gitHashMap[$s]=$gh
     updateProgess "\t${#gitHashMap[@]} / $SOLUTION_COUNT"
 done
+
 echo "-------------------------------"
 echo "Populating the version for each solution"
 echo ""
 declare -a populatedSolutions
 for s in ${SOLUTION_LIST[@]}; do
     populateVersionForSolution $s
-    updateProgess "\t${#populatedSolutions[@]} / $SOLUTION_COUNT - $sol"
 done
+updateProgess "\t${#populatedSolutions[@]} / $SOLUTION_COUNT - $s"
 
 cd - > /dev/null 

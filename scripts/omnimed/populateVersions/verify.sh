@@ -2,8 +2,10 @@
 
 BASE_DIR="$HOME/git/Omnimed-solutions/"
 M2_DIR="$HOME/.m2/repository/com/omnimed/"
-SOLUTION_COUNT=$(ls $BASE_DIR | grep 'omnimed-' | wc -l)
-SOLUTION_LIST=$(ls $BASE_DIR | grep 'omnimed-')
+
+cd $BASE_DIR
+SOLUTION_LIST=$(find ./ -maxdepth 2 -type f -path '*omnimed-*/pom.xml' -not -path '*omnimed-cuba*' -not -path '*omnimed-cumulus*' -not -path '*omnimed-saltstack*' -not -path '*.iml' | sort | cut -d/ -f2)
+SOLUTION_COUNT=$(echo ${SOLUTION_LIST[@]} | wc -w)
 
 updateProgess() {
     echo -e "\e[1A\e[K$1"
