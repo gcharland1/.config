@@ -7,15 +7,17 @@ SOLUTION_LIST=$(find ./ -maxdepth 2 -type f -path '*omnimed-*/pom.xml' -not -pat
 SOLUTION_COUNT=$(echo ${SOLUTION_LIST[@]} | wc -w)
 
 updateProgess() {
-    #echo -e "$1"
-    echo -e "\e[1A\e[K$1"
+    echo -e "$1"
+    #echo -e "\e[1A\e[K$1"
 }
 
 getVersionForSolution() {
     local sol=$1
 
     [ -f "$BASE_DIR$sol/solutionVersion.txt" ] && version=$(cat $BASE_DIR$sol/solutionVersion.txt)
-    [[ "$version" =~ "-SNAPSHOT" && ! -z ${gitHashMap["$sol"]} ]] && version=${gitHashMap["$sol"]}
+    if [[ "$version" =~ "-SNAPSHOT" && ! -z ${gitHashMap["$sol"]} ]]; then
+        version=$(echo $version | sed "s/-SNAPSHOT/-${gitHashMap["$sol"]}-SNAPSHOT/")
+    fi
 
     [ -z "$version" ] && version="0.0.0"
 
@@ -41,7 +43,7 @@ populateVersionForDependentSolutions() {
 populateVersionForSolution() {
     local sol=$1
 
-    [[ ${populatedSolutions[*]} =~ "$sol" ]] && return
+    [[ ${populatedSolutions[*]} =~ "$sol/" ]] && return
 
     declare -a solutionDependencies
     [ -f $BASE_DIR$sol/solutionDependencies.txt ] && solutionDependencies=$(cat $BASE_DIR$sol/solutionDependencies.txt | tr "\n" " ")
@@ -54,16 +56,19 @@ populateVersionForSolution() {
     populateVersionForDependentSolutions $sol $version
 
     local sedCmd="s/<version>0\.0\.0<\/version>/<version>$version<\/version>/g" 
-    find $BASE_DIR$sol -maxdepth 2 -type f -name 'pom.xml' -exec sed -i $sedCmd {} \;
+    find $BASE_DIR$sol -maxdepth 2 -type f -name 'pom.xml' -exec sed -i "$sedCmd" {} \;
     
-    echo $version > $BASE_DIR$sol/solutionVersion.txt
+    local sedCmd="s/\"version\": \"0.0.0\",/\"version\": \"$version\",/g"
+    echo $sedCmd
+    find $BASE_DIR$sol -maxdepth 1 -type f -name 'package.json' -exec sed -i "$sedCmd" {} \;
 
-    populatedSolutions+=( "$sol" )
+    echo -n $version > $BASE_DIR$sol/solutionVersion.txt
+
+    populatedSolutions+=( "$sol/" )
     updateProgess "\t${#populatedSolutions[@]} / $SOLUTION_COUNT - $sol"
 }
 
 echo "# Populate solutions versions #"
-git reset --hard HEAD
 
 echo "-------------------------------"
 echo "Getting the git hash for each solution"
@@ -82,6 +87,6 @@ declare -a populatedSolutions
 for s in ${SOLUTION_LIST[@]}; do
     populateVersionForSolution $s
 done
-updateProgess "\t${#populatedSolutions[@]} / $SOLUTION_COUNT - $s"
+updateProgess "\t${#populatedSolutions[@]} / $SOLUTION_COUNT - Done!"
 
 cd - > /dev/null 

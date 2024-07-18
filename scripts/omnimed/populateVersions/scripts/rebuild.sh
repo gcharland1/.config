@@ -2,14 +2,14 @@
 
 BASE_DIR="$HOME/git/Omnimed-solutions/"
 M2_DIR="$HOME/.m2/repository/com/omnimed/"
+OUTPUT_FILE="processRessource.log"
+VIRGO_PATH="/home/devjava/Applications/virgo-tomcat-server-3.6.3-Engine.RELEASE"
+VIRGO_DIR="$VIRGO_PATH/repository"
+
 
 cd $BASE_DIR
 SOLUTION_LIST=$(find ./ -maxdepth 2 -type f -path '*omnimed-*/pom.xml' -not -path '*omnimed-cuba*' -not -path '*omnimed-cumulus*' -not -path '*omnimed-saltstack*' -not -path '*.iml' | sort | cut -d/ -f2)
 SOLUTION_COUNT=$(echo ${SOLUTION_LIST[@]} | wc -w)
-
-VIRGO_PATH="/home/devjava/Applications/virgo-tomcat-server-3.6.3-Engine.RELEASE"
-VIRGO_DIR="$VIRGO_PATH/repository"
-
 
 updateProgess() {
     echo -e "\e[1A\e[K$1"
@@ -51,15 +51,15 @@ mavenCleanInstall() {
     declare mvnArguments=$(getMavenArgumentsList $sol)
 
     updateProgess "\t${#checkedSolutionList[@]} / $SOLUTION_COUNT (${#alreadyCompiledSolutionList[@]} pre-existing, ${#rebuiltSolutionList[@]} rebuilt, ${#failedSolutionList[@]} failed) - $sol"
-    mvn clean install $mvnArguments &> $BASE_DIR$sol/mvi_output.txt \
-        && rebuiltSolutionList+=( "$sol" ) \
-        || failedSolutionList+=( "$sol" )
+    mvn clean install $mvnArguments &> $BASE_DIR$sol/$OUTPUT_FILE \
+        && rebuiltSolutionList+=( "$sol/" ) \
+        || failedSolutionList+=( "$sol/" )
 }
 
 rebuildSolution() {
     local sol=$1
 
-    [[ ${checkedSolutionList[*]} =~ "$1" ]] && return
+    [[ ${checkedSolutionList[*]} =~ "$1/" ]] && return
 
     updateProgess "\t${#checkedSolutionList[@]} / $SOLUTION_COUNT (${#alreadyCompiledSolutionList[@]} pre-existing, ${#rebuiltSolutionList[@]} rebuilt, ${#failedSolutionList[@]} failed) - $sol"
 
@@ -72,9 +72,9 @@ rebuildSolution() {
     local version=$(cat $BASE_DIR$sol/solutionVersion.txt)
 
     local compiledSource=$(find $M2_DIR -type d -path "*/$sol/*" -name $version)
-    [ -z "$compiledSource" ] && mavenCleanInstall $sol || alreadyCompiledSolutionList+=( "$sol" )
+    [ -z "$compiledSource" ] && mavenCleanInstall $sol || alreadyCompiledSolutionList+=( "$sol/" )
 
-    checkedSolutionList+=( "$sol" )
+    checkedSolutionList+=( "$sol/" )
 }
 
 getSolutionNameFromCacheStack() {
@@ -102,24 +102,24 @@ declare -a alreadyCompiledSolutionList
 for s in ${SOLUTION_LIST[@]}; do
     rebuildSolution $s
 done
+updateProgess "\t${#checkedSolutionList[@]} / $SOLUTION_COUNT (${#alreadyCompiledSolutionList[@]} pre-existing, ${#rebuiltSolutionList[@]} rebuilt, ${#failedSolutionList[@]} failed) - $sol"
 
 echo -e "\nFailed compilations:"
 for s in ${failedSolutionList[@]}; do
     echo -e "\t $s"
 done
 
-#failedSolutionList=("omnimed-api-ai" "omnimed-dagster-data-extraction" "omnimed-hl7-importer" "omnimed-test-e2e")
 echo -e "\n-------------------------------"
 echo "Trying to fix the failed solutions..."
 declare cacheMessage="This failure was cached in the local repository and resolution" 
 for s in ${failedSolutionList[@]}; do
-    cachedError=$(grep -m 1 "$cacheMessage" $BASE_DIR$s/mvi_output.txt)
+    cachedError=$(grep -m 1 "$cacheMessage" $BASE_DIR$s/$OUTPUT_FILE)
     if [ ! -z "$cachedError" ]; then
         removeCachedErrors $cachedError
         mavenCleanInstall $s
     else
         echo "### $s failed because of"
-        head -4 $BASE_DIR$s/mvi_output.txt | sed 's/^/\t\|/g'
+        head -4 $BASE_DIR$s/$OUTPUT_FILE | sed 's/^/\t\|/g'
         echo -e "\n"
     fi
 done
