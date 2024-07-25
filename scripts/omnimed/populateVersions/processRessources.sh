@@ -1,30 +1,36 @@
 #!/bin/bash
  
-BASE_DIR=$HOME/.config/scripts/omnimed/populateVersions
 OMNIMED_SOLUTIONS=$HOME/git/Omnimed-solutions
+BASE_DIR=$HOME/.config/scripts/omnimed/populateVersions/
 #BASE_DIR=$HOME/git/Omnimed-solutions/build-tools/workspace/local
 
 cd $OMNIMED_SOLUTIONS
 
+SOLUTION_LIST=$1
+[ -z "$SOLUTION_LIST" ] \
+    && SOLUTION_LIST=$(find ./ -maxdepth 2 -type f -path '*omnimed-*/pom.xml' \
+        -not -path '*omnimed-cuba*' \
+		-not -path '*omnimed-cumulus*' \
+		-not -path '*omnimed-saltstack*' \
+		-not -path '*.iml' \
+        | sort \
+        | cut -d/ -f2)
+
 HAS_STASHED_CHANGES=0
-if [[ ! -z "$(git status -s)" ]]; then
-    echo "Saving local changes before process ressource"
-    git status -s | sed 's/^/\t| /g'
-    echo ""
-    HAS_STASHED_CHANGES=1
-    git stash push -m "Prepare process ressource"
-fi
+stashId="PROCESS_RESSOURCES_$(date "+%Y-%m-%d %H:%M:%S")"
+#if [[ ! -z "$(git status --short)" ]]; then
+#    echo -e "Stashing local changes with stash id\n\t $stashId\n"
+#    HAS_STASHED_CHANGES=1
+#    git stash push -m "$stashId"
+#fi
 
 echo "###### Process Ressources ######"
-$BASE_DIR/scripts/version.sh
-$BASE_DIR/scripts/rebuild.sh
-
-echo "Stashing modified version files"
-git stash push -m "PROCES RESSOURCE"
-echo ""
+$BASE_DIR/scripts/version.sh "$SOLUTION_LIST"
+$BASE_DIR/scripts/rebuild.sh "$SOLUTION_LIST"
+#$BASE_DIR/cleanup.sh
 
 if [ $HAS_STASHED_CHANGES == 1 ]; then
     echo "Restoring stashed local files"
-    $(git stash pop stash@{1})
-    git status -s | sed 's/^/\t| /g'
+    git stash pop stash@{0}
+    git status --short | sed 's/^/\t| /g'
 fi

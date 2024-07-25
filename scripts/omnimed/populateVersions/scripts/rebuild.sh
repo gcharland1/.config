@@ -1,14 +1,15 @@
 #!/bin/bash
 
 BASE_DIR="$HOME/git/Omnimed-solutions/"
-M2_DIR="$HOME/.m2/repository/com/omnimed/"
+M2_DIR="$HOME/.m2/repository/com/"
 OUTPUT_FILE="processRessource.log"
 VIRGO_PATH="/home/devjava/Applications/virgo-tomcat-server-3.6.3-Engine.RELEASE"
 VIRGO_DIR="$VIRGO_PATH/repository"
 
 
 cd $BASE_DIR
-SOLUTION_LIST=$(find ./ -maxdepth 2 -type f -path '*omnimed-*/pom.xml' -not -path '*omnimed-cuba*' -not -path '*omnimed-cumulus*' -not -path '*omnimed-saltstack*' -not -path '*.iml' | sort | cut -d/ -f2)
+SOLUTION_LIST=$1
+[ -z "$SOLUTION_LIST" ] && SOLUTION_LIST=$(find ./ -maxdepth 2 -type f -path '*omnimed-*/pom.xml' -not -path '*omnimed-cuba*' -not -path '*omnimed-cumulus*' -not -path '*omnimed-saltstack*' -not -path '*.iml' | sort | cut -d/ -f2)
 SOLUTION_COUNT=$(echo ${SOLUTION_LIST[@]} | wc -w)
 
 updateProgess() {
@@ -71,7 +72,8 @@ rebuildSolution() {
     
     local version=$(cat $BASE_DIR$sol/solutionVersion.txt)
 
-    local compiledSource=$(find $M2_DIR -type d -path "*/$sol/*" -name $version)
+    pathToM2=$(echo $sol | tr '-' '/')
+    local compiledSource=$(find $M2_DIR$pathToM2 -maxdepth 2 -type d -path "*/$sol/*" -name $version)
     [ -z "$compiledSource" ] && mavenCleanInstall $sol || alreadyCompiledSolutionList+=( "$sol/" )
 
     checkedSolutionList+=( "$sol/" )
@@ -102,26 +104,26 @@ declare -a alreadyCompiledSolutionList
 for s in ${SOLUTION_LIST[@]}; do
     rebuildSolution $s
 done
-updateProgess "\t${#checkedSolutionList[@]} / $SOLUTION_COUNT (${#alreadyCompiledSolutionList[@]} pre-existing, ${#rebuiltSolutionList[@]} rebuilt, ${#failedSolutionList[@]} failed) - $sol"
+updateProgess "\t${#checkedSolutionList[@]} / $SOLUTION_COUNT (${#alreadyCompiledSolutionList[@]} pre-existing, ${#rebuiltSolutionList[@]} rebuilt, ${#failedSolutionList[@]} failed) - Done!"
 
 echo -e "\nFailed compilations:"
 for s in ${failedSolutionList[@]}; do
     echo -e "\t $s"
 done
 
-echo -e "\n-------------------------------"
-echo "Trying to fix the failed solutions..."
-declare cacheMessage="This failure was cached in the local repository and resolution" 
-for s in ${failedSolutionList[@]}; do
-    cachedError=$(grep -m 1 "$cacheMessage" $BASE_DIR$s/$OUTPUT_FILE)
-    if [ ! -z "$cachedError" ]; then
-        removeCachedErrors $cachedError
-        mavenCleanInstall $s
-    else
-        echo "### $s failed because of"
-        head -4 $BASE_DIR$s/$OUTPUT_FILE | sed 's/^/\t\|/g'
-        echo -e "\n"
-    fi
-done
-
-cd $BASE_DIR
+#echo -e "\n-------------------------------"
+#echo "Trying to fix the failed solutions..."
+#declare cacheMessage="This failure was cached in the local repository and resolution" 
+#for s in ${failedSolutionList[@]}; do
+#    cachedError=$(grep -m 1 "$cacheMessage" $BASE_DIR$s/$OUTPUT_FILE)
+#    if [ ! -z "$cachedError" ]; then
+#        removeCachedErrors $cachedError
+#        mavenCleanInstall $s
+#    else
+#        echo "### $s failed because of"
+#        head -4 $BASE_DIR$s/$OUTPUT_FILE | sed 's/^/\t\|/g'
+#        echo -e "\n"
+#    fi
+#done
+#
+#cd $BASE_DIR

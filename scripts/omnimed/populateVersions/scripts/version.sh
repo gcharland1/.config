@@ -3,20 +3,21 @@
 BASE_DIR="$HOME/git/Omnimed-solutions/"
 
 cd $BASE_DIR
-SOLUTION_LIST=$(find ./ -maxdepth 2 -type f -path '*omnimed-*/pom.xml' -not -path '*omnimed-cuba*' -not -path '*omnimed-cumulus*' -not -path '*omnimed-saltstack*' -not -path '*.iml' | sort | cut -d/ -f2)
+SOLUTION_LIST=$1
+[ -z "$SOLUTION_LIST" ] && SOLUTION_LIST=$(find ./ -maxdepth 2 -type f -path '*omnimed-*/pom.xml' -not -path '*omnimed-cuba*' -not -path '*omnimed-cumulus*' -not -path '*omnimed-saltstack*' -not -path '*.iml' | sort | cut -d/ -f2)
 SOLUTION_COUNT=$(echo ${SOLUTION_LIST[@]} | wc -w)
 
 updateProgess() {
-    echo -e "$1"
-    #echo -e "\e[1A\e[K$1"
+    echo -e "\e[1A\e[K$1"
 }
 
 getVersionForSolution() {
     local sol=$1
 
     [ -f "$BASE_DIR$sol/solutionVersion.txt" ] && version=$(cat $BASE_DIR$sol/solutionVersion.txt)
-    if [[ "$version" =~ "-SNAPSHOT" && ! -z ${gitHashMap["$sol"]} ]]; then
-        version=$(echo $version | sed "s/-SNAPSHOT/-${gitHashMap["$sol"]}-SNAPSHOT/")
+    if [[ "$version" =~ "-SNAPSHOT" ]]; then
+        gh=$(git --no-pager log -1 --pretty=format:%h -- ./$s)
+        version=$(echo $version | sed "s/SNAPSHOT/$gh-SNAPSHOT/")
     fi
 
     [ -z "$version" ] && version="0.0.0"
@@ -31,6 +32,7 @@ populateVersionForDependentSolutions() {
     declare childrenList=$(grep -lE $parent omnimed-*/solutionDependencies.txt | cut -d/ -f1 | sort | uniq)
     [ -z "$childrenList" ] && return
 
+    # TODO ajouter un filtre qui fait qu'on cherche uniquement dans les solutions modifiés
     if [[ $parent =~ "-parent" ]]; then
         local sedCmd="/<artifactId>$parent<\/artifactId>/,/<\/parent>/s/<version>0\.0\.0<\/version>/<version>$parentVersion<\/version>/g"
         find $BASE_DIR -maxdepth 3 -type f -not -path "*/$parent/pom.xml" -name 'pom.xml' -exec grep -lE "<artifactId>$parent</artifactId>" {} \; | xargs -I {} sed -i $sedCmd {}
@@ -59,7 +61,6 @@ populateVersionForSolution() {
     find $BASE_DIR$sol -maxdepth 2 -type f -name 'pom.xml' -exec sed -i "$sedCmd" {} \;
     
     local sedCmd="s/\"version\": \"0.0.0\",/\"version\": \"$version\",/g"
-    echo $sedCmd
     find $BASE_DIR$sol -maxdepth 1 -type f -name 'package.json' -exec sed -i "$sedCmd" {} \;
 
     echo -n $version > $BASE_DIR$sol/solutionVersion.txt
@@ -68,19 +69,6 @@ populateVersionForSolution() {
     updateProgess "\t${#populatedSolutions[@]} / $SOLUTION_COUNT - $sol"
 }
 
-echo "# Populate solutions versions #"
-
-echo "-------------------------------"
-echo "Getting the git hash for each solution"
-echo ""
-declare -A gitHashMap
-for s in ${SOLUTION_LIST[@]}; do
-    gh=$(git --no-pager log -1 --pretty=format:%h -- ./$s)
-    gitHashMap[$s]=$gh
-    updateProgess "\t${#gitHashMap[@]} / $SOLUTION_COUNT"
-done
-
-echo "-------------------------------"
 echo "Populating the version for each solution"
 echo ""
 declare -a populatedSolutions
@@ -88,5 +76,7 @@ for s in ${SOLUTION_LIST[@]}; do
     populateVersionForSolution $s
 done
 updateProgess "\t${#populatedSolutions[@]} / $SOLUTION_COUNT - Done!"
+
+[ ! -z "$1" ] && echo ${populatedSolutions[@]} | tr ' ' '\n'
 
 cd - > /dev/null 
