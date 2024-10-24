@@ -2,6 +2,12 @@
 # Mod Key setup (Mod1 = Alt, Mod4 = Win, Mod2 = NumLock (DO NO USE))
 set $mod Mod4
 
+# Navigation
+set $left h
+set $down j
+set $up k 
+set $right l
+
 # Workspace variables
 set $wspace1 1
 set $wspace2 2
@@ -14,12 +20,12 @@ set $wspace8 8
 set $wspace9 9
 set $wspace10 10:0
 
-###########################
-# Customize looks
-###########################
+###################
+# Customize looks #
+###################
 # Font variables (requires fonts-font-awesome)
 set $font_normal "pango:Ubuntu Bold 10"
-set $font_bar "pango:Awesome Bold 10"
+set $font_bar "pango:Awesome Mono Bold 10"
 font $font_normal
 
 # Setting up border width
@@ -28,17 +34,19 @@ default_floating_border pixel 1
 hide_edge_borders smart
 
 # Set color variables
-set $main    #284b63
-set $black   #282828
-set $white   #d9d9d9
-set $red     #c44536
-set $yellow  #ffc300
+set $background #000000
+set $black      #292929
+set $main       #406464
+set $red        #bd6b73
+set $white      #dfdfdf
+set $yellow     #ffaf47
+
 
 # Window colors         border  bground text    indicator child_border
 client.focused          $main   $main   $white  $main     $main  
 client.focused_inactive $black  $black  $white  $black    $black  
 client.unfocused        $black  $black  $white  $black    $black  
-client.urgent           $white  $red    $white  $red      $red   
+client.urgent           $white  $red    $black  $red      $red   
 client.placeholder      $black  $black  $white  $black    $black  
 
 client.background       $black
@@ -46,7 +54,7 @@ client.background       $black
 bar {
     output eDP1
     mode dock
-    position bottom
+    position top
 
     status_command i3status
 
@@ -56,7 +64,7 @@ bar {
 
     font $font_bar
 
-    workspace_buttons yes 
+    workspace_buttons no 
     strip_workspace_numbers yes
 
     colors {
@@ -73,14 +81,6 @@ bar {
     }
 }
 
-##############
-# Navigation #
-##############
-set $up k 
-set $down j
-set $left h
-set $right l
-
 # change focus
 bindsym $mod+$left focus left
 bindsym $mod+$down focus down
@@ -88,10 +88,10 @@ bindsym $mod+$up focus up
 bindsym $mod+$right focus right
 
 # move focused window
-bindsym $mod+Shift+$left move left
-bindsym $mod+Shift+$down move down
-bindsym $mod+Shift+$up move up
-bindsym $mod+Shift+$right move right
+bindsym $mod+Shift+$left move left 50 px
+bindsym $mod+Shift+$down move down 30 px
+bindsym $mod+Shift+$up move up 30 px
+bindsym $mod+Shift+$right move right 50 px
 
 # switch to workspace
 bindsym $mod+1 workspace $wspace1
@@ -138,7 +138,7 @@ bindsym $mod+space focus mode_toggle
 floating_modifier $mod
 
 # Move the currently focused window to the scratchpad
-bindsym $mod+Shift+BackSpace move scratchpad
+bindsym $mod+Shift+BackSpace floating enable,resize set 1200 800, move position center ,move scratchpad
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+BackSpace scratchpad show
 bindsym $mod+minus scratchpad show
@@ -157,13 +157,12 @@ bindsym $mod+Shift+f fullscreen toggle
 
 # Start i3-dmenu-desktop
 bindsym $mod+m exec i3-dmenu-desktop --dmenu='dmenu -i -p Launch: -nb $black -nf $white -sb $white -sf $black'
-bindsym $mod+Shift+m exec "dmenu_run -i -l 10 -p 'Run command:' -nb '$black' -nf '$white' -sb '$white' -sf '$black'"
+bindsym $mod+Ctrl+m exec "dmenu_run -i -l 10 -p 'Run command:' -nb '$black' -nf '$white' -sb '$white' -sf '$black'"
 
 # dmenu utilities
 bindsym $mod+Ctrl+g exec "~/.config/scripts/workspace/googleSearch.sh"
 bindsym $mod+Ctrl+q exec "~/.config/scripts/workspace/killProcess.sh"
 bindsym $mod+Ctrl+d exec "~/.config/scripts/workspace/editDotFiles.sh"
-bindsym $mod+Ctrl+m exec "~/.config/scripts/workspace/setupMonitors.sh"
 
 
 # start a terminal
@@ -189,8 +188,9 @@ mode "resize" {
         bindsym Shift+$up         resize shrink height $largeResizeInc px or $largeResizeInc ppt
         bindsym Shift+$right      resize grow width $largeResizeInc px or $largeResizeInc ppt
 
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
+        # Center floating windows and go back to normal: Enter
+        bindsym Return move position center; mode "default"
+        # Go back to normal: Enter
         bindsym Escape mode "default"
 }
 
@@ -229,17 +229,20 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 
-#######################
-# Other keybindings
-#######################
+#####################
+# Other keybindings #
+#####################
 set $locker ~/.config/i3/fuzzy_lock.sh
 
 # Change Brightness (requires xbacklight)
 bindsym XF86MonBrightnessUp exec xbacklight -inc 10
+bindsym $mod+Ctrl+Up exec xbacklight -inc 10
 bindsym XF86MonBrightnessDown exec xbacklight -dec 10
+bindsym $mod+Ctrl+Down exec xbacklight -dec 10
 
 # Change System Volume (requires amixer)
 bindsym XF86AudioMute exec amixer -q -D pulse set Master toggle
+bindsym $mod+Shift+m exec amixer -q -D pulse set Master toggle
 bindsym $mod+Shift+Up exec amixer -q -D pulse set Master 5%+ unmute
 bindsym XF86AudioRaiseVolume exec amixer -q -D pulse set Master 5%+ unmute
 bindsym $mod+Shift+Down exec amixer -q -D pulse set Master 5%- unmute
@@ -259,16 +262,20 @@ bindsym --release $mod+Shift+P exec gnome-screenshot -acf /tmp/screenshot && cat
 bindsym Ctrl+Shift+Escape exec "$locker"
 bindsym Ctrl+Mod1+l exec "$locker"
 
-######################################################
-# Initialiser les applications au début de la session
-######################################################
+#######################################################
+# Initialiser les applications au début de la session #
+#######################################################
+exec_always --no-startup-id xsetroot -solid '$background'
+
 exec --no-startup-id xfce4-power-manager
-exec --no-startup-id amixer -q -D pulse set Master mute
-exec --no-startup-id xsetroot -solid '$black'
 exec --no-startup-id "xautolock -time 5 -locker $locker &"
 
+exec --no-startup-id amixer -q -D pulse set Master mute
+
 exec --no-startup-id bash $HOME/.config/i3/tray.sh
-exec --no-startup-id bash $HOME/.config/scripts/workspace/setupMonitors.sh
+
+# Setup monitors according to the wifi connected
+exec_always --no-startup-id bash $HOME/.config/i3/periferals.sh
 
 exec --no-startup-id i3-msg 'workspace $wspace1; exec ~/.config/scripts/workspace/startTmux.sh; exec x-terminal-emulator -e tmux attach -t omnimed'
 exec --no-startup-id i3-msg 'workspace $wspace2; exec google-chrome'
