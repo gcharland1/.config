@@ -2,7 +2,7 @@ apiVersion: skaffold/v2beta25
 kind: Config
 requires:
   - configs: []
-    path: /home/gcharland/git/Omnimed-solutions/omnimed-api-engine/skaffold.yaml
+    path: /home/gcharland/git/Omnimed-solutions/omnimed-integration-prescribeit/skaffold.yaml
   - configs: []
     path: /home/gcharland/git/Omnimed-solutions/omnimed-api-prescribeit/skaffold.yaml
   - configs: []
@@ -11,8 +11,6 @@ requires:
     path: /home/gcharland/git/Omnimed-solutions/omnimed-api-transmission/skaffold.yaml
   - configs: []
     path: /home/gcharland/git/Omnimed-solutions/omnimed-api-userconfiguration/skaffold.yaml
-  - configs: []
-    path: /home/gcharland/git/Omnimed-solutions/omnimed-integration-prescribeit/skaffold.yaml
   - configs: []
     path: /home/gcharland/git/Omnimed-solutions/omnimed-frontend-medication/skaffold.yaml
   - configs: []

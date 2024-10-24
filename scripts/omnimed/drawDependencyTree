@@ -1,0 +1,36 @@
+#!/bin/bash
+
+OMNIMED_SOLUTION="$HOME/git/Omnimed-solutions/"
+SOLUTION_DEPENDENCIES="solutionDependencies.txt"
+OUTPUT="$HOME/.config/scripts/omnimed/dependencyTree.txt"
+
+touch $OUTPUT
+cd $OMNIMED_SOLUTION
+SOLUTIONS=$(find ./ -maxdepth 2 -name $SOLUTION_DEPENDENCIES -printf "%h ")
+
+NODE_TMP="$HOME/.config/scripts/omnimed/nodeTmp.txt"
+rm $NODE_TMP; touch $NODE_TMP
+for sol in ${SOLUTIONS[@]}; do
+    nodeName=$(basename ${sol//-/_})
+    echo "node $nodeName" >> $NODE_TMP
+done
+
+CHILD_COUNT="$HOME/.config/scripts/omnimed/childCount.txt"
+TREE_TMP="$HOME/.config/scripts/omnimed/treeTmp.txt"
+rm $TREE_TMP; touch $TREE_TMP
+rm $CHILD_COUNT; touch $CHILD_COUNT
+for sol in ${SOLUTIONS[@]}; do
+    nodeName=$(basename ${sol//-/_})
+    sed "s/-/_/g;s/$/ -- $nodeName/" $sol/$SOLUTION_DEPENDENCIES >> $TREE_TMP
+    echo "" >> $TREE_TMP
+
+    wc -l $sol/$SOLUTION_DEPENDENCIES >> $CHILD_COUNT
+done
+sed -i '/^ --/d' $TREE_TMP
+
+echo "@startuml" > $OUTPUT
+sort $NODE_TMP >>  $OUTPUT
+sort $TREE_TMP >> $OUTPUT
+echo "@enduml" >> $OUTPUT
+
+sort $CHILD_COUNT

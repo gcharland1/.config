@@ -6,6 +6,7 @@ OUTPUT_FILE="processRessource.log"
 VIRGO_PATH="/home/devjava/Applications/virgo-tomcat-server-3.6.3-Engine.RELEASE"
 VIRGO_DIR="$VIRGO_PATH/repository"
 
+CACHE_MESSAGE="This failure was cached in the local repository and resolution" 
 
 cd $BASE_DIR
 SOLUTION_LIST=$1
@@ -55,6 +56,7 @@ mavenCleanInstall() {
     mvn clean install $mvnArguments &> $BASE_DIR$sol/$OUTPUT_FILE \
         && rebuiltSolutionList+=( "$sol/" ) \
         || failedSolutionList+=( "$sol/" )
+    
 }
 
 rebuildSolution() {
@@ -113,9 +115,9 @@ done
 
 #echo -e "\n-------------------------------"
 #echo "Trying to fix the failed solutions..."
-#declare cacheMessage="This failure was cached in the local repository and resolution" 
+#declare CACHE_MESSAGE="This failure was cached in the local repository and resolution" 
 #for s in ${failedSolutionList[@]}; do
-#    cachedError=$(grep -m 1 "$cacheMessage" $BASE_DIR$s/$OUTPUT_FILE)
+#    cachedError=$(grep -m 1 "$CACHE_MESSAGE" $BASE_DIR$s/$OUTPUT_FILE)
 #    if [ ! -z "$cachedError" ]; then
 #        removeCachedErrors $cachedError
 #        mavenCleanInstall $s
