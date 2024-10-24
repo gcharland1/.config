@@ -3,8 +3,10 @@
 dotFilesPath="$HOME/.config"
 declare -a options=(
     "i3wm - i3/config"
-    "scripts - scripts/workspace"
+    "aliases - my_aliases"
+    "scripts - scripts/workspace/"
     "vim - nvim"
+    "zsh - oh-my-zsh/"
 )
 
 conf=$(printf '%s\n' "${options[@]}" | dmenu -i -p 'Select config file:' -l 20 | awk '{print $NF}')

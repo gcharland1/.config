@@ -27,5 +27,9 @@ scripts/**/.temp
 
 !.zshrc
 
+# Do not include venv files
+**/venv/**
+**/__pycache__/**
+
 # Do not include any sub git projects
 */.git*

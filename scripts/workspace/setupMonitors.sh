@@ -4,7 +4,7 @@ for m in $(xrandr -q | grep '^[eDP|DP|HDMI]' | awk '{print $1}'); do
 done
 
 WIFI=$(iwgetid -r)
-[ "$WIFI" = "Le Flash" ] && position="--right-of" || position="--left-of"
+[ "$WIFI" = "Le Flash 5G" ] && position="--right-of" || position="--left-of"
 
 monitors=$(xrandr --listmonitors | grep -v 'Monitors:' | awk '{print $4}' | grep -v 'e')
 main=$(xrandr --listmonitors | grep -v 'Monitors:' | awk '{print $4}' | grep 'e')
