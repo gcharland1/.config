@@ -17,6 +17,7 @@ plugins=(
     zsh-autosuggestions
     shrink-path
     sudo
+    poetry
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -29,7 +30,7 @@ if [[ -n $SSH_CONNECTION ]]; then
  fi
 
 if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+    . ~/.bash_aliases_omnimed
 fi
 
 # Source personnal aliases

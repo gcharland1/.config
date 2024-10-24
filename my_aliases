@@ -31,11 +31,19 @@ fman() {
 }
 
 ff() {
-    [[ ! -z "$1" ]] && maxdepth=$1
     cmd=$(history | sed "s/^\s*[0-9]*\s*//" | sort | uniq | fzf)
     echo "$cmd"
-    [[ ! -z "$cmd" ]] && $cmd
+    [[ ! -z "$cmd" ]] && eval "$cmd"
 }
+
+fgit() {
+    ref=$(git --no-pager reflog | fzf | awk '{print $1}')
+    [[ ! -z "$ref" ]] && git reset $ref --hard
+}
+
+# Git Shortcuts
+alias gitDiff="git diff upstream/fix-develop...HEAD --name-only | cut -d/ -f1 | sort | uniq"
+
 
 # Tmux commands
 alias tmux="tmux -f ~/.config/tmux/tmux.conf"
@@ -60,6 +68,8 @@ alias runcukes="~/.config/scripts/omnimed/cukes.sh"
 
 ## Rebuild api
 rebuildApi() { bash ~/.config/scripts/omnimed/rebuildApi.sh $1; }
+rebuildFrontend() {cd ~/git/Omnimed-solutions/omnimed-frontend-$1 && npm install && for s in $(ls projects); do ng build $s; done}
+
 
 ## Deploy springboot solution
 alias marvin="~/.config/scripts/omnimed/runSpring.sh"
