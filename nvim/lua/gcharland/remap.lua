@@ -24,7 +24,11 @@ vim.keymap.set("n", "n", "nzz")
 vim.keymap.set("n", "n", "nzz")
 vim.keymap.set("n", "N", "Nzz")
 
--- Split windows
+-- Center window on next search result
+vim.keymap.set("n", "n", "nzz")
+vim.keymap.set("n", "N", "Nzz")
+
+-- Resize split windows
 vim.keymap.set("n", "<C-w>|", "<cmd>vsplit<cr>")
 vim.keymap.set("n", "<C-w>-", "<cmd>split<cr>")
 

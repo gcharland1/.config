@@ -19,6 +19,8 @@ vim.opt.wrap = false
 
 vim.opt.termguicolors = true
 
+vim.opt.termguicolors = true
+
 vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
@@ -34,6 +36,5 @@ vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
---
 vim.opt.colorcolumn = "120"
 vim.opt.cursorline = true
