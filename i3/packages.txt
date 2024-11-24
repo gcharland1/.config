@@ -6,6 +6,7 @@ dunst
 playerctl
 fonts-font-awesome
 xautolock
+xclip
 
 blueman
 pasystray
