@@ -17,6 +17,7 @@
 
 !nvim
 !nvim/**
+nvim/pack
 
 !tmux
 !tmux/**

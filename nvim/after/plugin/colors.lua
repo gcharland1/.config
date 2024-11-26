@@ -35,6 +35,20 @@ function ColorNext()
     return vim.cmd(string.format("colorscheme %s", AvailableColorSchemes[nextColor]))
 end
 
+function ZenMode()
+    local currentMode = vim.api.nvim_exec2("set statuscolumn?", {output = true})["output"]
+    local padBefore = 3
+    local padAfter = 3
+    if currentMode:match(string.format("%ss", padBefore)) then -- The zen mode is inactive
+        local colorColumn = vim.api.nvim_exec2("set colorcolumn?", {output = true})["output"]:match("%d+")
+        local winwidth = vim.api.nvim_win_get_width(0)
+        padBefore = math.min(math.floor((winwidth - colorColumn - padAfter))/2, 30)
+    end
+    local vimCmd = string.format("set statuscolumn=%%%ss%%-%s{v:relnum}", padBefore, padAfter)
+    vim.cmd(vimCmd)
+end
+
 SetupColorscheme()
 vim.cmd(string.format("colorscheme %s", AvailableColorSchemes[1]))
 vim.keymap.set("n", "<leader>cc", function() ColorNext() end)
+vim.keymap.set("n", "<leader>zz", function() ZenMode() end)

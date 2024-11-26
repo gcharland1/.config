@@ -6,8 +6,8 @@ local cmp = require('cmp')
 require('mason').setup({})
 require('mason-lspconfig').setup({
     ensure_installed = {
+        'biome', -- Javascript et typescript
         'bashls', -- Bash language
-        'tsserver', -- Javascript & Angular
         'jdtls', -- java
         'java_language_server', -- Java
         'html', --HTML

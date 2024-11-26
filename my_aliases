@@ -42,7 +42,12 @@ fgit() {
 }
 
 # Git Shortcuts
-alias gitDiff="git diff upstream/fix-develop...HEAD --name-only | cut -d/ -f1 | sort | uniq"
+"pull-request"() {
+    branch=$(git branch --show-current &> /dev/null && git branch --show-current)
+    [[ ! -z "$branch" ]] \
+        && xdg-open "https://github.com/gcharland1/Omnimed-solutions/compare/$branch?expand=1" >/dev/null \
+        || echo "T'es pas dans un repo git mec!"
+}
 
 
 # Tmux commands

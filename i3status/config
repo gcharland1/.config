@@ -20,7 +20,7 @@ general {
 order += "tztime local"
 tztime local {
     format = "%time"
-    format_time = "%-d/%b/%Y - %H:%M"
+    format_time = "%H:%M - %-d/%b/%Y"
 }
 
 order += "memory"
@@ -34,7 +34,7 @@ cpu_usage {
     max_threshold = 80
 }
 
-order += "volume master"
+# order += "volume master"
 volume master {
     format = " %volume"
     format_muted = " %volume"
@@ -45,7 +45,7 @@ volume master {
 
 order += "battery all"
 battery all {
-    format = "%status %percentage  |"
+    format = "%status %percentage   "
     status_full = ""
     status_chr = ""
     status_bat = " "

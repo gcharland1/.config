@@ -53,19 +53,18 @@ client.background       $black
 
 bar {
     output eDP1
-    mode dock
     position top
-
-    status_command i3status
-
-    tray_output eDP1
-    tray_padding 0
-    separator_symbol " | "
-
-    font $font_bar
+    mode dock
 
     workspace_buttons no 
     strip_workspace_numbers yes
+
+    status_command i3status
+
+    tray_padding 0
+
+    font $font_bar
+    separator_symbol " | "
 
     colors {
         background $black
@@ -160,9 +159,9 @@ bindsym $mod+m exec i3-dmenu-desktop --dmenu='dmenu -i -p Launch: -nb $black -nf
 bindsym $mod+Ctrl+m exec "dmenu_run -i -l 10 -p 'Run command:' -nb '$black' -nf '$white' -sb '$white' -sf '$black'"
 
 # dmenu utilities
+bindsym $mod+Ctrl+d exec "~/.config/scripts/workspace/editDotFiles.sh"
 bindsym $mod+Ctrl+g exec "~/.config/scripts/workspace/googleSearch.sh"
 bindsym $mod+Ctrl+q exec "~/.config/scripts/workspace/killProcess.sh"
-bindsym $mod+Ctrl+d exec "~/.config/scripts/workspace/editDotFiles.sh"
 
 
 # start a terminal
@@ -254,7 +253,6 @@ bindsym $mod+Shift+Right exec playerctl next
 bindsym $mod+Shift+Left exec playerctl previous
 
 # Take Screenshot
-bindsym --release Print exec gnome-screenshot
 bindsym --release Shift+Print exec gnome-screenshot -acf /tmp/screenshot && cat /tmp/screenshot | xclip -i -selection clipboard -target image/png
 bindsym --release $mod+Shift+P exec gnome-screenshot -acf /tmp/screenshot && cat /tmp/screenshot | xclip -i -selection clipboard -target image/png
 
@@ -272,7 +270,7 @@ exec --no-startup-id "xautolock -time 5 -locker $locker &"
 
 exec --no-startup-id amixer -q -D pulse set Master mute
 
-exec --no-startup-id bash $HOME/.config/i3/tray.sh
+exec_always --no-startup-id bash $HOME/.config/i3/tray.sh
 
 # Setup monitors according to the wifi connected
 exec_always --no-startup-id bash $HOME/.config/i3/periferals.sh
