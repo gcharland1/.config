@@ -18,7 +18,7 @@ fd() {
 } 
 
 fim() {
-    maxdepth=4
+    maxdepth=8
     [[ ! -z "$1" ]] && maxdepth=$1
     file=$(find ./ -maxdepth $maxdepth ! -path "*.git/*" ! -path "*/dist*" ! -path "*/target*" ! -path "*/node_modules*" | \
 		fzf --preview '[[ -f {} ]] && bat --style=numbers --color=always --line-range :500 {} || tree {} -L 4 -I "*.git/*|*node_modules*|*dist*|*target*"') 
