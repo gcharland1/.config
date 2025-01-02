@@ -1,9 +1,10 @@
-tmux -f ~/.config/tmux/tmux.conf new-session -d -s ssh -c ~
-tmux -f ~/.config/tmux/tmux.conf new-session -d -s omnimed -c ~/git/Omnimed-solutions
-tmux new-window -d -c "~/git/Omnimed-solutions/" -n "k9s" "k9s"
-tmux new-window -d -c "~/git/Omnimed-solutions/" -n "</>"
-tmux new-window -d -n "git" "cd ~/git/Omnimed-solutions/; lazygit"
+tmux -f ~/.config/tmux/tmux.conf new-session -d -s "ssh" -c "~"
+tmux -f ~/.config/tmux/tmux.conf new-session -d -s "omnimed"
 
-# Use this to connect whenever you want 
+tmux new-window -n "</>"
+tmux send-keys "cd ~/git/Omnimed-solutions/ && clear" Enter
+
+tmux new-window
+tmux send-keys "cd ~/git/Omnimed-solutions/ && clear" Enter
+
 tmux attach -t omnimed
-

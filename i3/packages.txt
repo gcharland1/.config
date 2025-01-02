@@ -2,7 +2,11 @@ i3-wm
 i3status
 i3lock
 dmenu
+dunst
 playerctl
+fonts-font-awesome
+xautolock
+xclip
 
 blueman
 pasystray

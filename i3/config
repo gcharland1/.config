@@ -2,6 +2,12 @@
 # Mod Key setup (Mod1 = Alt, Mod4 = Win, Mod2 = NumLock (DO NO USE))
 set $mod Mod4
 
+# Navigation
+set $left h
+set $down j
+set $up k 
+set $right l
+
 # Workspace variables
 set $wspace1 1
 set $wspace2 2
@@ -14,114 +20,77 @@ set $wspace8 8
 set $wspace9 9
 set $wspace10 10:0
 
-###########################
-# Customize looks
-###########################
+###################
+# Customize looks #
+###################
 # Font variables (requires fonts-font-awesome)
-set $font_normal "pango:mono 10"
-set $font_bar "pango:Ubuntu mono, Awesome 12"
+set $font_normal "pango:Ubuntu Bold 10"
+set $font_bar "pango:Awesome Mono Bold 10"
 font $font_normal
 
 # Setting up border width
-default_border pixel 1
-default_floating_border pixel 3
+default_border pixel 2
+default_floating_border pixel 1
 hide_edge_borders smart
 
 # Set color variables
-set $main #284b63
-set $black #22223b
-set $white #d9d9d9
-set $red #c44536
+set $background #000000
+set $black      #292929
+set $main       #406464
+set $red        #bd6b73
+set $white      #dfdfdf
+set $yellow     #ffaf47
 
-# Windo colors          border  bground text    indicator child_border
+
+# Window colors         border  bground text    indicator child_border
 client.focused          $main   $main   $white  $main     $main  
 client.focused_inactive $black  $black  $white  $black    $black  
 client.unfocused        $black  $black  $white  $black    $black  
-client.urgent           $white  $red    $white  $red      $red   
+client.urgent           $white  $red    $black  $red      $red   
 client.placeholder      $black  $black  $white  $black    $black  
 
-client.background       $black 
+client.background       $black
 
-# Main bar (Laptop, toutes l'info)
 bar {
-    # Commenter pour afficher sur tous les moniteurs
-    output primary
-
+    output eDP1
+    position top
     mode dock
-    position bottom
+
+    workspace_buttons no 
+    strip_workspace_numbers yes
 
     status_command i3status
 
-    tray_output primary 
     tray_padding 0
+
+    font $font_bar
     separator_symbol " | "
 
-    font $font_bar
-
-    workspace_buttons yes 
-    strip_workspace_numbers yes
-
     colors {
         background $black
         statusline $white
         separator  $white
 
         # Indicateurs WS   border  bground text
-        focused_workspace  $white  $white  $black
+        focused_workspace  $main   $main   $white
         active_workspace   $black  $black  $white
         inactive_workspace $black  $black  $white
         urgent_workspace   $red    $red    $white
-        binding_mode       $red    $red    $white
+        binding_mode       $yellow $yellow $black
     }
 }
 
-# Secondary invisible bar to enable dmenu on any screen
-bar {
-    mode hide
-    modifier none
-
-    tray_output none
-    workspace_buttons no
-    
-    font $font_bar
-    colors {
-        background $black
-        statusline $white
-        separator  $white
-
-        # Indicateurs WS   border  bground text
-        focused_workspace  $white  $white  $black
-        active_workspace   $black  $black  $white
-        inactive_workspace $black  $black  $white
-        urgent_workspace   $red    $red    $white
-        binding_mode       $red    $red    $white
-    }
-}
-    
-
-##############
-# Navigation #
-##############
-set $up k 
-set $down j
-set $left h
-set $right l
-
-# change focus #
+# change focus
 bindsym $mod+$left focus left
 bindsym $mod+$down focus down
 bindsym $mod+$up focus up
 bindsym $mod+$right focus right
 
-# move focused window #
-bindsym $mod+Shift+$left move left
-bindsym $mod+Shift+$down move down
-bindsym $mod+Shift+$up move up
-bindsym $mod+Shift+$right move right
-
-# focus the parent or child container
-bindsym $mod+a focus parent
-bindsym $mod+d focus child
+# move focused window
+bindsym $mod+Shift+$left move left 50 px
+bindsym $mod+Shift+$down move down 30 px
+bindsym $mod+Shift+$up move up 30 px
+bindsym $mod+Shift+$right move right 50 px
 
 # switch to workspace
 bindsym $mod+1 workspace $wspace1
@@ -135,60 +104,72 @@ bindsym $mod+8 workspace $wspace8
 bindsym $mod+9 workspace $wspace9
 bindsym $mod+0 workspace $wspace10
 
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $wspace1; workspace $wspace1
+bindsym $mod+Shift+2 move container to workspace $wspace2; workspace $wspace2
+bindsym $mod+Shift+3 move container to workspace $wspace3; workspace $wspace3
+bindsym $mod+Shift+4 move container to workspace $wspace4; workspace $wspace4
+bindsym $mod+Shift+5 move container to workspace $wspace5; workspace $wspace5
+bindsym $mod+Shift+6 move container to workspace $wspace6; workspace $wspace6
+bindsym $mod+Shift+7 move container to workspace $wspace7; workspace $wspace7
+bindsym $mod+Shift+8 move container to workspace $wspace8; workspace $wspace8
+bindsym $mod+Shift+9 move container to workspace $wspace9; workspace $wspace9
+bindsym $mod+Shift+0 move container to workspace $wspace10; workspace $wspace10
+
 # Move workspace to different window
 bindsym $mod+Ctrl+$left move workspace to output left
 bindsym $mod+Ctrl+$right move workspace to output right
 
-# move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $wspace1
-bindsym $mod+Shift+2 move container to workspace $wspace2
-bindsym $mod+Shift+3 move container to workspace $wspace3
-bindsym $mod+Shift+4 move container to workspace $wspace4
-bindsym $mod+Shift+5 move container to workspace $wspace5
-bindsym $mod+Shift+6 move container to workspace $wspace6
-bindsym $mod+Shift+7 move container to workspace $wspace7
-bindsym $mod+Shift+8 move container to workspace $wspace8
-bindsym $mod+Shift+9 move container to workspace $wspace9
-bindsym $mod+Shift+0 move container to workspace $wspace10
+# focus the parent or child container
+bindsym $mod+a focus parent
+bindsym $mod+d focus child
 
+# Start some windows in specific workspace
+for_window [class="Spotify"] move to workspace $wspace9
+for_window [class="jetbrains-idea"] move to workspace $wspace8
+for_window [class="discord"] move to workspace $wspace10
 
 #############################
 # Change container behavior #
 #############################
-# Delay before removing the urgent flag on a workspace
+# Delay before removing urgent flag
 force_display_urgency_hint 1000 ms
-# Mark ws as urgent instead of stealing focus
 focus_on_window_activation urgent
-# toggle tiling / floating
+
+# Toggle floating mode
 bindsym $mod+Shift+space floating toggle
-# change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
-# use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # Move the currently focused window to the scratchpad
+bindsym $mod+Shift+BackSpace floating enable, resize set 1200 800, move position center, move scratchpad
 bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+BackSpace scratchpad show
 bindsym $mod+minus scratchpad show
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
+
 # Split container verticaly or horizontaly in split layout
 bindsym $mod+Shift+v split h
 bindsym $mod+v split v
-# enter fullscreen mode for the focused container
+
+# Enter fullscreen mode for the focused container
 bindsym $mod+Shift+f fullscreen toggle
 
 # Start i3-dmenu-desktop
-bindsym $mod+m exec i3-dmenu-desktop --dmenu='dmenu -i -nb $black -nf $white -sb $main -sf $white'
-# start a terminal
-bindsym $mod+Return exec --no-startup-id i3-sensible-terminal
+bindsym $mod+m exec i3-dmenu-desktop --dmenu='dmenu -i -p Launch: -nb $black -nf $white -sb $white -sf $black'
+bindsym $mod+Ctrl+m exec "dmenu_run -i -l 10 -p 'Run command:' -nb '$black' -nf '$white' -sb '$white' -sf '$black'"
 
-# kill focused window
+# Start a terminal
+bindsym $mod+Return exec --no-startup-id x-terminal-emulator
+
+# Kill focused window
 bindsym $mod+Shift+q kill
 
-# resize window (you can also use the mouse for that)
+# Resize window (you can also use the mouse for that)
 bindsym $mod+r mode "resize"
 mode "resize" {
         set $resizeInc 5
@@ -205,14 +186,11 @@ mode "resize" {
         bindsym Shift+$up         resize shrink height $largeResizeInc px or $largeResizeInc ppt
         bindsym Shift+$right      resize grow width $largeResizeInc px or $largeResizeInc ppt
 
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
+        # Center floating windows and go back to normal: Enter
+        bindsym Return move position center; mode "default"
+        # Go back to normal: Enter
         bindsym Escape mode "default"
 }
-
-# Start some windows in specific workspace
-for_window [class="Spotify"] move to workspace $wspace9
-for_window [class="jetbrains-idea"] move to workspace $wspace8
 
 #######################################
 # Restart / Refresh / Exit i3 session #
@@ -229,16 +207,12 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 ##################
 # POWER SETTINGS #
 ##################
-# Define "power managment mode"
-#	- Must include "exec --no-startup-id xfce4-power-manager" at end of file (Startup options)
-#	-  Set xfce3-power-settings to ignore power button to let i3 handle power button
 bindsym XF86PowerOff mode "$mode_system"
-set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (Shift+r) reboot, (Shift+s) shutdown
+set $mode_system System (e) logout, (s) suspend, (h) hibernate, (Shift+r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
 	# Power options
-    bindsym l exec --no-startup-id $Locker, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
-    bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
+    bindsym s exec --no-startup-id  && systemctl suspend, mode "default"
     bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
     bindsym Shift+r exec --no-startup-id systemctl reboot, mode "default"
     bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"  
@@ -248,58 +222,61 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 
-
-#######################
-# Other keybindings
-#######################
+#####################
+# Other keybindings #
+#####################
 # Change Brightness (requires xbacklight)
 bindsym XF86MonBrightnessUp exec xbacklight -inc 10
+bindsym $mod+Ctrl+Up exec xbacklight -inc 10
 bindsym XF86MonBrightnessDown exec xbacklight -dec 10
-
-# Reset monitors
-bindsym $mod+Shift+m exec "~/.config/scripts/workspace/setupMonitors.sh"
+bindsym $mod+Ctrl+Down exec xbacklight -dec 10
 
 # Change System Volume (requires amixer)
 bindsym XF86AudioMute exec amixer -q -D pulse set Master toggle
+bindsym $mod+Shift+m exec amixer -q -D pulse set Master toggle
 bindsym $mod+Shift+Up exec amixer -q -D pulse set Master 5%+ unmute
 bindsym XF86AudioRaiseVolume exec amixer -q -D pulse set Master 5%+ unmute
 bindsym $mod+Shift+Down exec amixer -q -D pulse set Master 5%- unmute
 bindsym XF86AudioLowerVolume exec amixer -q -D pulse set Master 5%- unmute
 
-# Play / Pause (requires playerctl)
+# Play/Pause/Prev/Next (requires playerctl)
 bindsym $mod+p exec playerctl play-pause
 bindsym $mod+Shift+Right exec playerctl next
 bindsym $mod+Shift+Left exec playerctl previous
 
-# Take Screenshot
-bindsym --release Print exec gnome-screenshot
+# Take Screenshot (requires xclip)
 bindsym --release Shift+Print exec gnome-screenshot -acf /tmp/screenshot && cat /tmp/screenshot | xclip -i -selection clipboard -target image/png
 bindsym --release $mod+Shift+P exec gnome-screenshot -acf /tmp/screenshot && cat /tmp/screenshot | xclip -i -selection clipboard -target image/png
 
 # Lock screen
-bindsym Ctrl+Shift+Escape exec "~/.config/i3/fuzzy_lock.sh"
+set $locker ~/.config/scripts/workspace/fuzzy_lock.sh
+bindsym Ctrl+Shift+Escape exec "$locker"
+bindsym Ctrl+Mod1+l exec "$locker"
 
-#############################################################
-# Initialiser les applications au début de la session
-#
-# Commandes qu'on roule automatiquement quand on part i3:
-#	- exec .... 	-> 	Va exécuter seulement au loggin
-# 	- exec_always 	-> 	Va exécuter à chaque fois qu'on
-#						redémarre i3 ($mod+Shift+r)
-#############################################################
+# dmenu utilities
+bindsym $mod+Ctrl+d exec "~/.config/scripts/workspace/editDotFiles.sh"
+bindsym $mod+Ctrl+g exec "~/.config/scripts/workspace/googleSearch.sh"
+bindsym $mod+Ctrl+q exec "~/.config/scripts/workspace/killProcess.sh"
+
+#######################################################
+# Initialiser les applications au début de la session #
+#######################################################
+exec_always --no-startup-id xsetroot -solid '$background'
+
 exec --no-startup-id xfce4-power-manager
+exec --no-startup-id "xautolock -time 5 -locker $locker &"
+
 exec --no-startup-id amixer -q -D pulse set Master mute
-exec --no-startup-id xsetroot -solid '#222222'
-exec --no-startup-id xautolock -time 15 locker '~/.config/i3/fuzzy_lock.sh' &
 
-# Custom scripts for monitor monitoring and tray icons
-exec --no-startup-id bash /home/gcharland/.config/i3/tray.sh
+exec_always --no-startup-id bash $HOME/.config/scripts/workspace/tray.sh
 
-# Setup custom pour les moniteurs
-exec --no-startup-id /home/gcharland/.config/scripts/workspace/setupMonitors.sh
+# Setup monitors according to the wifi connected
+exec_always --no-startup-id bash ~/.config/scripts/workspace/setupMonitors.sh
 
-# Apps to start on login
-exec --no-startup-id i3-msg 'workspace $wspace1; exec i3-sensible-terminal'
+# Set internal microphone
+exec_always --no-startup-id bash ~/.config/scripts/workspace/setInputVolume.sh
+
+# Start desired apps
+exec --no-startup-id i3-msg 'workspace $wspace1; exec ~/.config/scripts/workspace/startTmux.sh; exec x-terminal-emulator -e tmux attach -t omnimed'
 exec --no-startup-id i3-msg 'workspace $wspace2; exec google-chrome'
-#exec --no-startup-id i3-msg 'workspace $wspace9; exec spotify --disable-gpu'
-exec --no-startup-id i3-msg 'workspace $wspace10; exec discord --start-minimized'
+exec --no-startup-id i3-msg 'workspace $wspace10; exec discord'

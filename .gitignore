@@ -17,6 +17,7 @@
 
 !nvim
 !nvim/**
+nvim/pack
 
 !tmux
 !tmux/**
@@ -24,8 +25,14 @@
 !scripts
 !scripts/**
 scripts/**/.temp
+scripts/omnimed/process-resources
+scripts/omnimed/process-resources/**
 
 !.zshrc
+
+# Do not include venv files
+**/venv/**
+**/__pycache__/**
 
 # Do not include any sub git projects
 */.git*

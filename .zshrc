@@ -15,10 +15,12 @@ plugins=(
     git
 	npm
     zsh-autosuggestions
+    shrink-path
     sudo
+    poetry
 )
+
 source $ZSH/oh-my-zsh.sh
-#
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -27,8 +29,9 @@ if [[ -n $SSH_CONNECTION ]]; then
    export EDITOR='nvim'
  fi
 
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+# Source omnimed aliases (if available)
+if [ -f ~/.bash_aliases_omnimed ]; then
+    . ~/.bash_aliases_omnimed
 fi
 
 # Source personnal aliases
@@ -48,4 +51,8 @@ export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 
 # Load Angular CLI autocompletion.
-source <(ng completion script)
+#source <(ng completion script)
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

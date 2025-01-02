@@ -12,6 +12,10 @@ mvn install -P VirgoDocker -Dvirgo-docker-build.phase=install -Dmaven.test.skip=
 cd ~/git/Omnimed-solutions/
 ant -buildfile ~/git/Omnimed-solutions/build-tools/workspace/processResources.xml processResources-karaf-authorization
 
+cd ~/git/Omnimed-solutions/omnimed-activemq/
+skaffold run &&
+
+echo "PID = "$PID
 wait $PID
 
 cd ~/git/Omnimed-solutions/
