@@ -25,6 +25,8 @@ nvim/pack
 !scripts
 !scripts/**
 scripts/**/.temp
+scripts/omnimed/process-resources
+scripts/omnimed/process-resources/**
 
 !.zshrc
 

@@ -18,11 +18,6 @@ vim.keymap.set("v", "<leader>d", "\"_d")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<S-n>", "<S-n>zz")
-vim.keymap.set("n", "n", "nzz")
-
--- Center window on next search result
-vim.keymap.set("n", "n", "nzz")
-vim.keymap.set("n", "N", "Nzz")
 
 -- Center window on next search result
 vim.keymap.set("n", "n", "nzz")

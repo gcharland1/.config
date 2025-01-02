@@ -36,9 +36,14 @@ ff() {
     [[ ! -z "$cmd" ]] && eval "$cmd"
 }
 
-fgit() {
+fgit-reset() {
     ref=$(git --no-pager reflog | fzf | awk '{print $1}')
     [[ ! -z "$ref" ]] && git reset $ref --hard
+}
+
+fgit-branch() {
+    branch=$(git branch | grep -v "*" | fzf)
+    [[ ! -z "$branch" ]] && git switch "${branch// /}"
 }
 
 # Git Shortcuts

@@ -29,7 +29,8 @@ if [[ -n $SSH_CONNECTION ]]; then
    export EDITOR='nvim'
  fi
 
-if [ -f ~/.bash_aliases ]; then
+# Source omnimed aliases (if available)
+if [ -f ~/.bash_aliases_omnimed ]; then
     . ~/.bash_aliases_omnimed
 fi
 
