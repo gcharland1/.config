@@ -41,7 +41,12 @@ fgit-reset() {
     [[ ! -z "$ref" ]] && git reset $ref --hard
 }
 
-fgit-branch() {
+fgit-checkout() {
+    branch=$(git branch -r | grep 'upstream' | fzf)
+    [[ ! -z "$branch" ]] && git checkout -B "${branch#*/}" "${branch// /}"
+}
+
+fgit-switch() {
     branch=$(git branch | grep -v "*" | fzf)
     [[ ! -z "$branch" ]] && git switch "${branch// /}"
 }
