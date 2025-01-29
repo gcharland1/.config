@@ -10,6 +10,9 @@
 !i3status
 !i3status/**
 
+!gnome-terminal
+!gnome-terminal/**
+
 !lazygit
 !lazygit/config.yml
 
@@ -29,6 +32,9 @@ scripts/omnimed/process-resources
 scripts/omnimed/process-resources/**
 
 !.zshrc
+
+!dunst
+!dunst/**
 
 # Do not include venv files
 **/venv/**

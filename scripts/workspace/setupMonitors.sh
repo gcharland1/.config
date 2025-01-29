@@ -1,3 +1,5 @@
+#!/usr/bin/bash
+
 # Setup tous les moniteurs par défaut (Reset)
 for m in $(xrandr -q | grep '^[eDP|DP|HDMI]' | awk '{print $1}'); do
     xrandr --output $m --auto

@@ -13,7 +13,7 @@ ENABLE_CORRECTION="true"
 
 plugins=(
     git
-	npm
+    npm
     zsh-autosuggestions
     shrink-path
     sudo
@@ -24,10 +24,11 @@ source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='nvim'
- else
-   export EDITOR='vim'
- fi
+    # TODO: Remplacer par nvim quand c'est configurer
+    export EDITOR='vim'
+else
+    export EDITOR='vim'
+fi
 
 # Source omnimed aliases (if available)
 if [ -f ~/.bash_aliases_omnimed ]; then
@@ -41,11 +42,11 @@ fi
 
 # Environment variables settés depuis omnimedrc
 . $HOME/.omnimedrc 2> /dev/null
-PATH=$PATH:~/Applications/Scripts
+PATH=$PATH:/home/gcharland/Applications/Scripts
 # Setting java-11 as default
-#export JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64
-#export PATH=$JAVA_HOME/jre/bin:$PATH
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export JAVA_HOME=$(readlink -f $(which java) | readlink -f $(which java) | sed 's/\/bin.*//g')
+export PATH=$JAVA_HOME/bin:$PATH
+
 export HISTTIMEFORMAT="%Y-%m-%d %T "
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"

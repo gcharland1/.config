@@ -5,8 +5,8 @@ dmenu
 dunst
 playerctl
 fonts-font-awesome
+imagemagick
 xautolock
 xclip
-
 blueman
 pasystray

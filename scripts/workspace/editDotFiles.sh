@@ -11,5 +11,5 @@ declare -a options=(
 
 conf=$(printf '%s\n' "${options[@]}" | dmenu -i -p 'Select config file:' -l 20 | awk '{print $NF}')
 [ ! -z "$conf" ] \
-    && x-terminal-emulator -e nvim "$HOME/.config/$conf" \
+    && x-terminal-emulator -e vim "$HOME/.config/$conf" \
     || exit
