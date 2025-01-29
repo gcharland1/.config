@@ -3,7 +3,7 @@ alias setupMonitors=~/.config/scripts/workspace/setupMonitors.sh
 alias setVolume=~/.config/scripts/workspace/setInputVolume.sh
 
 # App start aliases
-alias vim=nvim
+#TODO: alias vim=nvim
 alias lg=lazygit
 alias k9s=/snap/k9s/current/bin/k9s
 alias spotify="spotify --disable-gpu > /dev/null & disown"

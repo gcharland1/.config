@@ -30,6 +30,9 @@ scripts/omnimed/process-resources/**
 
 !.zshrc
 
+!dunst
+!dunst/**
+
 # Do not include venv files
 **/venv/**
 **/__pycache__/**

@@ -19,8 +19,7 @@ general {
 
 order += "tztime local"
 tztime local {
-    format = "%time"
-    format_time = "%H:%M - %-d/%b/%Y"
+    format = "%H:%M - %-d/%b/%Y"
 }
 
 order += "memory"

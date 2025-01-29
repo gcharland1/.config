@@ -1,18 +1,25 @@
 #!/bin/bash
 # Make sure all required packages are installed
 required_packages=(
+    "fonts-font-awesome"
     "i3"
     "i3-wm"
     "i3lock"
     "i3status"
-    "nvim"
+    "pavucontrol"
     "tmux"
+    "xterm"
     "zsh"
 )
-sudo apt update
 
-echo  "${required_packages[@]}"
-sudo apt install ${required_package[*]}
+echo  "Installing the following packages: ${required_packages[@]}"
+sudo apt update
+sudo apt install "${required_package[@]}"
+
+# Snap applications
+sudo snap install spotify
+
+#TODO: Installer et configurer nvim
 
 # Install lazygit from github
 if ! command -v lazygit &> /dev/null; then
@@ -33,7 +40,7 @@ fi
 sudo apt install zsh-autosuggestions zsh-syntax-highlighting zsh
 git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-ln -s ~/.config/oh-my-zsh ~/.oh-my-zsh
+ln -s ~/.oh-my-zsh ~/.config/oh-my-zsh
 
 if [ -f ~/.zshrc.pre-oh-my-zsh ]; then
     rm ~/.zhrc
@@ -45,3 +52,6 @@ if [ -f ~/.zshrc ]; then
     mv ~/.zshrc ~/.zshrc.bak
 fi
 ln -s ~/.config/.zshrc ~/.zshrc
+
+# Setup urxvt as default terminal
+sudo update-alternatives --config x-terminal-emulator

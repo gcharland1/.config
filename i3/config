@@ -52,7 +52,7 @@ client.placeholder      $black  $black  $white  $black    $black
 client.background       $black
 
 bar {
-    output eDP1
+    output eDP-1
     position top
     mode dock
 
