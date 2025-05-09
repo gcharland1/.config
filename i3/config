@@ -56,15 +56,15 @@ bar {
     position top
     mode dock
 
+    status_command i3blocks
+
     workspace_buttons no 
     strip_workspace_numbers yes
-
-    status_command i3status
 
     tray_padding 0
 
     font $font_bar
-    separator_symbol " | "
+    separator_symbol " "
 
     colors {
         background $black
@@ -128,6 +128,7 @@ bindsym $mod+d focus child
 for_window [class="Spotify"] move to workspace $wspace9
 for_window [class="jetbrains-idea"] move to workspace $wspace8
 for_window [class="discord"] move to workspace $wspace10
+for_window [class="(?i)gsimplecal"] floating enable, move position mouse, move down 8 px
 
 #############################
 # Change container behavior #
@@ -164,7 +165,7 @@ bindsym $mod+m exec i3-dmenu-desktop --dmenu='dmenu -i -p Launch: -nb $black -nf
 bindsym $mod+Ctrl+m exec "dmenu_run -i -l 10 -p 'Run command:' -nb '$black' -nf '$white' -sb '$white' -sf '$black'"
 
 # Start a terminal
-bindsym $mod+Return exec --no-startup-id x-terminal-emulator
+bindsym $mod+Return exec --no-startup-id LIBGL_ALWAYS_SOFTWARE=1 x-terminal-emulator
 
 # Kill focused window
 bindsym $mod+Shift+q kill
@@ -258,6 +259,9 @@ bindsym $mod+Ctrl+d exec "~/.config/scripts/workspace/editDotFiles.sh"
 bindsym $mod+Ctrl+g exec "~/.config/scripts/workspace/googleSearch.sh"
 bindsym $mod+Ctrl+q exec "~/.config/scripts/workspace/killProcess.sh"
 
+# Open popup calendar
+bindsym $mod+c exec gsimplecal
+
 #######################################################
 # Initialiser les applications au début de la session #
 #######################################################
@@ -277,6 +281,6 @@ exec_always --no-startup-id bash ~/.config/scripts/workspace/setupMonitors.sh
 exec_always --no-startup-id bash ~/.config/scripts/workspace/setInputVolume.sh
 
 # Start desired apps
-exec --no-startup-id i3-msg 'workspace $wspace1; exec ~/.config/scripts/workspace/startTmux.sh; exec x-terminal-emulator -e tmux attach -t omnimed'
+exec --no-startup-id i3-msg 'workspace $wspace1; exec ~/.config/scripts/workspace/startTmux.sh; exec LIBGL_ALWAYS_SOFTWARE=1 x-terminal-emulator -e tmux attach -t omnimed'
 exec --no-startup-id i3-msg 'workspace $wspace2; exec google-chrome'
 exec --no-startup-id i3-msg 'workspace $wspace10; exec discord'
