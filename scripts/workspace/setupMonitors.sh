@@ -15,7 +15,7 @@ POSITION_WORK="--left-of"
 monitors=$(xrandr --listmonitors | grep -v 'Monitors:' | awk '{print $4}' | grep -v 'e')
 main=$(xrandr --listmonitors | grep -v 'Monitors:' | awk '{print $4}' | grep 'e')
 
-xrandr --output $main --primary
+xrandr --output $main --primary --mode 1920x1200
 for m in $monitors; do
     xrandr --output $m $position $main --primary
 done

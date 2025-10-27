@@ -8,6 +8,7 @@ required_packages=(
     "i3-wm"
     "i3lock"
     "i3status"
+    "flameshot"
     "pavucontrol"
     "tmux"
     "vim-gtk3"
@@ -15,7 +16,7 @@ required_packages=(
 
 echo  "Installing the following packages: ${required_packages[@]}"
 sudo apt update
-sudo apt install "${required_package[@]}"
+sudo apt install ${required_package[@]}
 
 # Snap applications
 sudo snap install spotify
