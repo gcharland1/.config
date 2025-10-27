@@ -6,8 +6,12 @@ for m in $(xrandr -q | grep '^[eDP|DP|HDMI]' | awk '{print $1}'); do
 done
 
 WIFI=$(iwgetid -r)
-[[ $WIFI == Le\ Flash* ]] && position="--right-of" || position="--left-of"
 
+POSITION_HOME="--left-of"
+POSITION_WORK="--left-of"
+[[ $WIFI == Le\ Flash* ]] && position=$POSITION_HOME || position=$POSITION_WORK
+
+# TODO: Remplacer xrandr par wlr-randr
 monitors=$(xrandr --listmonitors | grep -v 'Monitors:' | awk '{print $4}' | grep -v 'e')
 main=$(xrandr --listmonitors | grep -v 'Monitors:' | awk '{print $4}' | grep 'e')
 

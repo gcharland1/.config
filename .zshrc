@@ -24,7 +24,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-    # TODO: Remplacer par nvim quand c'est configurer
+    # TODO: Remplacer par nvim quand c'est configuré
     export EDITOR='vim'
 else
     export EDITOR='vim'
@@ -41,19 +41,21 @@ if [ -f ~/.config/my_aliases ]; then
 fi
 
 # Environment variables settés depuis omnimedrc
+eval "$(direnv hook zsh)"
+
 . $HOME/.omnimedrc 2> /dev/null
-PATH=$PATH:/home/gcharland/Applications/Scripts
+PATH=$PATH:/home/devjava/Applications/Scripts
+
 # Setting java-11 as default
-export JAVA_HOME=$(readlink -f $(which java) | readlink -f $(which java) | sed 's/\/bin.*//g')
+export JAVA_HOME=$(find /usr/lib/jvm -maxdepth 3 -type d -name "*jdk-11*" -print -quit | sed 's/\/bin.*//g')
 export PATH=$JAVA_HOME/bin:$PATH
 
-export HISTTIMEFORMAT="%Y-%m-%d %T "
+export HIST_STAMPS="%Y-%m-%d %T "
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
-
-# Load Angular CLI autocompletion.
-#source <(ng completion script)
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+PATH=$PATH:~/Applications/Scripts
+export HISTTIMEFORMAT="%Y-%m-%d %T "

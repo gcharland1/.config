@@ -1,5 +1,3 @@
 #!/bin/sh
-#TEMP=$(sensors | grep 'Package id 0:\|Tdie' | grep ':[ ]*+[0-9]*.[0-9]*°C' -o | grep '+[0-9]*.[0-9]*°C' -o)
-CPU_USAGE=$(mpstat 1 1 | awk '/Average:/ {printf("%s\n", $(NF-9))}')
-#echo "$CPU_USAGE $TEMP" | awk '{ printf(" CPU:%8s% @ %3s \n"), $1, $2 }'
-echo "$CPU_USAGE " | awk '{ printf(" CPU:%3d% \n"), $1 }'
+CPU_USAGE=$(mpstat 1 1 | awk '/Average:/ {printf("%d\n", $(NF-9))}')
+echo "$CPU_USAGE " | awk '{ printf(" CPU: %6s%% \n", $1)}'

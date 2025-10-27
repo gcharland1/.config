@@ -30,16 +30,16 @@ font $font_normal
 
 # Setting up border width
 default_border pixel 2
-default_floating_border pixel 1
+default_floating_border pixel 2
 hide_edge_borders smart
 
 # Set color variables
 set $background #000000
-set $black      #292929
+set $black      #131313
 set $main       #406464
-set $red        #bd6b73
+set $red        #a75f5f
 set $white      #dfdfdf
-set $yellow     #ffaf47
+set $yellow     #a7a75f
 
 
 # Window colors         border  bground text    indicator child_border
@@ -232,13 +232,13 @@ bindsym $mod+Ctrl+Up exec xbacklight -inc 10
 bindsym XF86MonBrightnessDown exec xbacklight -dec 10
 bindsym $mod+Ctrl+Down exec xbacklight -dec 10
 
-# Change System Volume (requires amixer)
-bindsym XF86AudioMute exec amixer -q -D pulse set Master toggle
-bindsym $mod+Shift+m exec amixer -q -D pulse set Master toggle
-bindsym $mod+Shift+Up exec amixer -q -D pulse set Master 5%+ unmute
-bindsym XF86AudioRaiseVolume exec amixer -q -D pulse set Master 5%+ unmute
-bindsym $mod+Shift+Down exec amixer -q -D pulse set Master 5%- unmute
-bindsym XF86AudioLowerVolume exec amixer -q -D pulse set Master 5%- unmute
+# Change System Volume (requires amixer) and send signal #1 to i3blocks 
+bindsym XF86AudioMute exec amixer -q -D pulse set Master toggle && pkill -RTMIN+1 i3blocks
+bindsym $mod+Shift+m exec amixer -q -D pulse set Master toggle && pkill -RTMIN+1 i3blocks
+bindsym $mod+Shift+Up exec amixer -q -D pulse set Master 5%+ unmute && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioRaiseVolume exec amixer -q -D pulse set Master 5%+ unmute && pkill -RTMIN+1 i3blocks
+bindsym $mod+Shift+Down exec amixer -q -D pulse set Master 5%- unmute && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioLowerVolume exec amixer -q -D pulse set Master 5%- unmute && pkill -RTMIN+1 i3blocks
 
 # Play/Pause/Prev/Next (requires playerctl)
 bindsym $mod+p exec playerctl play-pause
@@ -247,12 +247,15 @@ bindsym $mod+Shift+Left exec playerctl previous
 
 # Take Screenshot (requires xclip)
 bindsym --release Shift+Print exec gnome-screenshot -acf /tmp/screenshot && cat /tmp/screenshot | xclip -i -selection clipboard -target image/png
-bindsym --release $mod+Shift+P exec gnome-screenshot -acf /tmp/screenshot && cat /tmp/screenshot | xclip -i -selection clipboard -target image/png
+#bindsym --release $mod+Shift+P exec gnome-screenshot -acf /tmp/screenshot && cat /tmp/screenshot | xclip -i -selection clipboard -target image/png
+bindsym --release $mod+Shift+P exec flameshot gui
 
 # Lock screen
 set $locker ~/.config/scripts/workspace/fuzzy_lock.sh
 bindsym Ctrl+Shift+Escape exec "$locker"
 bindsym Ctrl+Mod1+l exec "$locker"
+
+bindsym $mod+Mod1+m exec xrandr --output $(xrandr --listmonitors | grep -vE "eDP|Monitors:" | awk '{print $4}') --same-as eDP-1
 
 # dmenu utilities
 bindsym $mod+Ctrl+d exec "~/.config/scripts/workspace/editDotFiles.sh"
@@ -270,6 +273,8 @@ exec_always --no-startup-id xsetroot -solid '$background'
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id "xautolock -time 5 -locker $locker &"
 
+exec --no-startup-id dunst
+
 exec --no-startup-id amixer -q -D pulse set Master mute
 
 exec_always --no-startup-id bash $HOME/.config/scripts/workspace/tray.sh
@@ -277,7 +282,7 @@ exec_always --no-startup-id bash $HOME/.config/scripts/workspace/tray.sh
 # Setup monitors according to the wifi connected
 exec_always --no-startup-id bash ~/.config/scripts/workspace/setupMonitors.sh
 
-# Set internal microphone
+# Set microphone volume
 exec_always --no-startup-id bash ~/.config/scripts/workspace/setInputVolume.sh
 
 # Start desired apps

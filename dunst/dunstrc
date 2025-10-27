@@ -4,7 +4,7 @@
     ### Display ###
 
     # Which monitor should the notifications be displayed on.
-    monitor = 0
+    monitor = 1
 
     # Display notification on focused monitor.  Possible modes are:
     #   mouse: follow mouse pointer
@@ -19,13 +19,13 @@
 
     # The height of a single notification, excluding the frame.
     # dynamic height from 0 to 300
-    height = (0, 300)
+    height = 300
 
     # Position the notification in the top right corner
-    origin = bottom-right
+    origin = bottom-left
 
     # Offset from the origin
-    offset = (10, 10)
+    offset = 20x20
 
     # Scale factor. It is auto-detected if value is 0.
     scale = 0
@@ -38,7 +38,7 @@
 
     # Define which corners to round when drawing the icon image. If icon_corner_radius
     # is set to 0 this option will be ignored.
-    icon_corners = all
+    #icon_corners = all
 
     # Show how many messages are currently hidden (because of
     # notification_limit).
@@ -190,7 +190,7 @@
     # Scale small icons up to this size, set to 0 to disable. Helpful
     # for e.g. small files or high-dpi screens. In case of conflict,
     # max_icon_size takes precedence over this.
-    icon_size = 12
+    #icon_size = 12
     max_icon_size = 12
 
     # Paths to default icons (only necessary when not using recursive icon lookup)
@@ -229,7 +229,7 @@
 
     # Define which corners to round when drawing the window. If the corner radius
     # is set to 0 this option will be ignored.
-    corners = all
+    #corners = all
 
     # Ignore the dbus closeNotification message.
     # Useful to enforce the timeout set by dunst configuration. Without this
@@ -302,7 +302,7 @@
     foreground = "#dfdfdf"
     frame_color = "#406464"
     timeout = 10
-    override_pause_level = 30
+    #override_pause_level = 30
     # Icon for notifications with normal urgency
     default_icon = dialog-information
 
@@ -311,7 +311,7 @@
     foreground = "#dfdfdf"
     frame_color = "#292929"
     timeout = 0
-    override_pause_level = 60
+    #override_pause_level = 60
     # Icon for notifications with critical urgency
     default_icon = dialog-warning
 

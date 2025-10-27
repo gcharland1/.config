@@ -22,10 +22,11 @@ then
     # Print full text. The charging data.
     #TIME_LEFT=$(echo $TIME_LEFT | awk '{ printf("%s\n", substr($1, 0, 5)) }')
     #echo "🔋$BAT_LEVEL ⏳$TIME_LEFT "
-    echo "🔋$BAT_LEVEL "
+    # echo "🔋$BAT_LEVEL "
+    echo $BAT_LEVEL | awk '{ printf("🔋 %6s\n", $1)  }'
 
     # Print the short text.
-    echo "BAT: $BAT_LEVEL"
+    #echo "BAT: $BAT_LEVEL"
     
     # Change the font color, depending on the situation.
     if [ "$IS_CHARGING" = "Charging" ]
@@ -39,7 +40,7 @@ then
             echo "#FA1E44"
         else
             # Battery not charging but at decent level. Green color.
-            echo "#007872"
+            echo "#dfdfdf"
         fi
     fi
 fi

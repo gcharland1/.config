@@ -1,7 +1,3 @@
-# Workspace tools
-alias setupMonitors=~/.config/scripts/workspace/setupMonitors.sh
-alias setVolume=~/.config/scripts/workspace/setInputVolume.sh
-
 # App start aliases
 #TODO: alias vim=nvim
 alias lg=lazygit
@@ -22,7 +18,7 @@ fim() {
     [[ ! -z "$1" ]] && maxdepth=$1
     file=$(find ./ -maxdepth $maxdepth ! -path "*.git/*" ! -path "*/dist*" ! -path "*/target*" ! -path "*/node_modules*" | \
 		fzf --preview '[[ -f {} ]] && bat --style=numbers --color=always --line-range :500 {} || tree {} -L 4 -I "*.git/*|*node_modules*|*dist*|*target*"') 
-    [[ ! -z "$file" ]] && nvim $file
+    [[ ! -z "$file" ]] && vim $file
 }
 
 fman() {
@@ -45,20 +41,41 @@ fgit-checkout() {
     branch=$(git branch -r | grep 'upstream' | fzf)
     [[ ! -z "$branch" ]] && git checkout -B "${branch#*/}" "${branch// /}"
 }
+alias fgc=fgit-checkout
+
+fgit-delete() {
+    branch=$(git branch | grep -v '*' | fzf)
+    [[ ! -z "$branch" ]] && git branch -D "${branch// /}"
+}
 
 fgit-switch() {
     branch=$(git branch | grep -v "*" | fzf)
     [[ ! -z "$branch" ]] && git switch "${branch// /}"
 }
+alias fgs=fgit-switch
+
+fgit-diff() {
+    file=$(git status --short | fzf | awk '{print $2}')
+    [[ ! -z "$file" ]] && git diff HEAD $file
+}
+alias fgd=fgit-diff
 
 # Git Shortcuts
-"pull-request"() {
+pull-request() {
     branch=$(git branch --show-current &> /dev/null && git branch --show-current)
     [[ ! -z "$branch" ]] \
         && xdg-open "https://github.com/gcharland1/Omnimed-solutions/compare/$branch?expand=1" >/dev/null \
         || echo "T'es pas dans un repo git mec!"
 }
 
+create-feature-branch() {
+    branch=$(git branch --show-current &> /dev/null && git branch --show-current)
+    [[ ! -z "$branch" ]] \
+        && xdg-open "https://jenkins.omnimed.com/job/CreateFeatureBranch/build?delay=0sec&branchName=$branch" >/dev/null \
+        || echo "T'es pas dans un repo git mec!"
+}
+
+alias git-diffs="xdg-open \"https://github.com/Omnimed/Omnimed-solutions/compare/develop...fix-develop\" >/dev/null"
 
 # Tmux commands
 alias tmux="tmux -f ~/.config/tmux/tmux.conf"
@@ -84,7 +101,6 @@ alias runcukes="~/.config/scripts/omnimed/cukes.sh"
 ## Rebuild api
 rebuildApi() { bash ~/.config/scripts/omnimed/rebuildApi.sh $1; }
 rebuildFrontend() {cd ~/git/Omnimed-solutions/omnimed-frontend-$1 && npm install && for s in $(ls projects); do ng build $s; done}
-
 
 ## Deploy springboot solution
 alias marvin="~/.config/scripts/omnimed/runSpring.sh"
