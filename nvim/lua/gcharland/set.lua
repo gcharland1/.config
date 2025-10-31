@@ -15,5 +15,6 @@ vim.opt.smartindent = true
 vim.opt.wrap = false
 
 vim.opt.incsearch = true -- incremental search
+vim.opt.hlsearch = false -- incremental search
 
 vim.opt.termguicolors = true

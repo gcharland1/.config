@@ -36,12 +36,19 @@ if [ -f ~/.bash_aliases_omnimed ]; then
 fi
 
 # Source personnal aliases
+if [ ! -z $(which nvim | grep -v 'not found') ]; then
+  alias vim=nvim
+fi
+
+# Source personnal aliases
 if [ -f ~/.config/my_aliases ]; then
     . ~/.config/my_aliases
 fi
 
 # Environment variables settés depuis omnimedrc
 eval "$(direnv hook zsh)"
+
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 
 . $HOME/.omnimedrc 2> /dev/null
 PATH=$PATH:/home/devjava/Applications/Scripts

@@ -40,8 +40,8 @@ fi
 
 # Install oh-my-zsh and configure
 sudo apt install zsh-syntax-highlighting zsh
-git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
 ln -s ~/.oh-my-zsh ~/.config/oh-my-zsh
 
 if [ -f ~/.zshrc.pre-oh-my-zsh ]; then
