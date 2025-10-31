@@ -30,16 +30,16 @@ font $font_normal
 
 # Setting up border width
 default_border pixel 2
-default_floating_border pixel 1
+default_floating_border pixel 2
 hide_edge_borders smart
 
 # Set color variables
 set $background #000000
-set $black      #292929
+set $black      #131313
 set $main       #406464
-set $red        #bd6b73
+set $red        #a75f5f
 set $white      #dfdfdf
-set $yellow     #ffaf47
+set $yellow     #a7a75f
 
 
 # Window colors         border  bground text    indicator child_border
@@ -52,19 +52,19 @@ client.placeholder      $black  $black  $white  $black    $black
 client.background       $black
 
 bar {
-    output eDP1
+    output eDP-1
     position top
     mode dock
+
+    status_command i3blocks
 
     workspace_buttons no 
     strip_workspace_numbers yes
 
-    status_command i3status
-
     tray_padding 0
 
     font $font_bar
-    separator_symbol " | "
+    separator_symbol " "
 
     colors {
         background $black
@@ -124,6 +124,12 @@ bindsym $mod+Ctrl+$right move workspace to output right
 bindsym $mod+a focus parent
 bindsym $mod+d focus child
 
+# Start some windows in specific workspace
+for_window [class="Spotify"] move to workspace $wspace9
+for_window [class="jetbrains-idea"] move to workspace $wspace8
+for_window [class="discord"] move to workspace $wspace10
+for_window [class="(?i)gsimplecal"] floating enable, move position mouse, move down 8 px
+
 #############################
 # Change container behavior #
 #############################
@@ -137,7 +143,7 @@ bindsym $mod+space focus mode_toggle
 floating_modifier $mod
 
 # Move the currently focused window to the scratchpad
-bindsym $mod+Shift+BackSpace floating enable,resize set 1200 800, move position center ,move scratchpad
+bindsym $mod+Shift+BackSpace floating enable, resize set 1200 800, move position center, move scratchpad
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+BackSpace scratchpad show
 bindsym $mod+minus scratchpad show
@@ -151,26 +157,20 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+v split h
 bindsym $mod+v split v
 
-# enter fullscreen mode for the focused container
+# Enter fullscreen mode for the focused container
 bindsym $mod+Shift+f fullscreen toggle
 
 # Start i3-dmenu-desktop
 bindsym $mod+m exec i3-dmenu-desktop --dmenu='dmenu -i -p Launch: -nb $black -nf $white -sb $white -sf $black'
 bindsym $mod+Ctrl+m exec "dmenu_run -i -l 10 -p 'Run command:' -nb '$black' -nf '$white' -sb '$white' -sf '$black'"
 
-# dmenu utilities
-bindsym $mod+Ctrl+d exec "~/.config/scripts/workspace/editDotFiles.sh"
-bindsym $mod+Ctrl+g exec "~/.config/scripts/workspace/googleSearch.sh"
-bindsym $mod+Ctrl+q exec "~/.config/scripts/workspace/killProcess.sh"
+# Start a terminal
+bindsym $mod+Return exec --no-startup-id LIBGL_ALWAYS_SOFTWARE=1 x-terminal-emulator
 
-
-# start a terminal
-bindsym $mod+Return exec --no-startup-id x-terminal-emulator
-
-# kill focused window
+# Kill focused window
 bindsym $mod+Shift+q kill
 
-# resize window (you can also use the mouse for that)
+# Resize window (you can also use the mouse for that)
 bindsym $mod+r mode "resize"
 mode "resize" {
         set $resizeInc 5
@@ -193,11 +193,6 @@ mode "resize" {
         bindsym Escape mode "default"
 }
 
-# Start some windows in specific workspace
-for_window [class="Spotify"] move to workspace $wspace9
-for_window [class="jetbrains-idea"] move to workspace $wspace8
-for_window [class="discord"] move to workspace $wspace10
-
 #######################################
 # Restart / Refresh / Exit i3 session #
 #######################################
@@ -214,7 +209,7 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 # POWER SETTINGS #
 ##################
 bindsym XF86PowerOff mode "$mode_system"
-set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (Shift+r) reboot, (Shift+s) shutdown
+set $mode_system System (e) logout, (s) suspend, (h) hibernate, (Shift+r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
 	# Power options
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
@@ -231,34 +226,44 @@ mode "$mode_system" {
 #####################
 # Other keybindings #
 #####################
-set $locker ~/.config/i3/fuzzy_lock.sh
-
 # Change Brightness (requires xbacklight)
 bindsym XF86MonBrightnessUp exec xbacklight -inc 10
 bindsym $mod+Ctrl+Up exec xbacklight -inc 10
 bindsym XF86MonBrightnessDown exec xbacklight -dec 10
 bindsym $mod+Ctrl+Down exec xbacklight -dec 10
 
-# Change System Volume (requires amixer)
-bindsym XF86AudioMute exec amixer -q -D pulse set Master toggle
-bindsym $mod+Shift+m exec amixer -q -D pulse set Master toggle
-bindsym $mod+Shift+Up exec amixer -q -D pulse set Master 5%+ unmute
-bindsym XF86AudioRaiseVolume exec amixer -q -D pulse set Master 5%+ unmute
-bindsym $mod+Shift+Down exec amixer -q -D pulse set Master 5%- unmute
-bindsym XF86AudioLowerVolume exec amixer -q -D pulse set Master 5%- unmute
+# Change System Volume (requires amixer) and send signal #1 to i3blocks 
+bindsym XF86AudioMute exec amixer -q -D pulse set Master toggle && pkill -RTMIN+1 i3blocks
+bindsym $mod+Shift+m exec amixer -q -D pulse set Master toggle && pkill -RTMIN+1 i3blocks
+bindsym $mod+Shift+Up exec amixer -q -D pulse set Master 5%+ unmute && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioRaiseVolume exec amixer -q -D pulse set Master 5%+ unmute && pkill -RTMIN+1 i3blocks
+bindsym $mod+Shift+Down exec amixer -q -D pulse set Master 5%- unmute && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioLowerVolume exec amixer -q -D pulse set Master 5%- unmute && pkill -RTMIN+1 i3blocks
 
-# Play / Pause (requires playerctl)
+# Play/Pause/Prev/Next (requires playerctl)
 bindsym $mod+p exec playerctl play-pause
 bindsym $mod+Shift+Right exec playerctl next
 bindsym $mod+Shift+Left exec playerctl previous
 
-# Take Screenshot
+# Take Screenshot (requires xclip)
 bindsym --release Shift+Print exec gnome-screenshot -acf /tmp/screenshot && cat /tmp/screenshot | xclip -i -selection clipboard -target image/png
-bindsym --release $mod+Shift+P exec gnome-screenshot -acf /tmp/screenshot && cat /tmp/screenshot | xclip -i -selection clipboard -target image/png
+#bindsym --release $mod+Shift+P exec gnome-screenshot -acf /tmp/screenshot && cat /tmp/screenshot | xclip -i -selection clipboard -target image/png
+bindsym --release $mod+Shift+P exec flameshot gui
 
 # Lock screen
+set $locker ~/.config/scripts/workspace/fuzzy_lock.sh
 bindsym Ctrl+Shift+Escape exec "$locker"
 bindsym Ctrl+Mod1+l exec "$locker"
+
+bindsym $mod+Mod1+m exec xrandr --output $(xrandr --listmonitors | grep -vE "eDP|Monitors:" | awk '{print $4}') --same-as eDP-1
+
+# dmenu utilities
+bindsym $mod+Ctrl+d exec "~/.config/scripts/workspace/editDotFiles.sh"
+bindsym $mod+Ctrl+g exec "~/.config/scripts/workspace/googleSearch.sh"
+bindsym $mod+Ctrl+q exec "~/.config/scripts/workspace/killProcess.sh"
+
+# Open popup calendar
+bindsym $mod+c exec gsimplecal
 
 #######################################################
 # Initialiser les applications au début de la session #
@@ -268,13 +273,19 @@ exec_always --no-startup-id xsetroot -solid '$background'
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id "xautolock -time 5 -locker $locker &"
 
+exec --no-startup-id dunst
+
 exec --no-startup-id amixer -q -D pulse set Master mute
 
-exec_always --no-startup-id bash $HOME/.config/i3/tray.sh
+exec_always --no-startup-id bash $HOME/.config/scripts/workspace/tray.sh
 
 # Setup monitors according to the wifi connected
-exec_always --no-startup-id bash $HOME/.config/i3/periferals.sh
+exec_always --no-startup-id bash ~/.config/scripts/workspace/setupMonitors.sh
 
-exec --no-startup-id i3-msg 'workspace $wspace1; exec ~/.config/scripts/workspace/startTmux.sh; exec x-terminal-emulator -e tmux attach -t omnimed'
+# Set microphone volume
+exec_always --no-startup-id bash ~/.config/scripts/workspace/setInputVolume.sh
+
+# Start desired apps
+exec --no-startup-id i3-msg 'workspace $wspace1; exec ~/.config/scripts/workspace/startTmux.sh; exec LIBGL_ALWAYS_SOFTWARE=1 x-terminal-emulator -e tmux attach -t omnimed'
 exec --no-startup-id i3-msg 'workspace $wspace2; exec google-chrome'
 exec --no-startup-id i3-msg 'workspace $wspace10; exec discord'

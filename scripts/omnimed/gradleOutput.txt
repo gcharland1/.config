@@ -1,0 +1,193 @@
+Buildfile: /home/gcharland/git/Omnimed-solutions/build-tools/workspace/processResources.xml
+
+generateSchema:
+
+generateSchema:
+     [echo] Generate Schema (Stage 1)
+     [exec] [ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 5.874 s <<< FAILURE! - in com.omnimed.authorization.datasource.schema.AuthorizationDatasourceGenerateSchema
+     [exec] [ERROR] createDataBase(com.omnimed.authorization.datasource.schema.AuthorizationDatasourceGenerateSchema)  Time elapsed: 4.782 s  <<< ERROR!
+     [exec] org.springframework.transaction.CannotCreateTransactionException: Could not open Hibernate Session for transaction; nested exception is org.hibernate.exception.GenericJDBCException: Could not open connection
+     [exec] Caused by: org.hibernate.exception.GenericJDBCException: Could not open connection
+     [exec] Caused by: org.apache.commons.dbcp.SQLNestedException: Cannot create PoolableConnectionFactory (The connection attempt failed.)
+     [exec] Caused by: org.postgresql.util.PSQLException: The connection attempt failed.
+     [exec] Caused by: java.net.UnknownHostException: pg-omnimedsolutions-service
+     [exec] 
+     [exec] [ERROR] Errors: 
+     [exec] [ERROR]   AuthorizationDatasourceGenerateSchema.createDataBase » CannotCreateTransaction
+     [exec] [ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0
+     [exec] [ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:2.22.2:test (surefire-generate-database-schema) on project omnimed-authorization-datasource: There are test failures.
+     [exec] [ERROR] 
+     [exec] [ERROR] Please refer to /home/gcharland/git/Omnimed-solutions/omnimed-authorization/omnimed.authorization.datasource/target/surefire-reports for the individual test results.
+     [exec] [ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+     [exec] [ERROR] -> [Help 1]
+     [exec] [ERROR] 
+     [exec] [ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+     [exec] [ERROR] Re-run Maven using the -X switch to enable full debug logging.
+     [exec] [ERROR] 
+     [exec] [ERROR] For more information about the errors and possible solutions, please read the following articles:
+     [exec] [ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+     [exec] [ERROR] 
+     [exec] [ERROR] After correcting the problems, you can resume the build with the command
+     [exec] [ERROR]   mvn <args> -rf :omnimed-authorization-datasource
+     [exec] SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+     [exec] SLF4J: Defaulting to no-operation (NOP) logger implementation
+     [exec] SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+     [exec] SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+     [exec] SLF4J: Defaulting to no-operation (NOP) logger implementation
+     [exec] SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+     [exec] SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+     [exec] SLF4J: Defaulting to no-operation (NOP) logger implementation
+     [exec] SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+     [exec] SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+     [exec] SLF4J: Defaulting to no-operation (NOP) logger implementation
+     [exec] SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+
+BUILD FAILED
+/home/gcharland/git/Omnimed-solutions/build-tools/workspace/processResources.xml:185: The following error occurred while executing this line:
+/home/gcharland/git/Omnimed-solutions/build-tools/workspace/generateSchema.xml:16: exec returned: 1
+
+Total time: 59 seconds
+Generating tags...
+ - localhost:32000/omnimed-docker-postgresql-init -> localhost:32000/omnimed-docker-postgresql-init:247.0.0.R-217-g83533ba1822
+Checking cache...
+ - localhost:32000/omnimed-docker-postgresql-init: Found Remotely
+Starting test...
+Tags used in deployment:
+ - localhost:32000/omnimed-docker-postgresql-init -> localhost:32000/omnimed-docker-postgresql-init:247.0.0.R-217-g83533ba1822@sha256:17716d451eee00240baf927c6a1e7bf0aba53eb13aac26bc8d0652a8f8f9f8e7
+Starting deploy...
+Starting pre-deploy hooks...
+E0203 13:13:21.362682 1821462 memcache.go:287] couldn't get resource list for metrics.k8s.io/v1beta1: the server is currently unable to handle the request
+E0203 13:13:21.363260 1821462 memcache.go:121] couldn't get resource list for metrics.k8s.io/v1beta1: the server is currently unable to handle the request
+E0203 13:13:21.365424 1821462 memcache.go:121] couldn't get resource list for metrics.k8s.io/v1beta1: the server is currently unable to handle the request
+E0203 13:13:21.366501 1821462 memcache.go:121] couldn't get resource list for metrics.k8s.io/v1beta1: the server is currently unable to handle the request
+deployment.apps "com.omnimed.postgresql.administrative" deleted
+deployment.apps "com.omnimed.postgresql.cas-apereo" deleted
+deployment.apps "com.omnimed.postgresql.engine" deleted
+deployment.apps "com.omnimed.postgresql.omnimedsolutions" deleted
+deployment.apps "com.omnimed.postgresql.patientportal" deleted
+deployment.apps "com.omnimed.postgresql.privatebilling" deleted
+deployment.apps "com.omnimed.postgresql.reportclinical" deleted
+deployment.apps "com.omnimed.postgresql.transmission" deleted
+deployment.apps "com.omnimed.postgresql.userconfiguration" deleted
+11.2: Pulling from docker/postgres
+Digest: sha256:85d0c745dc4f4627184da8945a36ac773762ec5d2ba1c1821cc7334b736e6e00
+Status: Image is up to date for artifacts.omnimed.com/docker/postgres:11.2
+artifacts.omnimed.com/docker/postgres:11.2
+The push refers to repository [localhost:32000/postgres]
+2c023ab93af2: Preparing
+7015c8d0a3f5: Preparing
+842b24e93f2c: Preparing
+e4d7bc8584dd: Preparing
+923ed18d2581: Preparing
+9e3f39b108ca: Preparing
+804abd5012d6: Preparing
+da1749281c4c: Preparing
+268417188696: Preparing
+8ffc50431e46: Preparing
+b4505242243c: Preparing
+8700c6d5f108: Preparing
+1e1890158369: Preparing
+6270adb5794c: Preparing
+268417188696: Waiting
+8ffc50431e46: Waiting
+b4505242243c: Waiting
+8700c6d5f108: Waiting
+9e3f39b108ca: Waiting
+804abd5012d6: Waiting
+1e1890158369: Waiting
+6270adb5794c: Waiting
+2c023ab93af2: Layer already exists
+e4d7bc8584dd: Layer already exists
+7015c8d0a3f5: Layer already exists
+842b24e93f2c: Layer already exists
+923ed18d2581: Layer already exists
+804abd5012d6: Layer already exists
+da1749281c4c: Layer already exists
+268417188696: Layer already exists
+9e3f39b108ca: Layer already exists
+8ffc50431e46: Layer already exists
+b4505242243c: Layer already exists
+6270adb5794c: Layer already exists
+8700c6d5f108: Layer already exists
+1e1890158369: Layer already exists
+11.2: digest: sha256:08f97554d30e1cfa3ce47c800adb137f651edb6f6956012693bd31ddde97e6a6 size: 3245
+Completed pre-deploy hooks
+ - E0203 13:13:22.560202 1822528 memcache.go:287] couldn't get resource list for metrics.k8s.io/v1beta1: the server is currently unable to handle the request
+ - E0203 13:13:22.563440 1822528 memcache.go:121] couldn't get resource list for metrics.k8s.io/v1beta1: the server is currently unable to handle the request
+ - secret/postgresql-creds-administrative unchanged
+ - service/pg-administrative-service configured
+ - deployment.apps/com.omnimed.postgresql.administrative created
+ - networkpolicy.networking.k8s.io/pg-administration-network-policy unchanged
+ - secret/postgresql-creds-cas-apereo unchanged
+ - service/pg-cas-apereo-service configured
+ - deployment.apps/com.omnimed.postgresql.cas-apereo created
+ - networkpolicy.networking.k8s.io/pg-cas-apereo-network-policy unchanged
+ - secret/postgresql-creds-engine unchanged
+ - service/pg-engine-service configured
+ - deployment.apps/com.omnimed.postgresql.engine created
+ - networkpolicy.networking.k8s.io/pg-engine-network-policy unchanged
+ - secret/postgresql-creds-omnimedsolutions unchanged
+ - service/pg-omnimedsolutions-service configured
+ - deployment.apps/com.omnimed.postgresql.omnimedsolutions created
+ - networkpolicy.networking.k8s.io/pg-omnimedsolutions-network-policy unchanged
+ - secret/postgresql-creds-patientportal unchanged
+ - service/pg-patientportal-service configured
+ - deployment.apps/com.omnimed.postgresql.patientportal created
+ - networkpolicy.networking.k8s.io/pg-patientportal-network-policy unchanged
+ - secret/postgresql-creds-privatebilling unchanged
+ - service/pg-privatebilling-service configured
+ - deployment.apps/com.omnimed.postgresql.privatebilling created
+ - networkpolicy.networking.k8s.io/pg-privatebilling-network-policy unchanged
+ - secret/postgresql-creds-reportclinical unchanged
+ - service/pg-reportclinical-service configured
+ - deployment.apps/com.omnimed.postgresql.reportclinical created
+ - networkpolicy.networking.k8s.io/pg-reportclinical-network-policy unchanged
+ - secret/postgresql-creds-transmission unchanged
+ - service/pg-transmission-service configured
+ - deployment.apps/com.omnimed.postgresql.transmission created
+ - networkpolicy.networking.k8s.io/pg-transmission-network-policy unchanged
+ - secret/postgresql-creds-userconfiguration unchanged
+ - service/pg-userconfiguration-service configured
+ - deployment.apps/com.omnimed.postgresql.userconfiguration created
+ - networkpolicy.networking.k8s.io/pg-userconfiguration-network-policy unchanged
+Waiting for deployments to stabilize...
+I0203 13:13:25.300482 1821097 request.go:690] Waited for 1.131669394s due to client-side throttling, not priority and fairness, request: GET:https://127.0.0.1:16443/api/v1/namespaces/dev/events?fieldSelector=involvedObject.name%3Dcom.omnimed.postgresql.administrative-77775d54dd-7b42t%2CinvolvedObject.namespace%3Ddev%2CinvolvedObject.kind%3DPod%2CinvolvedObject.uid%3Db65314dd-3b20-440c-9c2a-6c3ee8d46a0d
+ - dev:deployment/com.omnimed.postgresql.administrative: waiting for rollout to finish: 0 of 1 updated replicas are available...
+ - dev:deployment/com.omnimed.postgresql.cas-apereo: waiting for rollout to finish: 0 of 1 updated replicas are available...
+ - dev:deployment/com.omnimed.postgresql.engine: waiting for rollout to finish: 0 of 1 updated replicas are available...
+ - dev:deployment/com.omnimed.postgresql.patientportal: waiting for rollout to finish: 0 of 1 updated replicas are available...
+ - dev:deployment/com.omnimed.postgresql.privatebilling: waiting for rollout to finish: 0 of 1 updated replicas are available...
+ - dev:deployment/com.omnimed.postgresql.omnimedsolutions: waiting for rollout to finish: 0 of 1 updated replicas are available...
+ - dev:deployment/com.omnimed.postgresql.reportclinical: waiting for rollout to finish: 0 of 1 updated replicas are available...
+ - dev:deployment/com.omnimed.postgresql.transmission: waiting for rollout to finish: 0 of 1 updated replicas are available...
+ - dev:deployment/com.omnimed.postgresql.userconfiguration: waiting for rollout to finish: 0 of 1 updated replicas are available...
+I0203 13:13:35.300841 1821097 request.go:690] Waited for 1.794984292s due to client-side throttling, not priority and fairness, request: GET:https://127.0.0.1:16443/api/v1/namespaces/dev/events?fieldSelector=involvedObject.namespace%3Ddev%2CinvolvedObject.kind%3DPod%2CinvolvedObject.uid%3Dc3957315-9372-400b-a49e-5c6a3a94fd41%2CinvolvedObject.name%3Dcom.omnimed.postgresql.reportclinical-89596d487-mnp5l
+ - dev:deployment/com.omnimed.postgresql.administrative is ready. [8/9 deployment(s) still pending]
+ - dev:deployment/com.omnimed.postgresql.patientportal is ready. [7/9 deployment(s) still pending]
+ - dev:deployment/com.omnimed.postgresql.transmission is ready. [6/9 deployment(s) still pending]
+I0203 13:13:45.300921 1821097 request.go:690] Waited for 1.388408625s due to client-side throttling, not priority and fairness, request: GET:https://127.0.0.1:16443/api/v1/namespaces/dev/events?fieldSelector=involvedObject.namespace%3Ddev%2CinvolvedObject.kind%3DPod%2CinvolvedObject.uid%3Dd8318767-7463-4f03-9ad2-23023b0fd4b5%2CinvolvedObject.name%3Dcom.omnimed.postgresql.cas-apereo-65bd845f8-7lzxc
+ - dev:deployment/com.omnimed.postgresql.cas-apereo is ready. [5/9 deployment(s) still pending]
+ - dev:deployment/com.omnimed.postgresql.omnimedsolutions is ready. [4/9 deployment(s) still pending]
+ - dev:deployment/com.omnimed.postgresql.reportclinical is ready. [3/9 deployment(s) still pending]
+ - dev:deployment/com.omnimed.postgresql.engine is ready. [2/9 deployment(s) still pending]
+ - dev:deployment/com.omnimed.postgresql.privatebilling is ready. [1/9 deployment(s) still pending]
+ - dev:deployment/com.omnimed.postgresql.userconfiguration is ready.
+Deployments stabilized in 23.675 seconds
+Starting post-deploy hooks...
+E0203 13:13:46.595915 1830729 memcache.go:287] couldn't get resource list for metrics.k8s.io/v1beta1: the server is currently unable to handle the request
+E0203 13:13:46.596486 1830729 memcache.go:121] couldn't get resource list for metrics.k8s.io/v1beta1: the server is currently unable to handle the request
+E0203 13:13:46.598728 1830729 memcache.go:121] couldn't get resource list for metrics.k8s.io/v1beta1: the server is currently unable to handle the request
+E0203 13:13:46.599723 1830729 memcache.go:121] couldn't get resource list for metrics.k8s.io/v1beta1: the server is currently unable to handle the request
+com.omnimed.postgresql.administrative-77775d54dd-7b42t      1/1     Running       0          24s
+com.omnimed.postgresql.engine-559d84b9d4-mpjp5              1/1     Running       0          24s
+com.omnimed.postgresql.cas-apereo-65bd845f8-7lzxc           1/1     Running       0          24s
+com.omnimed.postgresql.omnimedsolutions-c6858b679-ckq7q     1/1     Running       0          24s
+com.omnimed.postgresql.patientportal-6f4cd84fdc-qx2g6       1/1     Running       0          24s
+com.omnimed.postgresql.privatebilling-7bcb97468c-w6wbj      1/1     Running       0          23s
+com.omnimed.postgresql.reportclinical-89596d487-mnp5l       1/1     Running       0          23s
+com.omnimed.postgresql.transmission-58975b85d6-p5bj5        1/1     Running       0          23s
+com.omnimed.postgresql.userconfiguration-678854ff45-b2kcl   1/1     Running       0          23s
+Pods are ready
+Completed post-deploy hooks
+You can also run [skaffold run --tail] to get the logs
+

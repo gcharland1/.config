@@ -7,8 +7,11 @@
 
 !i3
 !i3/**
-!i3status
-!i3status/**
+!i3blocks
+!i3blocks/**
+
+!gnome-terminal
+!gnome-terminal/**
 
 !lazygit
 !lazygit/config.yml
@@ -25,8 +28,13 @@ nvim/pack
 !scripts
 !scripts/**
 scripts/**/.temp
+scripts/omnimed/process-resources
+scripts/omnimed/process-resources/**
 
 !.zshrc
+
+!dunst
+!dunst/**
 
 # Do not include venv files
 **/venv/**

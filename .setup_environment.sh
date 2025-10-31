@@ -1,18 +1,27 @@
 #!/bin/bash
 # Make sure all required packages are installed
 required_packages=(
+    "alacritty"
+    "fonts-font-awesome"
+    "fzf"
     "i3"
     "i3-wm"
     "i3lock"
     "i3status"
-    "nvim"
+    "pavucontrol"
     "tmux"
-    "zsh"
+    "vim-gtk3"
 )
-sudo apt update
 
-echo  "${required_packages[@]}"
-sudo apt install ${required_package[*]}
+echo  "Installing the following packages: ${required_packages[@]}"
+sudo apt update
+sudo apt install "${required_package[@]}"
+
+# Snap applications
+sudo snap install spotify
+
+#TODO: Installer et configurer nvim
+symlink ~/.config/vim/.vimrc ~/.vimrc
 
 # Install lazygit from github
 if ! command -v lazygit &> /dev/null; then
@@ -30,10 +39,10 @@ else
 fi
 
 # Install oh-my-zsh and configure
-sudo apt install zsh-autosuggestions zsh-syntax-highlighting zsh
+sudo apt install zsh-syntax-highlighting zsh
 git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-ln -s ~/.config/oh-my-zsh ~/.oh-my-zsh
+ln -s ~/.oh-my-zsh ~/.config/oh-my-zsh
 
 if [ -f ~/.zshrc.pre-oh-my-zsh ]; then
     rm ~/.zhrc
@@ -45,3 +54,6 @@ if [ -f ~/.zshrc ]; then
     mv ~/.zshrc ~/.zshrc.bak
 fi
 ln -s ~/.config/.zshrc ~/.zshrc
+
+# Setup alacritty as default terminal
+sudo update-alternatives --config x-terminal-emulator
