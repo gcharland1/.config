@@ -1,16 +1,20 @@
 #!/bin/bash
 # Make sure all required packages are installed
 required_packages=(
-    "alacritty"
+    "xserver-xorg"
+    "xinit"
+    "git"
     "fonts-font-awesome"
     "fzf"
     "i3"
     "i3-wm"
     "i3lock"
     "i3status"
+    "lightdm"
     "pavucontrol"
     "tmux"
     "vim-gtk3"
+    "nvim"
 )
 
 echo  "Installing the following packages: ${required_packages[@]}"
@@ -18,25 +22,25 @@ sudo apt update
 sudo apt install "${required_package[@]}"
 
 # Snap applications
-sudo snap install spotify
+# sudo snap install spotify
 
 #TODO: Installer et configurer nvim
 symlink ~/.config/vim/.vimrc ~/.vimrc
 
 # Install lazygit from github
-if ! command -v lazygit &> /dev/null; then
-    echo Installing lazygit from github repo
-
-    cd ~/
-    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-    tar xf lazygit.tar.gz lazygit
-    sudo install lazygit /usr/local/bin
-    rm -f lazygit.tar.gz
-    rm -r lazigit
-else
-    echo LazyGit already installed to version: \r $(lazygit --version)
-fi
+#if ! command -v lazygit &> /dev/null; then
+#    echo Installing lazygit from github repo
+#
+#    cd ~/
+#    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+#    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+#    tar xf lazygit.tar.gz lazygit
+#    sudo install lazygit /usr/local/bin
+#    rm -f lazygit.tar.gz
+#    rm -r lazigit
+#else
+#    echo LazyGit already installed to version: \r $(lazygit --version)
+#fi
 
 # Install oh-my-zsh and configure
 sudo apt install zsh-syntax-highlighting zsh
@@ -56,4 +60,4 @@ fi
 ln -s ~/.config/.zshrc ~/.zshrc
 
 # Setup alacritty as default terminal
-sudo update-alternatives --config x-terminal-emulator
+# sudo update-alternatives --config x-terminal-emulator
