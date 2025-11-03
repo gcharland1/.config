@@ -1,3 +1,5 @@
-require("gcharland/packer")
-require("gcharland/set")
-require("gcharland/remap")
+vim.g.mapleader = " "
+
+require("gcharland.lazy_init")
+require("gcharland.remap")
+require("gcharland.set")
