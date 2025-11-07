@@ -5,26 +5,6 @@ alias k9s=/snap/k9s/current/bin/k9s
 alias spotify="spotify --disable-gpu > /dev/null & disown"
 
 # Fuzzy Find
-fd() {
-    maxdepth=4
-    [[ ! -z "$1" ]] && maxdepth=$1
-    dir=$(find ./ -maxdepth $maxdepth -type d ! -path "*.git/*" ! -path "*/dist*" ! -path "*/target*" ! -path "*/node_modules*" | \
-            fzf --preview 'tree {} -L 4 -I "*.git/*|*node_modules*|*dist*|*target*"')
-    [[ ! -z "$dir" ]] && cd $dir
-} 
-
-fim() {
-    maxdepth=8
-    [[ ! -z "$1" ]] && maxdepth=$1
-    file=$(find ./ -maxdepth $maxdepth ! -path "*.git/*" ! -path "*/dist*" ! -path "*/target*" ! -path "*/node_modules*" | \
-		fzf --preview '[[ -f {} ]] && bat --style=numbers --color=always --line-range :500 {} || tree {} -L 4 -I "*.git/*|*node_modules*|*dist*|*target*"') 
-    [[ ! -z "$file" ]] && vim $file
-}
-
-fman() {
-    entry=$(apropos . | fzf --preview "echo {} | awk '{print $1}' | xargs man" | awk '{print $1}')
-    [[ ! -z "$entry" ]] && man $entry
-}
 
 ff() {
     cmd=$(history | sed "s/^\s*[0-9]*\s*//" | sort | uniq | fzf)
@@ -38,15 +18,11 @@ fgit-reset() {
 }
 
 fgit-checkout() {
-    branch=$(git branch -r | grep 'upstream' | fzf)
+    remote=$(git remote | fzf)
+    [[ ! -z "$remote" ]] && branch=$(git branch -r | grep "$remote" | fzf)
     [[ ! -z "$branch" ]] && git checkout -B "${branch#*/}" "${branch// /}"
 }
 alias fgc=fgit-checkout
-
-fgit-delete() {
-    branch=$(git branch | grep -v '*' | fzf)
-    [[ ! -z "$branch" ]] && git branch -D "${branch// /}"
-}
 
 fgit-switch() {
     branch=$(git branch | grep -v "*" | fzf)
@@ -59,6 +35,14 @@ fgit-diff() {
     [[ ! -z "$file" ]] && git diff HEAD $file
 }
 alias fgd=fgit-diff
+
+fgit-cherry-pick() {
+    branch=$(git branch | fzf | sed 's/^[^a-z]*//')
+    echo $branch
+    [[ ! -z "$branch" ]] && commits=($(git --no-pager log -n 30 --oneline $branch | fzf --multi | awk '{print $1}'))
+    [[ ! -z "$commits" ]] && git cherry-pick "${commits[@]}"
+}
+alias fgcp=fgit-cherry-pick
 
 # Git Shortcuts
 pull-request() {
@@ -75,19 +59,12 @@ create-feature-branch() {
         || echo "T'es pas dans un repo git mec!"
 }
 
-alias git-diffs="xdg-open \"https://github.com/Omnimed/Omnimed-solutions/compare/develop...fix-develop\" >/dev/null"
-
 # Tmux commands
 alias tmux="tmux -f ~/.config/tmux/tmux.conf"
-alias tmux-omnimed="tmux new-session -s omnimed -c ~/git/Omnimed-solutions"
-alias tmux-ssh="tmux new-session -s ssh -c ~"
-alias tmux-ws="~/.config/scripts/workspace/startTmux.sh"
 
 # Go to directories
 alias cgt='cd ~/git/teluq/'
 alias cgos='cd ~/git/Omnimed-solutions/'
-alias cfm='cd ~/git/Omnimed-solutions/omnimed-frontend-medication/'
-alias cfc='cd ~/git/Omnimed-solutions/omnimed-frontend-communication/'
 
 # Omnimed aliases
 alias initdb="ant -buildfile ~/git/Omnimed-solutions/build-tools/workspace/initDatabase.xml"
@@ -108,10 +85,6 @@ alias marvin="~/.config/scripts/omnimed/runSpring.sh"
 ## Deploy k8s solution. Ex: deploySolution api prescribeit
 k8s() { ~/.config/scripts/omnimed/startK8sPod.sh $@; }
 alias k8sOmnimedSolutions="~/.config/scripts/omnimed/deployOmnimedSolution.sh"
-alias k8sChillPills="cd ~/.config/scripts/omnimed/ && skaffold run && cd -"
 
-
-## Ant scripts
-alias ant-activeMq="sudo ant -buildfile ~/git/Omnimed-solutions/build-tools/workspace/starter.xml start-activemq"
-alias ant-generateIndex="ant -buildfile ~/git/Omnimed-solutions/build-tools/pipeline/database/generateIndex.xml default"
-alias ant-processRessource="ant -buildfile ~/git/Omnimed-solutions/build-tools/workspace/processResources.xml all force-rebuild"
+## PERFORMANCE
+alias performance="powerprofilesctl set performance"

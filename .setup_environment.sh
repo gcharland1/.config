@@ -16,9 +16,12 @@ required_packages=(
 
 echo  "Installing the following packages: ${required_packages[@]}"
 sudo apt update
-sudo apt install ${required_package[@]}
+
+echo "################## APT INSTALL ###########################"
+sudo apt install "${required_packages[@]}"
 
 # Snap applications
+echo "################## SNAP INSTALL ###########################"
 sudo snap install spotify
 
 #TODO: Installer et configurer nvim
@@ -58,3 +61,6 @@ ln -s ~/.config/.zshrc ~/.zshrc
 
 # Setup alacritty as default terminal
 sudo update-alternatives --config x-terminal-emulator
+
+# Symlink to global gitignore config
+ln -s ~/.config/.gitignore_global ~/.gitignore_global

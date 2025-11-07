@@ -36,11 +36,6 @@ if [ -f ~/.bash_aliases_omnimed ]; then
 fi
 
 # Source personnal aliases
-if [ ! -z $(which nvim | grep -v 'not found') ]; then
-  alias vim=nvim
-fi
-
-# Source personnal aliases
 if [ -f ~/.config/my_aliases ]; then
     . ~/.config/my_aliases
 fi
@@ -48,13 +43,18 @@ fi
 # Environment variables settés depuis omnimedrc
 eval "$(direnv hook zsh)"
 
+# Change vim for nvim
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+if [ ! -z $(which nvim | grep -v 'not found') ]; then
+  alias vim=nvim
+fi
+
 
 . $HOME/.omnimedrc 2> /dev/null
 PATH=$PATH:/home/devjava/Applications/Scripts
 
 # Setting java-11 as default
-export JAVA_HOME=$(find /usr/lib/jvm -maxdepth 3 -type d -name "*jdk-11*" -print -quit | sed 's/\/bin.*//g')
+export JAVA_HOME=/usr/lib/jvm/jdk21
 export PATH=$JAVA_HOME/bin:$PATH
 
 export HIST_STAMPS="%Y-%m-%d %T "
@@ -66,3 +66,7 @@ export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 PATH=$PATH:~/Applications/Scripts
 export HISTTIMEFORMAT="%Y-%m-%d %T "
+
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)

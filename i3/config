@@ -251,8 +251,8 @@ bindsym --release Shift+Print exec gnome-screenshot -acf /tmp/screenshot && cat 
 bindsym --release $mod+Shift+P exec flameshot gui
 
 # Lock screen
-set $locker ~/.config/scripts/workspace/fuzzy_lock.sh
-bindsym Ctrl+Shift+Escape exec "$locker"
+#set $locker ~/.config/scripts/workspace/fuzzy_lock.sh
+set $locker i3lock --nofork --color 141414
 bindsym Ctrl+Mod1+l exec "$locker"
 
 bindsym $mod+Mod1+m exec xrandr --output $(xrandr --listmonitors | grep -vE "eDP|Monitors:" | awk '{print $4}') --same-as eDP-1
