@@ -1,5 +1,5 @@
 -- Set colorscheme
-vim.cmd.colorscheme("habamax")
+--vim.cmd.colorscheme("habamax")
 vim.api.nvim_set_hl(0, "Normal", { bg = "#0a0a0a" })
 vim.opt.termguicolors = true
 vim.opt.incsearch = true -- incremental search
@@ -23,3 +23,4 @@ vim.cmd("command! W w")
 vim.cmd("command! Wq wq")
 vim.cmd("command! WQ wq")
 vim.cmd("command! Q q")
+

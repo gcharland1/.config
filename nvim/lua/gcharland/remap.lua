@@ -29,6 +29,12 @@ vim.keymap.set("n", "<C-w><C-j>", "<cmd>resize -5<cr>")
 vim.keymap.set("n", "<C-w><C-k>", "<cmd>resize +5<cr>")
 vim.keymap.set("n", "<C-w><C-l>", "<cmd>vertical resize +5<cr>")
 
+-- Change bewteen split panes with Tmux bindings (Not working)
+vim.keymap.set("n", "<M-h>", "<C-w>h")
+vim.keymap.set("n", "<M-j>", "<C-w>j")
+vim.keymap.set("n", "<M-k>", "<C-w>k")
+vim.keymap.set("n", "<M-l>", "<C-w>l")
+
 -- Search word under cursor in page
 --  ...project, etc
 
