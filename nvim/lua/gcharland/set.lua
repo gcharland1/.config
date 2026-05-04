@@ -5,6 +5,12 @@ vim.opt.termguicolors = true
 vim.opt.incsearch = true -- incremental search
 vim.opt.hlsearch = false -- incremental search
 
+
+-- Don't try to reset nertw cursor location
+vim.g.netrw_banner = 1
+vim.g.netrw_cursor = 1
+vim.g.netrw_fastbrowse = 1
+
 -- vim.opt.clipboard = 'unnamedplus' -- use system keyboard for yank
 
 vim.opt.nu = true                 -- set line numbers -- set line numbers

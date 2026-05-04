@@ -7,7 +7,7 @@ alias spotify="spotify --disable-gpu > /dev/null & disown"
 # Fuzzy Find
 
 ff() {
-    cmd=$(history | sed "s/^\s*[0-9]*\s*//" | sort | uniq | fzf)
+    cmd=$(history | awk '{for(i=4;i<=NF;i++) printf "%s%s", $i, (i<NF?OFS:ORS)}' | sort | uniq | fzf)
     echo "$cmd"
     [[ ! -z "$cmd" ]] && eval "$cmd"
 }
@@ -25,7 +25,7 @@ fgit-checkout() {
 alias fgc=fgit-checkout
 
 fgit-switch() {
-    branch=$(git branch | grep -v "*" | fzf)
+    branch=$(git branch | grep -v "*" | fzf -i)
     [[ ! -z "$branch" ]] && git switch "${branch// /}"
 }
 alias fgs=fgit-switch
@@ -44,6 +44,8 @@ fgit-cherry-pick() {
 }
 alias fgcp=fgit-cherry-pick
 
+alias fgit-delete-branch=git branch -vv | grep -v ahead | grep -v '^*' | fzf -m | awk '{printf "%s ", $1}' | xargs git branch -d
+
 # Git Shortcuts
 pull-request() {
     branch=$(git branch --show-current &> /dev/null && git branch --show-current)
@@ -59,6 +61,25 @@ create-feature-branch() {
         || echo "T'es pas dans un repo git mec!"
 }
 
+git-log-short() {
+    local n=10
+    local p=""
+ 
+    while getopts "n:p:" opt; do
+        case "$opt" in
+            n) n="$OPTARG" ;;
+            p) p="$OPTARG" ;;
+            *) echo "Usage: gitlog [-n <chiffre>] [-p <directory>]" >&2; return 1 ;;
+        esac
+    done
+ 
+    local cmd="git --no-pager log -${n} --oneline"
+    [[ -n "$p" ]] && cmd+=" -- $p"
+ 
+    eval "$cmd"
+}
+alias gls=git-log-short
+
 # Tmux commands
 alias tmux="tmux -f ~/.config/tmux/tmux.conf"
 
@@ -68,6 +89,11 @@ alias cgos='cd ~/git/Omnimed-solutions/'
 
 # Omnimed aliases
 alias initdb="ant -buildfile ~/git/Omnimed-solutions/build-tools/workspace/initDatabase.xml"
+
+# Get dependencies for solution
+getDependencies() {
+    for d in $(cat $1/solutionDependencies.txt); do echo -n "$d "; getDependencies $d | tr '\n' ' '; done
+}
 
 ## Cukes
 alias dbcukes="~/.config/scripts/omnimed/BdPlusCukes.sh"
