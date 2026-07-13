@@ -39,6 +39,9 @@ scripts/omnimed/process-resources/**
 !dunst
 !dunst/**
 
+!docs
+!docs/**
+
 # Do not include venv files
 **/venv/**
 **/__pycache__/**
