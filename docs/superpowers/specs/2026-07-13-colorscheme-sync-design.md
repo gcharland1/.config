@@ -63,9 +63,13 @@ in place, idempotently, using marker-delimited blocks so hand-written config
 around them is untouched:
 
 - **i3/config, sway/config** — replace the `set $black/$main/$red/$white/
-  $yellow/$blue` block between `# BEGIN_PALETTE` / `# END_PALETTE` markers
+  $yellow` block between `# BEGIN_PALETTE_I3` / `# END_PALETTE_I3` markers
   (mirroring the `# BEGIN_KITTY_THEME`/`# END_KITTY_THEME` convention already
-  used in `kitty/kitty.conf`).
+  used in `kitty/kitty.conf`). i3/config no longer defines `$blue` (dropped in
+  a manual edit in favor of reusing `$main` for the launcher's prompt/highlight
+  text) — sway/config still has the old `$blue` var and references; this sync
+  also removes it there and switches sway's launcher bindings to `$main`, so
+  both files match exactly.
 - **gnome-terminal** — not a file. The script looks up the live default
   profile UUID via `dconf read /org/gnome/terminal/legacy/profiles:/default`
   (never hardcoded) and runs `dconf write` for `background-color`,
