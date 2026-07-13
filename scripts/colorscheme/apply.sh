@@ -45,8 +45,21 @@ set \$blue       $color4"
     replace_block "$file" "I3" "$content"
 }
 
+apply_tmux() {
+    local file="$1"
+    local content
+    content="set -g status-style \"bg=$background fg=$foreground\"
+
+set -g pane-border-style \"fg=$color8\"
+set -g pane-active-border-style \"fg=$color6\"
+
+set -g window-status-current-style \"fg=$color6 bg=$background\""
+    replace_block "$file" "TMUX" "$content"
+}
+
 apply_gnome_terminal
 apply_i3_like "$CONFIG_DIR/i3/config"
 apply_i3_like "$CONFIG_DIR/sway/config"
+apply_tmux "$CONFIG_DIR/tmux/tmux.conf"
 
 echo "Palette applied."
