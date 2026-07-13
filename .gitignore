@@ -10,6 +10,9 @@
 !i3blocks
 !i3blocks/**
 
+!sway
+!sway/**
+
 !gnome-terminal
 !gnome-terminal/**
 

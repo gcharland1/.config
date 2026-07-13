@@ -9,7 +9,7 @@ declare -a options=(
     "zsh - oh-my-zsh/"
 )
 
-conf=$(printf '%s\n' "${options[@]}" | dmenu -i -p 'Select config file:' -l 20 | awk '{print $NF}')
+conf=$(printf '%s\n' "${options[@]}" | bemenu -i -p 'Select config file:' -l 20 | awk '{print $NF}')
 [ ! -z "$conf" ] \
     && x-terminal-emulator -e vim "$HOME/.config/$conf" \
     || exit

@@ -1,11 +1,11 @@
-# i3 config file (v4)
+# sway config file (based on i3/config v4)
 # Mod Key setup (Mod1 = Alt, Mod4 = Win, Mod2 = NumLock (DO NO USE))
 set $mod Mod4
 
 # Navigation
 set $left h
 set $down j
-set $up k 
+set $up k
 set $right l
 
 # Workspace variables
@@ -40,14 +40,15 @@ set $main       #406464
 set $red        #a75f5f
 set $white      #dfdfdf
 set $yellow     #a7a75f
+set $blue       #5f5fa7
 
 
 # Window colors         border  bground text    indicator child_border
-client.focused          $main   $main   $white  $main     $main  
-client.focused_inactive $black  $black  $white  $black    $black  
-client.unfocused        $black  $black  $white  $black    $black  
-client.urgent           $white  $red    $black  $red      $red   
-client.placeholder      $black  $black  $white  $black    $black  
+client.focused          $main   $main   $white  $main     $main
+client.focused_inactive $black  $black  $white  $black    $black
+client.unfocused        $black  $black  $white  $black    $black
+client.urgent           $white  $red    $black  $red      $red
+client.placeholder      $black  $black  $white  $black    $black
 
 client.background       $black
 
@@ -58,7 +59,7 @@ bar {
 
     status_command i3blocks
 
-    workspace_buttons no 
+    workspace_buttons no
     strip_workspace_numbers yes
 
     tray_padding 0
@@ -125,6 +126,9 @@ bindsym $mod+a focus parent
 bindsym $mod+d focus child
 
 # Start some windows in specific workspace
+# NOTE: these apps currently run through XWayland (no native Wayland mode enabled),
+# so `class` matching still applies. If any of them is later launched with native
+# Wayland support, its rule needs `app_id` instead of `class`.
 for_window [class="Spotify"] move to workspace $wspace9
 for_window [class="jetbrains-idea"] move to workspace $wspace8
 for_window [class="discord"] move to workspace $wspace10
@@ -161,8 +165,8 @@ bindsym $mod+v split v
 bindsym $mod+Shift+f fullscreen toggle
 
 # Start j4-dmenu-desktop
-bindsym $mod+m exec j4-dmenu-desktop --dmenu="bemenu -i -p Launch: --nb '$black' --nf '$white' --tb '$black' --tf '$main' --hb '$black' --hf '$main' --sb '$white' --sf '$black' --fn 'Ubuntu Bold 12'"
-bindsym $mod+Ctrl+m exec "bemenu-run -i -l 10 -p 'Run command:' --nb '$black' --nf '$white' --tb '$black' --tf '$main' --hb '$black' --hf '$main' --sb '$white' --sf '$black' --fn 'Ubuntu Bold 12'"
+bindsym $mod+m exec j4-dmenu-desktop --dmenu="bemenu -i -p Launch: --nb '$black' --nf '$white' --tb '$black' --tf '$blue' --hb '$black' --hf '$blue' --sb '$white' --sf '$black' --fn 'Ubuntu Bold 12'"
+bindsym $mod+Ctrl+m exec "bemenu-run -i -l 10 -p 'Run command:' --nb '$black' --nf '$white' --tb '$black' --tf '$blue' --hb '$black' --hf '$blue' --sb '$white' --sf '$black' --fn 'Ubuntu Bold 12'"
 
 # Start a terminal
 bindsym $mod+Return exec --no-startup-id LIBGL_ALWAYS_SOFTWARE=1 x-terminal-emulator
@@ -194,16 +198,16 @@ mode "resize" {
 }
 
 #######################################
-# Restart / Refresh / Exit i3 session #
+# Restart / Refresh / Exit sway session #
 #######################################
 # reload the configuration file
 bindsym $mod+Shift+c reload
 
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+# restart sway inplace (preserves your layout/session, can be used to upgrade sway)
 bindsym $mod+Shift+r restart
 
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+# exit sway (logs you out of your Wayland session)
+bindsym $mod+Shift+e exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'"
 
 ##################
 # POWER SETTINGS #
@@ -212,11 +216,11 @@ bindsym XF86PowerOff mode "$mode_system"
 set $mode_system System (e) logout, (s) suspend, (h) hibernate, (Shift+r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
 	# Power options
-    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym e exec --no-startup-id swaymsg exit, mode "default"
     bindsym s exec --no-startup-id $locker && systemctl suspend, mode "default"
     bindsym h exec --no-startup-id $locker && systemctl hibernate, mode "default"
     bindsym Shift+r exec --no-startup-id systemctl reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"  
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
 
     # back to normal: Enter or Escape
     bindsym Return mode "default"
@@ -232,7 +236,7 @@ bindsym $mod+Ctrl+Up exec brightnessctl set +10%
 bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
 bindsym $mod+Ctrl+Down exec brightnessctl set 10%-
 
-# Change System Volume (requires amixer) and send signal #1 to i3blocks 
+# Change System Volume (requires amixer) and send signal #1 to i3blocks
 bindsym XF86AudioMute exec amixer -q -D pulse set Master toggle && pkill -RTMIN+1 i3blocks
 bindsym $mod+Shift+m exec amixer -q -D pulse set Master toggle && pkill -RTMIN+1 i3blocks
 bindsym $mod+Shift+Up exec amixer -q -D pulse set Master 5%+ unmute && pkill -RTMIN+1 i3blocks
@@ -251,7 +255,6 @@ bindsym --release $mod+Shift+P exec "~/.config/scripts/workspace/screenshot.sh g
 
 # Lock screen
 set $locker ~/.config/scripts/workspace/fuzzy_lock.sh
-#bindsym Ctrl+Mod1+l exec "$locker"
 bindsym $mod+Mod1+L exec "$locker"
 
 bindsym $mod+Mod1+m exec "~/.config/scripts/workspace/monitorMirror.sh"
@@ -267,11 +270,11 @@ bindsym $mod+c exec gsimplecal
 #######################################################
 # Initialiser les applications au début de la session #
 #######################################################
-exec_always --no-startup-id xsetroot -solid '$background'
+# Native background color, replaces xsetroot
+output * bg $background solid_color
 
 exec --no-startup-id xfce4-power-manager
-exec --no-startup-id "xset s 300"
-exec --no-startup-id "xss-lock -- $locker"
+exec --no-startup-id swayidle -w timeout 300 '$locker' before-sleep '$locker'
 
 exec --no-startup-id dunst
 
@@ -286,6 +289,6 @@ exec_always --no-startup-id bash ~/.config/scripts/workspace/setupMonitors.sh
 exec_always --no-startup-id bash ~/.config/scripts/workspace/setInputVolume.sh
 
 # Start desired apps
-exec --no-startup-id i3-msg 'workspace $wspace1; exec ~/.config/scripts/workspace/startTmux.sh; exec LIBGL_ALWAYS_SOFTWARE=1 x-terminal-emulator -e tmux attach -t omnimed'
-exec --no-startup-id i3-msg 'workspace $wspace2; exec google-chrome'
-exec --no-startup-id i3-msg 'workspace $wspace10; exec discord'
+exec --no-startup-id swaymsg 'workspace $wspace1; exec ~/.config/scripts/workspace/startTmux.sh; exec LIBGL_ALWAYS_SOFTWARE=1 x-terminal-emulator -e tmux attach -t omnimed'
+exec --no-startup-id swaymsg 'workspace $wspace2; exec google-chrome'
+exec --no-startup-id swaymsg 'workspace $wspace10; exec discord'

@@ -1,8 +1,11 @@
-i3-wm
-i3lock
-xclip
-xss-lock
-libbemenu-x11
+sway
+swaylock
+swayidle
+wlr-randr
+grim
+slurp
+wl-clipboard
+libbemenu-wayland
 
 i3blocks
 dunst
