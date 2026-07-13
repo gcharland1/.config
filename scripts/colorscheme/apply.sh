@@ -57,9 +57,27 @@ set -g window-status-current-style \"fg=$color6 bg=$background\""
     replace_block "$file" "TMUX" "$content"
 }
 
+apply_dunst() {
+    local file="$1"
+
+    replace_block "$file" "GLOBAL" "    frame_color = \"$background\""
+
+    replace_block "$file" "LOW" "    background = \"$background\"
+    foreground = \"$foreground\""
+
+    replace_block "$file" "NORMAL" "    background = \"$background\"
+    foreground = \"$foreground\"
+    frame_color = \"$accent\""
+
+    replace_block "$file" "CRITICAL" "    background = \"$color1\"
+    foreground = \"$foreground\"
+    frame_color = \"$background\""
+}
+
 apply_gnome_terminal
 apply_i3_like "$CONFIG_DIR/i3/config"
 apply_i3_like "$CONFIG_DIR/sway/config"
 apply_tmux "$CONFIG_DIR/tmux/tmux.conf"
+apply_dunst "$CONFIG_DIR/dunst/dunstrc"
 
 echo "Palette applied."
