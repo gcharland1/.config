@@ -35,12 +35,14 @@ hide_edge_borders smart
 
 # Set color variables
 set $background #000000
-set $black      #131313
+# BEGIN_PALETTE_I3
+set $black      #0a0a0a
 set $main       #406464
 set $red        #a75f5f
-set $white      #dfdfdf
-set $yellow     #a7a75f
+set $white      #b2b2b2
+set $yellow     #a7873f
 set $blue       #5f5fa7
+# END_PALETTE_I3
 
 
 # Window colors         border  bground text    indicator child_border

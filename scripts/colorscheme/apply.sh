@@ -33,6 +33,20 @@ apply_gnome_terminal() {
     dconf write "$base/palette" "['$color0', '$color1', '$color2', '$color3', '$color4', '$color5', '$color6', '$color7', '$color8', '$color9', '$color10', '$color11', '$color12', '$color13', '$color14', '$color15']"
 }
 
+apply_i3_like() {
+    local file="$1"
+    local content
+    content="set \$black      $background
+set \$main       $accent
+set \$red        $color1
+set \$white      $foreground
+set \$yellow     $color3
+set \$blue       $color4"
+    replace_block "$file" "I3" "$content"
+}
+
 apply_gnome_terminal
+apply_i3_like "$CONFIG_DIR/i3/config"
+apply_i3_like "$CONFIG_DIR/sway/config"
 
 echo "Palette applied."
