@@ -26,6 +26,10 @@ replace_block() {
 apply_gnome_terminal() {
     local uuid
     uuid=$(dconf read /org/gnome/terminal/legacy/profiles:/default | tr -d "'")
+    if [ -z "$uuid" ]; then
+        echo "no default gnome-terminal profile found, skipping"
+        return
+    fi
     local base="/org/gnome/terminal/legacy/profiles:/:$uuid"
 
     dconf write "$base/background-color" "'$background'"
@@ -74,7 +78,11 @@ apply_dunst() {
     frame_color = \"$background\""
 }
 
-apply_gnome_terminal
+if command -v dconf >/dev/null 2>&1; then
+    apply_gnome_terminal
+else
+    echo "dconf not found, skipping gnome-terminal"
+fi
 apply_i3_like "$CONFIG_DIR/i3/config"
 apply_i3_like "$CONFIG_DIR/sway/config"
 apply_tmux "$CONFIG_DIR/tmux/tmux.conf"
