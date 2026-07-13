@@ -49,24 +49,22 @@ if [ ! -z $(which nvim | grep -v 'not found') ]; then
   alias vim=nvim
 fi
 
-
 . $HOME/.omnimedrc 2> /dev/null
-PATH=$PATH:/home/devjava/Applications/Scripts
+export PATH=$PATH:/home/devjava/Applications/Scripts
+export HISTTIMEFORMAT="%Y-%m-%d %T "
 
 # Setting java-11 as default
 export JAVA_HOME=/usr/lib/jvm/jdk21
 export PATH=$JAVA_HOME/bin:$PATH
 
-export HIST_STAMPS="%Y-%m-%d %T "
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-PATH=$PATH:~/Applications/Scripts
-export HISTTIMEFORMAT="%Y-%m-%d %T "
-
 
 # Load Angular CLI autocompletion.
 source <(ng completion script)
+PATH=$PATH:~/Applications/Scripts
+omnikools-lag

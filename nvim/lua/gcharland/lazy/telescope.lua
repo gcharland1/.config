@@ -17,7 +17,10 @@ return {
             defaults = {
                 dynamic_preview_title = true,
                 file_ignore_patterns = {
-                    "node_modules", "build", "dist", "target"
+                    "node_modules",
+                    "^(?!.*orchestration%.library/[^/]+/build).*/?build/",
+                    "dist",
+                    "target"
                 },
                 path_display = { "shorten" },
             },

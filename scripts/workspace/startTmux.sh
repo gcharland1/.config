@@ -1,3 +1,6 @@
+tmux -f ~/.config/tmux/tmux.conf new-session -d -s "sshuttle" -c "~"
+tmux set status-style "bg=colour130"
+
 tmux -f ~/.config/tmux/tmux.conf new-session -d -s "ssh" -c "~"
 tmux set status-style "bg=colour52"
 

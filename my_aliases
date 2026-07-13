@@ -44,7 +44,7 @@ fgit-cherry-pick() {
 }
 alias fgcp=fgit-cherry-pick
 
-alias fgit-delete-branch=git branch -vv | grep -v ahead | grep -v '^*' | fzf -m | awk '{printf "%s ", $1}' | xargs git branch -d
+alias fgit-delete-branch="git branch -vv | grep -v ahead | grep -v '^*' | fzf -m | awk '{printf \"%s \", \$1}' | xargs git branch -d"
 
 # Git Shortcuts
 pull-request() {
@@ -95,6 +95,18 @@ getDependencies() {
     for d in $(cat $1/solutionDependencies.txt); do echo -n "$d "; getDependencies $d | tr '\n' ' '; done
 }
 
+# Resolve cluster for environment
+getCluster() {
+    environment="${1:-prod}"
+    cluster=$(dig +short CNAME "${environment}".k8s-routing.omnimed.com @192.168.12.1)
+    if [[ "$cluster" == *k8s-routing* ]]; then
+        echo "Environment $environment roule sur" $(echo $cluster | cut -d. -f1)
+    else
+        echo "Impossible de résoudre le cluster, valider les tunnels et exécuter la commande suivante:"
+        echo "    dig +short CNAME ${environment}.k8s-routing.omnimed.com @192.168.12.1"
+    fi
+}
+
 ## Cukes
 alias dbcukes="~/.config/scripts/omnimed/BdPlusCukes.sh"
 alias cukesdb="~/.config/scripts/omnimed/cukesPlusBD.sh"
@@ -114,3 +126,6 @@ alias k8sOmnimedSolutions="~/.config/scripts/omnimed/deployOmnimedSolution.sh"
 
 ## PERFORMANCE
 alias performance="powerprofilesctl set performance"
+
+## Pour le lol 
+alias claudette="claude"

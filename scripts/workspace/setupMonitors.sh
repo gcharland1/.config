@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 # Setup tous les moniteurs par défaut (Reset)
-for m in $(xrandr -q | grep '^[eDP|DP|HDMI]' | awk '{print $1}'); do
+for m in $(xrandr -q | grep '^[DP|HDMI]' | awk '{print $1}'); do
     xrandr --output $m --auto
 done
 
@@ -17,5 +17,5 @@ main=$(xrandr --listmonitors | grep -v 'Monitors:' | awk '{print $4}' | grep 'e'
 
 xrandr --output $main --primary --mode 1920x1200
 for m in $monitors; do
-    xrandr --output $m $position $main --primary
+    xrandr --output $m $position $main --primary --mode 1920x1080
 done

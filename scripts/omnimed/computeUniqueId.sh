@@ -1,49 +1,40 @@
 #!/bin/bash
 
-#omnimed-api-access-identity:[omnimed-apidefinition-access-identity omnimed-parent-springboot omnimed-shared-api omnimed-shared-error-handling omnimed-shared-persistence omnimed-shared-security omnimed-shared-streamdefinition omnimed-shared-test omnimed-streamdefinition-emr omnimed-parent-apidefinition]
+cd /home/devjava/git/Omnimed-solutions
 
-cd /home/gcharland/git/Omnimed-solutions
+SOLUTION=${1:-"omnimed-api-access-identity"}
 
-#SOLUTION="omnimed-apidefinition-access-identity"
-#
-#DEPENDENCY_LIST=(
-#        "omnimed-parent-apidefinition"
-#        "omnimed-parent-springboot"
-#        "omnimed-shared-test"
-#    )
 
-SOLUTION="omnimed-api-access-identity"
+DEPENDENCY_LIST+=($(cat $SOLUTION/solutionDependencies.txt | tr '\n' ' '))
 
-DEPENDENCY_LIST=(
-        "omnimed-apidefinition-access-identity"
-        "omnimed-parent-apidefinition"
-        "omnimed-parent-springboot"
-        "omnimed-shared-api"
-        "omnimed-shared-error-handling"
-        "omnimed-shared-persistence"
-        "omnimed-shared-security"
-        "omnimed-shared-streamdefinition"
-        "omnimed-shared-test"
-        "omnimed-streamdefinition-emr"
-    )
+previousLength=0
+newLength=${#DEPENDENCY_LIST[@]}
+while [[ $previousLength -ne $newLength ]]; do
+    previousLength=$newLength
+    for dependency in ${DEPENDENCY_LIST[@]}; do
+        for new_dependency in $(cat $dependency/solutionDependencies.txt | tr '\n' ' '); do
+            if ! [[ " ${DEPENDENCY_LIST[@]} " =~ " $new_dependency " ]]; then
+                DEPENDENCY_LIST+=($new_dependency) 
+            fi
+        done
+    done
+    DEPENDENCY_LIST=($(printf "%s\n" "${DEPENDENCY_LIST[@]}" | sort -u))
+    newLength=${#DEPENDENCY_LIST[@]}
+done
 
-hashSentence=$(git --no-pager log -n 1 --pretty=format:%H -- $SOLUTION)
+echo "Depenencies are ${DEPENDENCY_LIST[*]}"
+
+hashSentence=$(git --no-pager rev-parse HEAD:$SOLUTION)
+echo "Commit hashes:"
+echo -e "\t- $SOLUTION : $hashSentence"
 
 for sol in "${DEPENDENCY_LIST[@]}"; do
-    hashSentence=$hashSentence$(git --no-pager log -n 1 --pretty=format:%H -- $sol)
+    solHash=$(git --no-pager rev-parse HEAD:$sol)
+    hashSentence=$hashSentence$solHash
+    echo -e "\t- $sol : $solHash"
 done
 
 hash=$(echo $hashSentence | sha1sum | head -c 11)
 
 echo "Hash sentence was: $hashSentence"
 echo "Unique id is: $hash"
-
-
-# apidefinition
-#Hash sentence was: 0adfaa766728468966d6480bd77d447c3913e0016dc367d473bf43f57f285e2ccd20ac50ea16102a6dc367d473bf43f57f285e2ccd20ac50ea16102a6dc367d473bf43f57f285e2ccd20ac50ea16102a
-#Unique id is: 6f3bc9ac057
-#
-# api-access-identity
-#Hash sentence was: 0adfaa766728468966d6480bd77d447c3913e0010adfaa766728468966d6480bd77d447c3913e0016dc367d473bf43f57f285e2ccd20ac50ea16102a6dc367d473bf43f57f285e2ccd20ac50ea16102aab1e6c22ac9eae16b7895ca390c8597cd339ed836dc367d473bf43f57f285e2ccd20ac50ea16102aab1e6c22ac9eae16b7895ca390c8597cd339ed836dc367d473bf43f57f285e2ccd20ac50ea16102a6dc367d473bf43f57f285e2ccd20ac50ea16102a6dc367d473bf43f57f285e2ccd20ac50ea16102a6dc367d473bf43f57f285e2ccd20ac50ea16102a
-#Unique id is: 15741ce4492
-

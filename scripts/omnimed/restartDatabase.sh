@@ -2,4 +2,4 @@
 # docker images | grep "omnimed-docker-postgresql-init" | awk '{print $3}' | exec docker image rm {}
 
 cd ~/git/Omnimed-solutions/omnimed-postgresql/
-skaffold run --filename=skaffold-base.yaml
+skaffold run --filename=skaffold.yaml

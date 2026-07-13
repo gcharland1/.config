@@ -25,6 +25,16 @@ vim.opt.smartindent = true
 
 vim.opt.wrap = false
 
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "markdown",
+    callback = function()
+        vim.opt_local.wrap = true
+        vim.opt_local.linebreak = true   -- coupe aux word-breaks, jamais mid-mot
+        vim.opt_local.textwidth = 140
+        vim.opt_local.colorcolumn = "140"
+    end,
+})
+
 vim.cmd("command! W w")
 vim.cmd("command! Wq wq")
 vim.cmd("command! WQ wq")
