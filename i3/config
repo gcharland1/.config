@@ -41,7 +41,7 @@ set $main       #406464
 set $red        #a75f5f
 set $white      #b2b2b2
 set $yellow     #a7873f
-set $blue       #5f5fa7
+set $blue       #406464
 # END_PALETTE_I3
 
 
@@ -164,8 +164,8 @@ bindsym $mod+v split v
 bindsym $mod+Shift+f fullscreen toggle
 
 # Start j4-dmenu-desktop
-bindsym $mod+m exec j4-dmenu-desktop --dmenu="bemenu -i -p Launch: --nb '$black' --nf '$white' --tb '$black' --tf '$blue' --hb '$black' --hf '$blue' --sb '$white' --sf '$black' --fn 'Ubuntu Bold 12'"
-bindsym $mod+Ctrl+m exec "bemenu-run -i -l 10 -p 'Run command:' --nb '$black' --nf '$white' --tb '$black' --tf '$blue' --hb '$black' --hf '$blue' --sb '$white' --sf '$black' --fn 'Ubuntu Bold 12'"
+bindsym $mod+m exec j4-dmenu-desktop --dmenu="bemenu -i -p Launch: --hp 5 --nb '$black' --nf '$white' --tb '$black' --tf '$white' --hb '$white' --hf '$black' --sb '$white' --sf '$black' --fn 'Ubuntu Bold 12'"
+bindsym $mod+Ctrl+m exec "bemenu-run -i -l 10 -p 'Run command:' --hp 5 --nb '$black' --nf '$white' --tb '$black' --tf '$blue' --hb '$white' --hf '$black' --sb '$white' --sf '$black' --fn 'Ubuntu Bold 12'"
 
 # Start a terminal
 bindsym $mod+Return exec --no-startup-id LIBGL_ALWAYS_SOFTWARE=1 x-terminal-emulator
@@ -249,7 +249,7 @@ bindsym $mod+Shift+Right exec playerctl next
 bindsym $mod+Shift+Left exec playerctl previous
 
 # Take Screenshot
-bindsym --release Shift+Print exec "~/.config/scripts/workspace/screenshot.sh full"
+#bindsym --release Shift+Print exec "~/.config/scripts/workspace/screenshot.sh full"
 bindsym --release $mod+Shift+P exec "~/.config/scripts/workspace/screenshot.sh gui"
 
 # Lock screen

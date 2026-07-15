@@ -1,6 +1,11 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+# zsh never sources .profile (only bash does), so ~/.local/bin must be added
+# here explicitly or its contents (e.g. claude) are only found by luck,
+# depending on which gnome-terminal-server instance's captured PATH you inherit.
+export PATH="$HOME/.local/bin:$PATH"
+
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.config/oh-my-zsh"
 #

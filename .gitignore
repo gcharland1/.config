@@ -16,6 +16,9 @@
 !gnome-terminal
 !gnome-terminal/**
 
+!foot
+!foot/**
+
 !lazygit
 !lazygit/config.yml
 

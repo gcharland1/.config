@@ -2,6 +2,21 @@
 # Mod Key setup (Mod1 = Alt, Mod4 = Win, Mod2 = NumLock (DO NO USE))
 set $mod Mod4
 
+# Keyboard layout (X11/i3 picked this up from /etc/default/keyboard automatically;
+# sway needs it set explicitly since it doesn't read that file)
+input type:keyboard {
+    xkb_layout ca
+}
+
+# Propagate session env into systemd/D-Bus so xdg-desktop-portal can match the
+# sway-portals.conf backend (file choosers, screenshots, etc.) instead of
+# falling back to a stale/incorrect desktop and hanging.
+# GTK_OVERLAY_SCROLLING=0 covers any other GTK3 app spawned in this sway
+# session (the terminal itself is foot now, so it doesn't need this) - it's
+# set at D-Bus/systemd level because gnome-terminal-server-style D-Bus-activated
+# apps only pick up env captured at their persistent server process's first launch.
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway GTK_OVERLAY_SCROLLING=0
+
 # Navigation
 set $left h
 set $down j
@@ -41,7 +56,7 @@ set $main       #406464
 set $red        #a75f5f
 set $white      #b2b2b2
 set $yellow     #a7873f
-set $blue       #5f5fa7
+set $blue       #406464
 # END_PALETTE_I3
 
 
@@ -167,11 +182,14 @@ bindsym $mod+v split v
 bindsym $mod+Shift+f fullscreen toggle
 
 # Start j4-dmenu-desktop
-bindsym $mod+m exec j4-dmenu-desktop --dmenu="bemenu -i -p Launch: --nb '$black' --nf '$white' --tb '$black' --tf '$blue' --hb '$black' --hf '$blue' --sb '$white' --sf '$black' --fn 'Ubuntu Bold 12'"
+bindsym $mod+m exec j4-dmenu-desktop --dmenu="bemenu -i -p Launch: --nb '$black' --nf '$white' --tb '$black' --tf '$white' --hb '$white' --hf '$black' --sb '$white' --sf '$black' --fn 'Ubuntu Bold 12'"
 bindsym $mod+Ctrl+m exec "bemenu-run -i -l 10 -p 'Run command:' --nb '$black' --nf '$white' --tb '$black' --tf '$blue' --hb '$black' --hf '$blue' --sb '$white' --sf '$black' --fn 'Ubuntu Bold 12'"
 
 # Start a terminal
-bindsym $mod+Return exec --no-startup-id LIBGL_ALWAYS_SOFTWARE=1 x-terminal-emulator
+# foot is a native wlroots/Wayland terminal (no GTK, no D-Bus-activated
+# singleton, no XWayland) so it sidesteps the gnome-terminal scrollbar/scroll
+# bugs above entirely. i3/config keeps gnome-terminal since foot is Wayland-only.
+bindsym $mod+Return exec --no-startup-id foot
 
 # Kill focused window
 bindsym $mod+Shift+q kill
@@ -206,7 +224,7 @@ mode "resize" {
 bindsym $mod+Shift+c reload
 
 # restart sway inplace (preserves your layout/session, can be used to upgrade sway)
-bindsym $mod+Shift+r restart
+bindsym $mod+Shift+r reload
 
 # exit sway (logs you out of your Wayland session)
 bindsym $mod+Shift+e exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'"
@@ -291,6 +309,6 @@ exec_always --no-startup-id bash ~/.config/scripts/workspace/setupMonitors.sh
 exec_always --no-startup-id bash ~/.config/scripts/workspace/setInputVolume.sh
 
 # Start desired apps
-exec --no-startup-id swaymsg 'workspace $wspace1; exec ~/.config/scripts/workspace/startTmux.sh; exec LIBGL_ALWAYS_SOFTWARE=1 x-terminal-emulator -e tmux attach -t omnimed'
+exec --no-startup-id swaymsg 'workspace $wspace1; exec ~/.config/scripts/workspace/startTmux.sh; exec foot tmux attach -t omnimed'
 exec --no-startup-id swaymsg 'workspace $wspace2; exec google-chrome'
 exec --no-startup-id swaymsg 'workspace $wspace10; exec discord'

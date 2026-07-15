@@ -5,10 +5,10 @@ mode="${1:-full}"
 if [ -n "$WAYLAND_DISPLAY" ]; then
     case "$mode" in
         full)
-            grim - | wl-copy
+            grim - | swappy -f -
             ;;
         gui)
-            grim -g "$(slurp)" - | wl-copy
+            grim -g "$(slurp)" - | swappy -f -
             ;;
     esac
 else
